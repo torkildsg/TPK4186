@@ -63,4 +63,15 @@ print(Team_getNumGamesDraw(rosenborg))
 print(Team_getNumberOfGoalsFor(rosenborg))
 print(Team_getNumberOfGoalsAgainst(rosenborg))
 
+#datalist ser slik ut: [TriHome, ScoreHome, TriVis, ScorVis]
+def Game_New(dataList):
+    newGame = [dataList[0], dataList[1], dataList[2], dataList[3]]
+    return newGame
+
+def Team_GetHomeTrigram(game):
+    return 
+
+def Team_SetHomeTrigram(homeTeam, trigram):
+
+
 
