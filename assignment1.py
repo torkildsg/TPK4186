@@ -1,4 +1,6 @@
 
+# Task 1
+
 def Team_New(name, trigram, gamesWon, gamesLost, gamesDraw, numberOfGoalsFor, numberOfGoalsAgainst):
     return [name, trigram, gamesWon, gamesLost, gamesDraw, numberOfGoalsFor, numberOfGoalsAgainst]
 
@@ -33,7 +35,7 @@ def Team_SetNumGamesDraw(team, gamesDraw):
     team[4] = gamesDraw
 
 def Team_TotalPoints(team):
-    totalPoints = Team_getNumGamesWon(team) * 3 + Team_getNumGamesDraw(team) 
+    totalPoints = Team_GetNumGamesWon(team) * 3 + Team_GetNumGamesDraw(team) 
     return totalPoints
 
 def Team_SetNumOfGoalsFor(team, numOfGoalsFor):
@@ -53,7 +55,7 @@ def Team_goalDifference(team):
     return goalDifference
 
 
-# Testing
+# Testing task 1
 
 rosenborg = Team_New("Rosenborg", "RBK", 0 , 0, 0, 0, 0)
 Team_GetName(rosenborg)
@@ -72,16 +74,55 @@ print(Team_GetNumOfGoalsAgainst(rosenborg))
 print(Team_goalDifference(rosenborg))
 print(Team_TotalPoints(rosenborg))
 
-# TASK 2
-#datalist ser slik ut: [TriHome, ScoreHome, TriVis, ScorVis]
-def Game_New(dataList):
-    newGame = [dataList[0], dataList[1], dataList[2], dataList[3]]
-    return newGame
 
-def Team_GetHomeTrigram(game):
-    return 
 
-def Team_SetHomeTrigram(homeTeam, trigram):
+# Task 3
+
+def Championship_New():
+    championship = dict()
+    return championship
+
+def Championship_LookForTeam(championship, trigram):
+    return championship.get(trigram)
+
+def Championship_NewTeam(team, trigram, championship):
+    newTeam = {trigram: team}
+    championship.update(newTeam)
+
+def Championship_GetTeams(championship):
+    participants = []
+    for trigram in championship:
+        participants.append(trigram)
+    return participants
+
+def Championship_NewGame(homeTrigram, visitorTrigram, championship):
+    game = [homeTrigram, visitorTrigram]
+    championship.append(game)
+
+def Championship_GetGames(championship):
+    games = []
+    for game in championship:
+        games.append(championship.get(game))
+    return games
+
+# Task 4 (testing)
+
+
+
+# Task 5
+
+def Print_Team(team):
+    print("Trigram: " + Team_GetTrigram(team) + "\nGames won: " + Team_GetNumGamesWon(team)
+        + "\nGames draw: " + Team_GetNumGamesDraw(team) + "\nGoals scored: " + Team_GetNumOfGoalsFor(team) + "\nGoals conceded: " + Team_GetNumOfGoalsAgainst(team)
+                + "\nPoints: " + Team_TotalPoints(team))
+
+def Print_Game(game):
+    print()
+
+
+
+
+
 
 
 
