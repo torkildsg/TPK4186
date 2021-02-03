@@ -58,7 +58,7 @@ def Team_goalDifference(team):
 # Testing task 1
 
 rosenborg = Team_New("Rosenborg", "RBK", 0 , 0, 0, 0, 0)
-Team_GetName(rosenborg)
+Team_GetName(rosenborg) 
 Team_GetTrigram(rosenborg)
 Team_SetNumGamesWon(rosenborg, 10)
 Team_SetNumGamesDraw(rosenborg, 8)
@@ -74,7 +74,16 @@ print(Team_GetNumOfGoalsAgainst(rosenborg))
 print(Team_goalDifference(rosenborg))
 print(Team_TotalPoints(rosenborg))
 
+# TASK 2
+#datalist ser slik ut: [TriHome, ScoreHome, TriVis, ScorVis]
+def Game_New(dataList):
+    newGame = [dataList[0], dataList[1], dataList[2], dataList[3]]
+    return newGame
 
+def Team_GetHomeTrigram(game):
+    return 
+
+def Team_SetHomeTrigram(homeTeam, trigram):
 
 # Task 3
 
