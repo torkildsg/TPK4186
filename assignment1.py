@@ -33,7 +33,7 @@ def Team_SetNumGamesDraw(team, gamesDraw):
     team[4] = gamesDraw
 
 def Team_TotalPoints(team):
-    totalPoints = Team_GetNumGamesWon(team) * 3 + Team_GetNumGamesDraw(team) 
+    totalPoints = Team_getNumGamesWon(team) * 3 + Team_getNumGamesDraw(team) 
     return totalPoints
 
 def Team_SetNumOfGoalsFor(team, numOfGoalsFor):
@@ -71,5 +71,18 @@ print(Team_GetNumOfGoalsFor(rosenborg))
 print(Team_GetNumOfGoalsAgainst(rosenborg))
 print(Team_goalDifference(rosenborg))
 print(Team_TotalPoints(rosenborg))
+
+# TASK 2
+#datalist ser slik ut: [TriHome, ScoreHome, TriVis, ScorVis]
+def Game_New(dataList):
+    newGame = [dataList[0], dataList[1], dataList[2], dataList[3]]
+    return newGame
+
+def Team_GetHomeTrigram(game):
+    return 
+
+def Team_SetHomeTrigram(homeTeam, trigram):
+
+
 
 
