@@ -74,21 +74,29 @@ print(Team_GetNumOfGoalsAgainst(rosenborg))
 print(Team_goalDifference(rosenborg))
 print(Team_TotalPoints(rosenborg))"""
 
-# TASK 2
-#datalist ser slik ut: [TriHome, ScoreHome, TriVis, ScorVis]
+# Task 2
+
 def Game_New(trigramHometeam, hometeamScore, trigramVisitorteam, visitorteamScore):
-    newGame = [trigramHometeam, hometeamScore, trigramVisitorteam, visitorteamScore]
+    newGame = {"homeTrigram": trigramHometeam, "scoreHometeam": hometeamScore, "visitorTrigram": trigramVisitorteam, "scoreVisitorteam": visitorteamScore}
     return newGame
 
-"""def Team_GetHomeTrigram(game):
-    return game
+def Team_GetHomeTrigram(game):
+    return game["homeTrigram"] 
 
-def Team_SetHomeTrigram(homeTeam, trigram):"""
+def Team_SetHomeTrigram(game, newTrigram):
+    game["homeTrigram"] = newTrigram
+
+def Team_GetVisitorTrigram(game):
+    return game["visitorTrigram"]
+
+def Team_SetVisitorTrigram(game, newTrigram):
+    game["visitorTrigram"] = newTrigram
+
 
 # Task 3
 
 def Championship_New():
-    championship = {"teamName":[],"teamTrigram":[],"games":[]}; 
+    championship = {"teamName":[],"teamTrigram":[],"games":[]} 
     return championship
 
 def Championship_LookForTeam(championship, trigram):
