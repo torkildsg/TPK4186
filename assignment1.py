@@ -125,11 +125,24 @@ print(Championship_LookForTeam(cup, "LKL"))
 
 # Task 5
 
-"""def Print_Team(team):
+def Print_Team(team):
     print("Trigram: " + Team_GetTrigram(team) + "\nGames won: " + Team_GetNumGamesWon(team)
         + "\nGames draw: " + Team_GetNumGamesDraw(team) + "\nGoals scored: " + Team_GetNumOfGoalsFor(team) + "\nGoals conceded: " + Team_GetNumOfGoalsAgainst(team)
                 + "\nPoints: " + Team_TotalPoints(team))
 
 def Print_Game(game):
-    print()"""
+    print()
+
+def Print_ChampionshipDescription(championship):
+    teamnames = championship["teamName"]
+    teamtrigram = championship["teamTrigram"]
+    games = championship["games"]
+
+    print("#Name"+" "+"Code"+"\n")
+    for i in range(0,len(teamnames)):
+        print(teamnames[i]+" " + teamtrigram[i]+"\n")
+
+    for game in games:
+        print(game[0]+" "+game[1]+"\n")
+
 
