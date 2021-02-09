@@ -175,7 +175,7 @@ Print_ChampionshipDescription(cup)
 #Task 6
 import csv
 tsv_file = open("PremierLeague2019-2020-Description.tsv")
-read_tsv = csv.reader(tsv_file, delimiter="\t")
+read_tsv = csv.reader(tsv_file, delimiter="\t") #legg til try/except
 
 def Import_Championship():
     championship_1 = Championship_New()
@@ -192,4 +192,5 @@ def Import_Championship():
 #Task 7:
 
 def Championship_UpdateStatistics(championship):
+
     
