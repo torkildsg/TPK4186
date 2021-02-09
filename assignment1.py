@@ -146,7 +146,11 @@ rosenborgbk = Championship_NewTeam("rosenborgbk", "RBK", cup)
 lyn = Championship_NewTeam("lynfk", "LYN", cup)
 finale = Championship_NewGame("ODD", 3, "RBK", 2, cup)
 semi = Championship_NewGame("VIF",  1, "LYN", 2, cup)
+<<<<<<< HEAD
 kamp = Game_New("RBK", 5, "LSK", 6)
+=======
+
+>>>>>>> 5ed544aa7df5ae60569471a6d09e840b050b7393
 """print(Championship_GetGames(cup))
 print(Championship_GetTeams(cup))
 print(Championship_LookForTeam(cup, "RBK"))"""
@@ -161,8 +165,47 @@ def Print_Team(team):
 def Print_Game(game):
     print(Game_GetHomeTrigram(game) + " " + str(Game_GetScoreHometeam(game)) + " - " + Game_GetVisitorTrigram(game) + " " + str(Game_GetScoreVisitorteam(game)))
 
+def Print_ChampionshipDescription(championship):
+    teamnames = list(Championship_GetTeams(championship).values())
+    teamtrigrams = list(Championship_GetTeams(championship).keys())
+    games = Championship_GetGames(championship)
+
+    
+    print("#Name"+" "+"Code".rjust(25)+"\n")
+    for i in range(0,len(teamnames)):
+        print(teamnames[i]+" " + teamtrigrams[i].rjust(30-len(teamnames[i]))+"\n")
+
+    print("#Home code"+"    "+"Home score"+"    "+"#Visitor code"+"    "+"Visitor score"+"\n")
+
+    for game in games:
+        print(str(game[0]) + "           " + str(game[1])+ "             " + str(game[2])+ "           " + str(game[3])+"\n")
+
 # Testing task 5
 #Print_Game(kamp)
 
 # Task 7
 
+"""Print_ChampionshipDescription(cup)"""
+
+
+#Task 6
+import csv
+tsv_file = open("PremierLeague2019-2020-Description.tsv")
+read_tsv = csv.reader(tsv_file, delimiter="\t") #legg til try/except
+
+def Import_Championship():
+    championship_1 = Championship_New()
+    for row in read_tsv:
+        if (len(row)==2) and (row[0] != "#Name"):
+            Championship_NewTeam(row[0],row[1],championship_1)
+        elif (len(row)==4) and (row[0] != "#Home code"):
+            Championship_NewGame(row[0],row[2],row[1],row[3],championship_1)    
+    #Print_ChampionshipDescription(championship_1)
+    return championship_1
+
+#Testing task 6
+Import_Championship()
+
+#Task 7:
+
+"""def Championship_UpdateStatistics(championship):"""
