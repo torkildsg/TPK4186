@@ -117,9 +117,11 @@ cup = Championship_New()
 oddbk = Championship_NewTeam("oddbk", "ODD", cup)
 rosenborgbk = Championship_NewTeam("rosenborgbk", "RBK", cup)
 finale = Championship_NewGame("ODD", "RBK", cup)
+"""
 print(Championship_GetGames(cup))
 print(Championship_GetTeams(cup))
 print(Championship_LookForTeam(cup, "LKL"))
+"""
 
 
 
@@ -130,8 +132,11 @@ def Print_Team(team):
         + "\nGames draw: " + Team_GetNumGamesDraw(team) + "\nGoals scored: " + Team_GetNumOfGoalsFor(team) + "\nGoals conceded: " + Team_GetNumOfGoalsAgainst(team)
                 + "\nPoints: " + Team_TotalPoints(team))
 
+"""
 def Print_Game(game):
     print()
+
+"""
 
 def Print_ChampionshipDescription(championship):
     teamnames = championship["teamName"]
@@ -140,9 +145,16 @@ def Print_ChampionshipDescription(championship):
 
     print("#Name"+" "+"Code"+"\n")
     for i in range(0,len(teamnames)):
-        print(teamnames[i]+" " + teamtrigram[i]+"\n")
+        print(teamnames[i]+" " + teamtrigram[i].rjust(20-len(teamnames[i]))+"\n")
+
+    print("#Home code"+"    "+"Home score"+"    "+"#Visitor code"+"    "+"Visitor score"+"\n")
 
     for game in games:
-        print(game[0]+" "+game[1]+"\n")
+        print(game[0]+" "+game[1].rjust(20-len(game[0]))+"\n")
+
+
+
+
+print(Print_ChampionshipDescription(cup))
 
 
