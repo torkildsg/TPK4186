@@ -78,8 +78,8 @@ print(Team_GetNumGamesWon(rosenborg))
 print(Team_GetNumGamesDraw(rosenborg))
 print(Team_GetNumOfGoalsFor(rosenborg))
 print(Team_GetNumOfGoalsAgainst(rosenborg))
-print(rosenborg)
-"""
+print(rosenborg)"""
+
 
 
 # Task 2
@@ -146,11 +146,8 @@ rosenborgbk = Championship_NewTeam("rosenborgbk", "RBK", cup)
 lyn = Championship_NewTeam("lynfk", "LYN", cup)
 finale = Championship_NewGame("ODD", 3, "RBK", 2, cup)
 semi = Championship_NewGame("VIF",  1, "LYN", 2, cup)
-<<<<<<< HEAD
-kamp = Game_New("RBK", 5, "LSK", 6)
-=======
 
->>>>>>> 5ed544aa7df5ae60569471a6d09e840b050b7393
+
 """print(Championship_GetGames(cup))
 print(Championship_GetTeams(cup))
 print(Championship_LookForTeam(cup, "RBK"))"""
@@ -162,8 +159,8 @@ def Print_Team(team):
     + str(Team_GetNumGamesDraw(team)) + "\nGoals scored: " + str(Team_GetNumOfGoalsFor(team)) + "\nGoals conceded: " 
     + str(Team_GetNumOfGoalsAgainst(team)) + "\nPoints: " + str(Team_TotalPoints(team)))
 
-def Print_Game(game):
-    print(Game_GetHomeTrigram(game) + " " + str(Game_GetScoreHometeam(game)) + " - " + Game_GetVisitorTrigram(game) + " " + str(Game_GetScoreVisitorteam(game)))
+"""def Print_Game(game):
+    print("")"""
 
 def Print_ChampionshipDescription(championship):
     teamnames = list(Championship_GetTeams(championship).values())
@@ -181,9 +178,9 @@ def Print_ChampionshipDescription(championship):
         print(str(game[0]) + "           " + str(game[1])+ "             " + str(game[2])+ "           " + str(game[3])+"\n")
 
 # Testing task 5
-#Print_Game(kamp)
-
-# Task 7
+#Print_Game(finale, cup)
+#Print_Team(rosenborg)
+#print(Championship_GetGames(cup))
 
 """Print_ChampionshipDescription(cup)"""
 
@@ -204,8 +201,31 @@ def Import_Championship():
     return championship_1
 
 #Testing task 6
-Import_Championship()
+"""Import_Championship()"""
 
 #Task 7:
 
-"""def Championship_UpdateStatistics(championship):"""
+def Championship_UpdateStatistics(championship):
+    games = Championship_GetGames(championship)
+    teamtrigrams = list(Championship_GetTeams(championship).keys())
+    for game in games:
+        tri_home = Game_GetHomeTrigram(game)
+        tri_away = Game_GetVisitorTrigram(game)
+        goals_home = Game_GetScoreHometeam(game)
+        goals_away = Game_GetScoreVisitorteam(game)
+        winner =""
+        looser =""
+        draw = False
+
+        if (goals_home > goals_away):
+            winner = tri_home
+        elif(goals_away<goals_away):
+            winner = tri_away
+        elif(goals_away ==goals_home):
+            draw = True
+        
+
+                    
+    
+    
+    
