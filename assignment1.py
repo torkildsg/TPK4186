@@ -113,7 +113,7 @@ def Championship_GetTeams(championship):
     return championship["teamName"]
 
 def Championship_NewGame(trigramHometeam, hometeamScore, trigramVisitorteam, visitorteamScore, championship):
-    game = {trigramHometeam: hometeamScore, trigramVisitorteam: visitorteamScore}
+    game = [str(trigramHometeam), hometeamScore, str(trigramVisitorteam), visitorteamScore]
     championship["games"].append(game)
 
 def Championship_GetGames(championship):
@@ -124,10 +124,14 @@ def Championship_GetGames(championship):
 cup = Championship_New()
 oddbk = Championship_NewTeam("oddbk", "ODD", cup)
 rosenborgbk = Championship_NewTeam("rosenborgbk", "RBK", cup)
+
+
+
 finale = Championship_NewGame("ODD", "RBK", 3, 2, cup)
 """print(Championship_GetGames(cup))
 print(Championship_GetTeams(cup))
 print(Championship_LookForTeam(cup, "LKL"))"""
+
 
 
 # Task 5
@@ -142,10 +146,45 @@ def Print_Game(game, championship):
     else:
         print("The game does not exist in this championship.")
 
-# Testing task 5
 
+def Print_ChampionshipDescription(championship):
+    teamnames = Championship_GetTeams(championship)
+    teamtrigrams = championship["teamTrigram"]
+    games = Championship_GetGames(championship)
+
+    print("#Name"+" "+"Code".rjust(25)+"\n")
+    for i in range(0,len(teamnames)):
+        print(teamnames[i]+" " + teamtrigrams[i].rjust(30-len(teamnames[i]))+"\n")
+
+    print("#Home code"+"    "+"Home score"+"    "+"#Visitor code"+"    "+"Visitor score"+"\n")
+
+    for game in games:
+        print(game[0] + "           " + game[2]+ "             " + str(game[1])+ "           " + str(game[3])+"\n")
+
+ 
+
+# Testing task 5
+"""
 Print_Game(finale, cup)
 Print_Team(rosenborgbk)
 
 
+Print_ChampionshipDescription(cup)
+"""
 
+#Task 6
+import csv
+tsv_file = open("PremierLeague2019-2020-Description.tsv")
+read_tsv = csv.reader(tsv_file, delimiter="\t")
+
+def Import_Championship():
+    championship_1 = Championship_New()
+    for row in read_tsv:
+        if (len(row)==2) and (row[0] != "#Name"):
+            Championship_NewTeam(row[0],row[1],championship_1)
+        elif (len(row)==4) and (row[0] != "#Home code"):
+            Championship_NewGame(row[0],row[2],row[1],row[3],championship_1)    
+    Print_ChampionshipDescription(championship_1)
+
+#Testing task 6
+Import_Championship()
