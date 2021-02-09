@@ -146,9 +146,15 @@ def Print_Game(game, championship):
         print("The game does not exist.")
 
 # Testing task 5
+<<<<<<< HEAD
 #Print_Game(finale, cup)
 #Print_Team(rosenborg)
 #print(Championship_GetGames(cup))
+=======
+
+Print_Game(finale, cup)
+Print_Team(rosenborgbk)
+>>>>>>> afd61cfe2baa131b47055f7a066fe786b17e6f79
 
 
 
