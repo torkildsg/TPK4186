@@ -147,9 +147,9 @@ lyn = Championship_NewTeam("lynfk", "LYN", cup)
 finale = Championship_NewGame("ODD", 3, "RBK", 2, cup)
 semi = Championship_NewGame("VIF",  1, "LYN", 2, cup)
 
-print(Championship_GetGames(cup))
+"""print(Championship_GetGames(cup))
 print(Championship_GetTeams(cup))
-print(Championship_LookForTeam(cup, "RBK"))
+print(Championship_LookForTeam(cup, "RBK"))"""
 
 
 # Task 5
@@ -181,7 +181,7 @@ def Print_ChampionshipDescription(championship):
 #Print_Team(rosenborg)
 #print(Championship_GetGames(cup))
 
-Print_ChampionshipDescription(cup)
+"""Print_ChampionshipDescription(cup)"""
 
 
 #Task 6
@@ -196,10 +196,11 @@ def Import_Championship():
             Championship_NewTeam(row[0],row[1],championship_1)
         elif (len(row)==4) and (row[0] != "#Home code"):
             Championship_NewGame(row[0],row[2],row[1],row[3],championship_1)    
-    Print_ChampionshipDescription(championship_1)
+    #Print_ChampionshipDescription(championship_1)
+    return championship_1
 
 #Testing task 6
-"""Import_Championship()"""
+Import_Championship()
 
 #Task 7:
 
