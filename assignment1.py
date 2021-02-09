@@ -187,4 +187,9 @@ def Import_Championship():
     Print_ChampionshipDescription(championship_1)
 
 #Testing task 6
-Import_Championship()
+"""Import_Championship()"""
+
+#Task 7:
+
+def Championship_UpdateStatistics(championship):
+    
