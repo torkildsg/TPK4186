@@ -74,21 +74,29 @@ print(Team_GetNumOfGoalsAgainst(rosenborg))
 print(Team_goalDifference(rosenborg))
 print(Team_TotalPoints(rosenborg))"""
 
-# TASK 2
-#datalist ser slik ut: [TriHome, ScoreHome, TriVis, ScorVis]
+# Task 2
+
 def Game_New(trigramHometeam, hometeamScore, trigramVisitorteam, visitorteamScore):
-    newGame = [trigramHometeam, hometeamScore, trigramVisitorteam, visitorteamScore]
+    newGame = {"homeTrigram": trigramHometeam, "scoreHometeam": hometeamScore, "visitorTrigram": trigramVisitorteam, "scoreVisitorteam": visitorteamScore}
     return newGame
 
-"""def Team_GetHomeTrigram(game):
-    return game
+def Team_GetHomeTrigram(game):
+    return game["homeTrigram"] 
 
-def Team_SetHomeTrigram(homeTeam, trigram):"""
+def Team_SetHomeTrigram(game, newTrigram):
+    game["homeTrigram"] = newTrigram
+
+def Team_GetVisitorTrigram(game):
+    return game["visitorTrigram"]
+
+def Team_SetVisitorTrigram(game, newTrigram):
+    game["visitorTrigram"] = newTrigram
+
 
 # Task 3
 
 def Championship_New():
-    championship = {"teamName":[],"teamTrigram":[],"games":[]}; 
+    championship = {"teamName":[],"teamTrigram":[],"games":[]} 
     return championship
 
 def Championship_LookForTeam(championship, trigram):
@@ -104,8 +112,8 @@ def Championship_NewTeam(team, trigram, championship):
 def Championship_GetTeams(championship):
     return championship["teamName"]
 
-def Championship_NewGame(homeTrigram, visitorTrigram, championship):
-    game = [homeTrigram, visitorTrigram]
+def Championship_NewGame(trigramHometeam, hometeamScore, trigramVisitorteam, visitorteamScore, championship):
+    game = {trigramHometeam: hometeamScore, trigramVisitorteam: visitorteamScore}
     championship["games"].append(game)
 
 def Championship_GetGames(championship):
@@ -116,20 +124,28 @@ def Championship_GetGames(championship):
 cup = Championship_New()
 oddbk = Championship_NewTeam("oddbk", "ODD", cup)
 rosenborgbk = Championship_NewTeam("rosenborgbk", "RBK", cup)
-finale = Championship_NewGame("ODD", "RBK", cup)
-print(Championship_GetGames(cup))
+finale = Championship_NewGame("ODD", "RBK", 3, 2, cup)
+"""print(Championship_GetGames(cup))
 print(Championship_GetTeams(cup))
-print(Championship_LookForTeam(cup, "LKL"))
-
+print(Championship_LookForTeam(cup, "LKL"))"""
 
 
 # Task 5
+def Print_Team(team):
+    print("Trigram: " + Team_GetTrigram(team) + "\nGames won: " + Team_GetNumGamesWon(team) 
+    + "\nGames draw: " + Team_GetNumGamesDraw(team) + "\nGoals scored: " + Team_GetNumOfGoalsFor(team) + "\nGoals conceded: " + Team_GetNumOfGoalsAgainst(team) 
+    + "\nPoints: " + Team_TotalPoints(team))
 
-"""def Print_Team(team):
-    print("Trigram: " + Team_GetTrigram(team) + "\nGames won: " + Team_GetNumGamesWon(team)
-        + "\nGames draw: " + Team_GetNumGamesDraw(team) + "\nGoals scored: " + Team_GetNumOfGoalsFor(team) + "\nGoals conceded: " + Team_GetNumOfGoalsAgainst(team)
-                + "\nPoints: " + Team_TotalPoints(team))
+def Print_Game(game, championship):
+    if(game in Championship_GetGames(championship)):
+        print(championship["games"].get(game))
+    else:
+        print("The game does not exist in this championship.")
 
-def Print_Game(game):
-    print()"""
+# Testing task 5
+
+Print_Game(finale, cup)
+Print_Team(rosenborgbk)
+
+
 
