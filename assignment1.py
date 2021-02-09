@@ -149,7 +149,3 @@ Print_Team(rosenborgbk)
 
 
 
-
-
-
-
