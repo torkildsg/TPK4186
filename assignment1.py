@@ -154,7 +154,6 @@ def Print_ChampionshipDescription(championship):
 
 
 
-
 print(Print_ChampionshipDescription(cup))
 
 
