@@ -73,11 +73,19 @@ class Team:
     
     """" Part one of Task 5. This is equivalent to 'Print_Team' """
     def __str__(self):
-        return "Trigram: " + self.getTrigram() + "\nGames won: " + str(self.getNumGamesWon()) + \
+        """return "Trigram: " + self.getTrigram() + "\nGames won: " + str(self.getNumGamesWon()) + \
             "\nGames draw: " + str(self.getNumGamesDraw()) + "\nGoals scored: " + str(self.getNumOfGoalsFor()) + \
-            "\nGoals conceded: " + str(self.getNumOfGoalsAgainst()) + "\nPoints: " + str(self.getTotalpoints())
+            "\nGoals conceded: " + str(self.getNumOfGoalsAgainst()) + "\nPoints: " + str(self.getTotalpoints())"""
 
-
+        print("Team" + "      " + "Played" + "      " + "Wins" + "      " + " Draws" + \
+             "      " + "Losses" + "      " + "Goals For" + "      " + "Goals Against" + \
+                 "      " + "Goal Difference" + "      " + "Points")
+        
+        print(self.getName() + "      " + str(self.getNumGamesDraw() + self.getNumGamesLost() + self.getNumGamesWon()) + \
+                "      " + str(self.getNumGamesWon()) + "      " + str(self.getNumGamesDraw()) + "      " + str(self.getNumGamesLost()) + \
+                    str(self.getNumOfGoalsFor()) + "      " + str(self.getNumOfGoalsAgainst()) + "      " + str(self.getGoalDifference()) + \
+                        "      " + str(self.getTotalpoints()))
+        return ' '
 
 """ Task 2 """
 
@@ -266,7 +274,6 @@ class Championship:
                 
 
 
-
 """ Task 4 """
 cup = Championship()
 cup.newTeam("Odd ballklubb", "ODD")
@@ -294,8 +301,8 @@ cup.UpdateStatistics()
 
 """Test 9"""
 
-#cup.printRanking()
+cup.printRanking()
 
 """Test 10"""
-cup.updateGameLists()
+#cup.updateGameLists()
 
