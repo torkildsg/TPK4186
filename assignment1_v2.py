@@ -295,6 +295,10 @@ class Championship:
             self.allGamesByTeams[teamTrigram] = teamgames  
 
         return self.allGamesByTeams
+
+    """" Task 11 """
+    #Gjør denne
+
     
     """ Task 12 """
 
@@ -382,6 +386,9 @@ cup.UpdateStatistics()
 """Test 10"""
 #cup.updateGameLists()
 #print(cup.allGamesByTeams) #dictionary with Trigrams as keys. "RBK":[[Games where RBK plays at home],[Games where RBK plays as visitor]]
+
+""" Test 11 """
+cup.printGameTable()
 
 """ Test 12"""
 #print(cup.getRanking()) #Task 8 (original)
