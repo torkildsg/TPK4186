@@ -226,6 +226,17 @@ class Championship:
             visitorTeam.setGoalDifference()
            
 
+    """ Task 8 """
+
+    def getRanking(self):
+
+        newList = []
+        for team in self.teams:
+            newList.append([self.teams[team].getTrigram(), self.teams[team].getTotalpoints()])
+        sortedList = sorted(newList, key=lambda l:l[1], reverse=True) 
+        return sortedList
+
+
 
 
 """ Task 4 """
@@ -238,14 +249,16 @@ cup.newGame("RBK", 1, "ODD", 4)
 cup.newGame("ODD", 3, "LYN", 2)
 #print(cup.getGames()) # Kan se i terminalen at tre game-objekter er opprettet
 
-""" Testing task 5 """
+""" Testing task 6 """
 newChamp = Championship()
 fileName = "PremierLeague2019-2020-Description.tsv"
 newChamp.importChampionship(fileName)
 #print(newChamp)
 
-"""Testing task 7"""
-
+""" Testing task 7 """
 cup.UpdateStatistics()
-print(cup.teams["LYN"])
+#print(cup.teams["LYN"])
+
+""" Testing task 8 """
+#cup.getRanking()
 
