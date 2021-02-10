@@ -28,44 +28,44 @@ class Team:
             self.info[1] = trigram
     
     def setNumGamesWon(self, gamesWon):
-        self.info[2] = gamesWon
+        self.info[2] += gamesWon
 
     def getNumGamesWon(self):
         return self.info[2]
     
     def setNumGamesLost(self, gamesLost):
-        self.info[3] = gamesLost
+        self.info[3] += gamesLost
     
     def getNumGamesLost(self):
         return self.info[3]
 
     def setNumGamesDraw(self, gamesDraw):
-        self.info[4] = gamesDraw
+        self.info[4] += gamesDraw
     
     def getNumGamesDraw(self):
         return self.info[4]
     
-    def setTotalpoints(self, team):
-        totalPoints = getNumGamesWon(team) * 3 + getNumGamesDraw(team) 
+    def setTotalpoints(self):
+        totalPoints = self.getNumGamesWon() * 3 + self.getNumGamesDraw() 
         self.info[5] = totalPoints
 
     def getTotalpoints(self):
         return self.info[5]
     
     def setNumOfGoalsFor(self, numOfGoalsFor):
-        self.info[6] = numOfGoalsFor
+        self.info[6] += numOfGoalsFor
     
     def getNumOfGoalsFor(self):
         return self.info[6]
 
     def setNumOfGoalsAgainst(self, numOfGoalsAgainst):
-        self.info[7] = numOfGoalsAgainst
+        self.info[7] += numOfGoalsAgainst
 
     def getNumOfGoalsAgainst(self):
         return self.info[7]
 
-    def setGoalDifference(self, team):
-        goalDifference = getNumOfGoalsFor(team) - getNumOfGoalsAgainst(team)
+    def setGoalDifference(self):
+        goalDifference = self.getNumOfGoalsFor() - self.getNumOfGoalsAgainst()
         self.info[8] = goalDifference
 
     def getGoalDifference(self):
@@ -186,6 +186,46 @@ class Championship:
                   self.newGame(row[0], row[1], row[2], row[3])
         return self
         inputFile.close()
+    
+    """Task 7"""
+
+    def UpdateStatistics(self):
+        for game in self.games:
+            trigramHometeam = game.getTrigramHometeam()
+            trigramVisitorteam = game.getTrigramVisitorteam()
+
+            scoreHometeam = game.getScoreHometeam()
+            scoreVisitorteam = game.getScoreVisitorteam()
+
+            homeTeam = self.teams[trigramHometeam]
+            visitorTeam = self.teams[trigramVisitorteam]
+
+            #-----Update games drawn,lost & won
+            if scoreHometeam > scoreVisitorteam:
+                homeTeam.setNumGamesWon(1)
+                visitorTeam.setNumGamesLost(1)
+
+            elif scoreHometeam == scoreVisitorteam:
+                homeTeam.setNumGamesDraw(1)
+                visitorTeam.setNumGamesDraw(1)
+
+            elif scoreHometeam < scoreVisitorteam:
+                visitorTeam.setNumGamesWon(1)
+                homeTeam.setNumGamesLost(1)
+
+            #----- Update total points
+            homeTeam.setTotalpoints()
+            visitorTeam.setTotalpoints()
+
+            #--- Update goals scored, consided & goaldifference
+            homeTeam.setNumOfGoalsFor(scoreHometeam)
+            visitorTeam.setNumOfGoalsFor(scoreVisitorteam)
+            homeTeam.setNumOfGoalsAgainst(scoreVisitorteam)
+            visitorTeam.setNumOfGoalsAgainst(scoreHometeam)
+            homeTeam.setGoalDifference()
+            visitorTeam.setGoalDifference()
+           
+
 
 
 """ Task 4 """
@@ -203,3 +243,9 @@ newChamp = Championship()
 fileName = "PremierLeague2019-2020-Description.tsv"
 newChamp.importChampionship(fileName)
 #print(newChamp)
+
+"""Testing task 7"""
+
+cup.UpdateStatistics()
+print(cup.teams["LYN"])
+
