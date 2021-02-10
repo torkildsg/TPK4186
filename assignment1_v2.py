@@ -174,18 +174,17 @@ class Championship:
     def importChampionship(self, fileName):
         try:
             inputFile = open(fileName, "r")
-        except:
-            return "The file " + fileName + " does not exist."
+        except FileNotFoundError:
+            print("The file " + fileName + " does not exist.")
         
         read_tsv = csv.reader(inputFile, delimiter="\t")
 
         for row in read_tsv:
             if (len(row)==2) and (row[0] != "#Name"):
-                
+                self.newTeam(row[0], row[1])
             elif (len(row)==4) and (row[0] != "#Home code"):
-                  
-            return 
-
+                  self.newGame(row[0], row[1], row[2], row[3])
+        return self
         inputFile.close()
 
 
@@ -197,8 +196,10 @@ cup.newTeam("Lyn FK", "LYN")
 cup.newGame("LYN", 2, "RBK", 1)
 cup.newGame("RBK", 1, "ODD", 4)
 cup.newGame("ODD", 3, "LYN", 2)
-print(cup.getGames()) # Kan se i terminalen at tre game-objekter er opprettet
+#print(cup.getGames()) # Kan se i terminalen at tre game-objekter er opprettet
 
-
-
-print(cup)
+""" Testing task 5 """
+newChamp = Championship()
+fileName = "PremierLeague2019-2020-Description.tsv"
+newChamp.importChampionship(fileName)
+#print(newChamp)
