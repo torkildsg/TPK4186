@@ -45,8 +45,8 @@ class Team:
     def getNumGamesDraw(self):
         return self.info[4]
     
-    def setTotalpoints(self, team):
-        totalPoints = getNumGamesWon(team) * 3 + getNumGamesDraw(team) 
+    def setTotalpoints(self):
+        totalPoints = self.getNumGamesWon() * 3 + self.getNumGamesDraw() 
         self.info[5] = totalPoints
 
     def getTotalpoints(self):
@@ -64,8 +64,8 @@ class Team:
     def getNumOfGoalsAgainst(self):
         return self.info[7]
 
-    def setGoalDifference(self, team):
-        goalDifference = getNumOfGoalsFor(team) - getNumOfGoalsAgainst(team)
+    def setGoalDifference(self):
+        goalDifference = self.getNumOfGoalsFor() - self.getNumOfGoalsAgainst()
         self.info[8] = goalDifference
 
     def getGoalDifference(self):
@@ -214,16 +214,16 @@ class Championship:
                 homeTeam.setNumGamesLost(1)
 
             #----- Update total points
-            homeTeam.setTotalpoints(homeTeam)
-            visitorTeam.setTotalpoints(visitorTeam)
+            homeTeam.setTotalpoints()
+            visitorTeam.setTotalpoints()
 
             #--- Update goals scored, consided & goaldifference
             homeTeam.setNumOfGoalsFor(scoreHometeam)
             visitorTeam.setNumOfGoalsFor(scoreVisitorteam)
             homeTeam.setNumOfGoalsAgainst(scoreVisitorteam)
             visitorTeam.setNumOfGoalsAgainst(scoreHometeam)
-            homeTeam.setGoalDifference(homeTeam)
-            visitorTeam.setGoalDifference(visitorTeam)
+            homeTeam.setGoalDifference()
+            visitorTeam.setGoalDifference()
            
 
 
@@ -243,3 +243,9 @@ newChamp = Championship()
 fileName = "PremierLeague2019-2020-Description.tsv"
 newChamp.importChampionship(fileName)
 #print(newChamp)
+
+"""Testing task 7"""
+
+cup.UpdateStatistics()
+print(cup.teams["LYN"])
+
