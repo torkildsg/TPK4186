@@ -108,6 +108,29 @@ class Game:
     def getScoreVisitorteam(self):
         return self.gameInfo[3]
     
+    """ Task 12"""
+
+    def pointHomeTeams(self): 
+        homeTeamGoals = self.getScoreHometeam()
+        visitorTeamGoals = self.getScoreVisitorteam()
+        if homeTeamGoals > visitorTeamGoals:
+            return 3
+        elif homeTeamGoals == visitorTeamGoals:
+            return 1
+        else: return 0
+    
+    def pointVisitorTeams(self): 
+        homeTeamGoals = self.getScoreHometeam()
+        visitorTeamGoals = self.getScoreVisitorteam()
+        if homeTeamGoals < visitorTeamGoals:
+            return 3
+        elif homeTeamGoals == visitorTeamGoals:
+            return 1
+        else: return 0
+
+    
+    """ Task 12 done"""
+    
 
     """Part two of Task 5. 
     This is equivalent to 'Print_Game' 
@@ -226,7 +249,7 @@ class Championship:
 
     """ Task 8 """
 
-    def getRanking(self):
+    def getRanking(self): #Må få inn at den sorterer på målforskjell dersom likt antall poeng
 
         newList = []
         for team in self.teams:
@@ -269,9 +292,63 @@ class Championship:
 
             teamgames = [teamHomegames,teamVisitorgames]
 
-            self.allGamesByTeams[teamTrigram] = teamgames    
+            self.allGamesByTeams[teamTrigram] = teamgames  
+
+        return self.allGamesByTeams
+    
+    """ Task 12 """
+
+    def getRankingByHome(self):
+        games = self.updateGameLists()
+        homeranking = []
+        for team in games:
+            sum = 0
+            for game in games[team][0]:
+                sum += game.pointHomeTeams()
+            
+            homeranking.append([team, sum])
+        
+        sortedList = sorted(homeranking, key=lambda l:l[1], reverse=True) 
+            
+        return sortedList
+    
+    def getRankingByVisitor(self):
+        games = self.updateGameLists()
+        visitorRanking = []
+        for team in games:
+            sum = 0
+            for game in games[team][0]:
+                sum += game.pointVisitorTeams()
+            
+            visitorRanking.append([team, sum])
+        
+        sortedList = sorted(visitorRanking, key=lambda l:l[1], reverse=True) 
+        return sortedList
+            
+    """ Task 13 """
+    def rankingByGoalsFor(self):
+        newList = []
+        for team in self.teams:
+            newList.append([self.teams[team].getTrigram(), self.teams[team].getNumOfGoalsFor()])
+        sortedList = sorted(newList, key=lambda l:l[1], reverse=True) 
+        return sortedList
+    
+    def rankingByGoalsAgainst(self):
+        newList = []
+        for team in self.teams:
+            newList.append([self.teams[team].getTrigram(), self.teams[team].getNumOfGoalsAgainst()])
+        sortedList = sorted(newList, key=lambda l:l[1], reverse=False) 
+        return sortedList
+
+
+
+
+
+
         
 
+    
+    
 
 """ Task 4 """
 cup = Championship()
@@ -306,3 +383,13 @@ cup.UpdateStatistics()
 #cup.updateGameLists()
 #print(cup.allGamesByTeams) #dictionary with Trigrams as keys. "RBK":[[Games where RBK plays at home],[Games where RBK plays as visitor]]
 
+""" Test 12"""
+#print(cup.getRanking()) #Task 8 (original)
+#print(cup.getRankingByHome()) # considering only the games played at home
+#print(cup.getRankingByVisitor()) # considering only the games played as visitors
+
+#As we kan see, there is a big difference
+
+""" Test 13 """
+#print(cup.rankingByGoalsFor()) #prints trigram and number of goals for, where the first is the one with the most goals for
+#print(cup.rankingByGoalsAgainst()) #prints trigram and number of goals agains, where the first is the one with the least goals against
