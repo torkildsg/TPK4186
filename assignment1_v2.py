@@ -73,19 +73,9 @@ class Team:
     
     """" Part one of Task 5. This is equivalent to 'Print_Team' """
     def __str__(self):
-        """return "Trigram: " + self.getTrigram() + "\nGames won: " + str(self.getNumGamesWon()) + \
+        return "Trigram: " + self.getTrigram() + "\nGames won: " + str(self.getNumGamesWon()) + \
             "\nGames draw: " + str(self.getNumGamesDraw()) + "\nGoals scored: " + str(self.getNumOfGoalsFor()) + \
-            "\nGoals conceded: " + str(self.getNumOfGoalsAgainst()) + "\nPoints: " + str(self.getTotalpoints())"""
-
-        print("Team" + "      " + "Played" + "      " + "Wins" + "      " + " Draws" + \
-             "      " + "Losses" + "      " + "Goals For" + "      " + "Goals Against" + \
-                 "      " + "Goal Difference" + "      " + "Points")
-        
-        print(self.getName() + "      " + str(self.getNumGamesDraw() + self.getNumGamesLost() + self.getNumGamesWon()) + \
-                "      " + str(self.getNumGamesWon()) + "      " + str(self.getNumGamesDraw()) + "      " + str(self.getNumGamesLost()) + \
-                    str(self.getNumOfGoalsFor()) + "      " + str(self.getNumOfGoalsAgainst()) + "      " + str(self.getGoalDifference()) + \
-                        "      " + str(self.getTotalpoints()))
-        return ' '
+            "\nGoals conceded: " + str(self.getNumOfGoalsAgainst()) + "\nPoints: " + str(self.getTotalpoints())
 
 """ Task 2 """
 
@@ -247,10 +237,18 @@ class Championship:
     """Task 9"""
 
     def printRanking(self):
+        
+        print("Pos".ljust(7) + "Team".ljust(30) + "Played".ljust(10) + "Wins".ljust(10) + "Draws".ljust(10) + \
+            "Losses".ljust(10) + "Goals For".ljust(15) + "Goals Against".ljust(20) + "Goal Difference".ljust(20) + "Points")
         ranking = 1
         for team in self.getRanking():
-            print(self.teams[team[0]])
-            ranking +=1
+
+            print(str(ranking).ljust(7) + self.teams[team[0]].getName().ljust(30) + str(self.teams[team[0]].getNumGamesDraw() + \
+                self.teams[team[0]].getNumGamesLost() + self.teams[team[0]].getNumGamesWon()).ljust(10) + str(self.teams[team[0]].getNumGamesWon()).ljust(10) + \
+                    str(self.teams[team[0]].getNumGamesDraw()).ljust(10) + str(self.teams[team[0]].getNumGamesLost()).ljust(10) + str(self.teams[team[0]].getNumOfGoalsFor()).ljust(15) + \
+                        str(self.teams[team[0]].getNumOfGoalsAgainst()).ljust(20) + str(self.teams[team[0]].getGoalDifference()).ljust(20) + str(self.teams[team[0]].getTotalpoints()))
+
+            ranking += 1
 
     """Task 10"""
     
@@ -299,9 +297,8 @@ cup.UpdateStatistics()
 """ Testing task 8 """
 #cup.getRanking()
 
-"""Test 9"""
-
-cup.printRanking()
+""" Test 9 """
+#cup.printRanking()
 
 """Test 10"""
 #cup.updateGameLists()
