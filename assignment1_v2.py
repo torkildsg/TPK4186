@@ -258,15 +258,21 @@ class Championship:
 
         self.allGamesByTeams = dict()
         
-        
         for team in self.teams:
             teamTrigram = self.teams[team].getTrigram()
+            teamHomegames=[]
+            teamVisitorgames =[]
             
-            teamgames = []
             for game in self.getGames():
-                if  teamTrigram == game.getTrigramHometeam() or teamTrigram == game.getTrigramVisitorteam():
-                    teamgames.append(game)
-            self.allGamesByTeams[teamTrigram] = teamgames        
+                if  teamTrigram == game.getTrigramHometeam():
+                    teamHomegames.append(game)
+                elif teamTrigram == game.getTrigramVisitorteam():
+                    teamVisitorgames.append(game)
+
+            teamgames = [teamHomegames,teamVisitorgames]
+
+            self.allGamesByTeams[teamTrigram] = teamgames    
+        
 
 
 """ Task 4 """
@@ -299,5 +305,5 @@ cup.UpdateStatistics()
 
 """Test 10"""
 #cup.updateGameLists()
-#print(self.allGamesByTeams) #dictionary with Trigrams as keys. Each value is a list of all games the team participate in
+#print(cup.allGamesByTeams) #dictionary with Trigrams as keys. "RBK":[[Games where RBK plays at home],[Games where RBK plays as visitor]]
 
