@@ -244,6 +244,34 @@ class Championship:
         sortedList = sorted(newList, key=lambda l:l[1], reverse=True) 
         return sortedList
 
+    """Task 9"""
+
+    def printRanking(self):
+        ranking = 1
+        for team in self.getRanking():
+            print(self.teams[team[0]])
+            ranking +=1
+
+    """Task 10"""
+    
+    def updateGameLists(self):
+        
+        
+        for team in self.teams:
+            teamTrigram = self.teams[team].getTrigram()
+            print("Homematches for: "+str(teamTrigram))
+            for game in self.getGames():
+                if  teamTrigram == game.getTrigramHometeam():
+                    print(game)
+            print("\n")
+
+            print("Visitormatches for: "+str(teamTrigram))
+            for game in self.getGames():
+                if  teamTrigram == game.getTrigramVisitorteam():
+                    print(game)
+            print("\n")
+        
+                
 
 
 """ Task 4 """
@@ -252,7 +280,9 @@ cup.newTeam("Odd ballklubb", "ODD")
 cup.newTeam("Rosenborg ballklubb", "RBK")
 cup.newTeam("Lyn FK", "LYN")
 cup.newGame("LYN", 2, "RBK", 1)
+cup.newGame("ODD", 12, "LYN", 1)
 cup.newGame("RBK", 1, "ODD", 4)
+cup.newGame("LYN", 1, "RBK", 4)
 cup.newGame("ODD", 3, "LYN", 2)
 #print(cup.getGames()) # Kan se i terminalen at tre game-objekter er opprettet
 
@@ -268,4 +298,11 @@ cup.UpdateStatistics()
 
 """ Testing task 8 """
 #cup.getRanking()
+
+"""Test 9"""
+
+cup.printRanking()
+
+"""Test 10"""
+#cup.updateGameLists()
 
