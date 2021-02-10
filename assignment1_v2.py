@@ -255,23 +255,18 @@ class Championship:
     """Task 10"""
     
     def updateGameLists(self):
+
+        self.allGamesByTeams = dict()
         
         
         for team in self.teams:
             teamTrigram = self.teams[team].getTrigram()
-            print("Homematches for: "+str(teamTrigram))
+            
+            teamgames = []
             for game in self.getGames():
-                if  teamTrigram == game.getTrigramHometeam():
-                    print(game)
-            print("\n")
-
-            print("Visitormatches for: "+str(teamTrigram))
-            for game in self.getGames():
-                if  teamTrigram == game.getTrigramVisitorteam():
-                    print(game)
-            print("\n")
-        
-                
+                if  teamTrigram == game.getTrigramHometeam() or teamTrigram == game.getTrigramVisitorteam():
+                    teamgames.append(game)
+            self.allGamesByTeams[teamTrigram] = teamgames        
 
 
 """ Task 4 """
@@ -300,9 +295,9 @@ cup.UpdateStatistics()
 #cup.getRanking()
 
 """Test 9"""
-
-cup.printRanking()
+#cup.printRanking()
 
 """Test 10"""
 #cup.updateGameLists()
+#print(self.allGamesByTeams) #dictionary with Trigrams as keys. Each value is a list of all games the team participate in
 
