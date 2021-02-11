@@ -412,6 +412,16 @@ class Championship:
             newList.append([self.teams[team].getTrigram(), self.teams[team].getNumOfGoalsAgainst()])
         sortedList = sorted(newList, key=lambda l:l[1], reverse=False) 
         return sortedList
+
+    def printRankingGeneralForAndAgainst(self):
+        f = open('printRankingGeneralForAndAgainst.tsv', 'w')
+        
+        f.write("General ranking: "+str(self.getRanking())+" #prints trigram and num points"+"\n")
+        f.write("Ranking by num goals for: "+str(self.rankingByGoalsFor())+" #prints trigram and number of goals for, where the first is the one with the most goals for"+"\n")
+        f.write("Ranking by num goals against: "+str(self.rankingByGoalsAgainst())+" #prints trigram and number of goals agains, where the first is the one with the least goals against"+"\n")
+        f.close()
+        
+
     
 
  
@@ -441,7 +451,7 @@ cup.newGame("ODD", 3, "RBK", 1)
 testTeam = Team("TestTeam", "TRI")
 testTeam.setNumGamesLost(10)
 testTeam.setNumGamesWon(2)
-print(testTeam)
+#print(testTeam)
 
 
 """ Testing task 6 """
@@ -475,8 +485,11 @@ cup.UpdateStatistics()
 #print(cup.getRankingByHome()) # considering only the games played at home
 #print(cup.getRankingByVisitor()) # considering only the games played as visitors
 
-#As we kan see, there is a big difference
+#As we kan see, there are a big differences between only receiving points at 1.Home or draw og 2. Visitor or draw
 
 """ Testing Task 13 """
-#print(cup.rankingByGoalsFor()) #prints trigram and number of goals for, where the first is the one with the most goals for
-#print(cup.rankingByGoalsAgainst()) #prints trigram and number of goals agains, where the first is the one with the least goals against
+
+
+#cup.printRankingGeneralForAndAgainst()
+#as we can see. Also here the ranking is different from the general ranking
+
