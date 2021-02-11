@@ -29,6 +29,7 @@ class Team:
     
     def setNumGamesWon(self, gamesWon):
         self.info[2] += gamesWon
+        self.setTotalpoints()
 
     def getNumGamesWon(self):
         return self.info[2]
@@ -41,6 +42,7 @@ class Team:
 
     def setNumGamesDraw(self, gamesDraw):
         self.info[4] += gamesDraw
+        self.setTotalpoints()
     
     def getNumGamesDraw(self):
         return self.info[4]
@@ -54,12 +56,15 @@ class Team:
     
     def setNumOfGoalsFor(self, numOfGoalsFor):
         self.info[6] += numOfGoalsFor
+        self.setGoalDifference()
     
     def getNumOfGoalsFor(self):
         return self.info[6]
+        
 
     def setNumOfGoalsAgainst(self, numOfGoalsAgainst):
         self.info[7] += numOfGoalsAgainst
+        self.setGoalDifference()
 
     def getNumOfGoalsAgainst(self):
         return self.info[7]
@@ -72,10 +77,13 @@ class Team:
         return self.info[8]
     
     """" Part one of Task 5. This is equivalent to 'Print_Team' """
+
     def __str__(self):
-        return "Trigram: " + self.getTrigram() + "\nGames won: " + str(self.getNumGamesWon()) + \
-            "\nGames draw: " + str(self.getNumGamesDraw()) + "\nGoals scored: " + str(self.getNumOfGoalsFor()) + \
-            "\nGoals conceded: " + str(self.getNumOfGoalsAgainst()) + "\nPoints: " + str(self.getTotalpoints())
+        f = open('teamFile.csv','w')
+        f.write( "TeamName: "+self.getName()+"\nTrigram: " + self.getTrigram() + "\nGames won: " + str(self.getNumGamesWon()) + \
+            "\nGames draw: " + str(self.getNumGamesDraw()) +"\nGames lost: " + str(self.getNumGamesLost()) + "\nGoals scored: " + str(self.getNumOfGoalsFor()) + \
+            "\nGoals conceded: " + str(self.getNumOfGoalsAgainst()) + "\nPoints: " + str(self.getTotalpoints()))
+        f.close()
 
 """ Task 2 """
 
@@ -136,12 +144,14 @@ class Game:
     """ Task 12 done"""
     
 
-    """Part two of Task 5. 
-    This is equivalent to 'Print_Game' 
+    """Part two of Task 5. - This is equivalent to 'Print_Game' 
     """
     def __str__(self):
-        return self.getTrigramHometeam() + "           " + str(self.getScoreHometeam()) + \
-            "             " + self.getTrigramVisitorteam() + "              " + str(self.getScoreVisitorteam())
+        f = open('gameFile.csv','w')
+        f.write("HomeTeam:   HomeScore:   VisitorTeam:   VisitorScore:"+"\n")
+        f.write(self.getTrigramHometeam().rjust(8) + str(self.getScoreHometeam()).rjust(13) +\
+             self.getTrigramVisitorteam().rjust(15) + str(self.getScoreVisitorteam()).rjust(15))
+        f.close()
 
 
     
@@ -181,16 +191,23 @@ class Championship:
     Prints all information associated with a championship"""
 
     def __str__(self):
-        print("#Name"+" "+"Code".rjust(25))
+
+        f = open('championshipFile.csv','w')
+
+        
+        
+
+        f.write("#Name"+" "+"Code".rjust(25)+"\n")
 
         for team in self.teams:
-            print(self.teams[team].getName() + " " + self.teams[team].getTrigram().rjust(30-len(self.teams[team].getName())))
+            f.write(self.teams[team].getName() + " " + self.teams[team].getTrigram().rjust(30-len(self.teams[team].getName()))+"\n")
         
-        print("\n#Home code"+ "    " + "Home score" + "    " + "#Visitor code" + "    " + "Visitor score") # Må fikses med .ljust(4)
+        f.write("\n"+"#Home code"+ "    " + "Home score" + "    " + "#Visitor code" + "    " + "Visitor score")
 
         for game in self.games:
-            print(game)
+            f.write("\n"+str(game))
 
+        f.close()
 
         return '' # Innebygde metoden sier at man må returnere en innebygd string. Omgår dette ved å sette denne
 
@@ -353,6 +370,7 @@ class Championship:
             f.write("\n")
         f.close()
 
+
     """ Task 12 """
 
     def getRankingByHome(self):
@@ -405,6 +423,16 @@ class Championship:
             newList.append([self.teams[team].getTrigram(), self.teams[team].getNumOfGoalsAgainst()])
         sortedList = sorted(newList, key=lambda l:l[1], reverse=False) 
         return sortedList
+
+    def printRankingGeneralForAndAgainst(self):
+        f = open('printRankingGeneralForAndAgainst.tsv', 'w')
+        
+        f.write("General ranking: "+str(self.getRanking())+" #prints trigram and num points"+"\n")
+        f.write("Ranking by num goals for: "+str(self.rankingByGoalsFor())+" #prints trigram and number of goals for, where the first is the one with the most goals for"+"\n")
+        f.write("Ranking by num goals against: "+str(self.rankingByGoalsAgainst())+" #prints trigram and number of goals agains, where the first is the one with the least goals against"+"\n")
+        f.close()
+        
+
     
 
  
@@ -422,7 +450,20 @@ cup.newGame("RBK", 2, "ODD", 2)
 cup.newGame("ODD", 3, "RBK", 1)
 
 
+
 #print(cup.getGames()) # Kan se i terminalen at tre game-objekter er opprettet
+
+""" Testing 5 """
+#print(cup)
+
+#finale = Game("ODD", 6, "RBK", 6)
+#print(finale)
+
+testTeam = Team("TestTeam", "TRI")
+testTeam.setNumGamesLost(10)
+testTeam.setNumGamesWon(2)
+#print(testTeam)
+
 
 """ Testing task 6 """
 newChamp = Championship()
@@ -445,6 +486,7 @@ newChamp.importChampionship(fileName)
 #cup.updateGameLists()
 #print(cup.allGamesByTeams) #dictionary with Trigrams as keys. "RBK":[[Games where RBK plays at home],[Games where RBK plays as visitor]]
 
+
 """ Testing task 11 """
 #cup.printGameTable()
 
@@ -452,10 +494,14 @@ newChamp.importChampionship(fileName)
 print(cup.getRanking()) #Task 8 (original)
 print(cup.getRankingByHome()) # considering only the games played at home
 print(cup.getRankingByVisitor()) # considering only the games played as visitors
-cup.printRankingHomeAndAwayAndCombined()
+#cup.printRankingHomeAndAwayAndCombined()
 
-#As we kan see, there is a big difference
+
+#As we kan see, there are a big differences between only receiving points at 1.Home or draw og 2. Visitor or draw
 
 """ Testing Task 13 """
-#print(cup.rankingByGoalsFor()) #prints trigram and number of goals for, where the first is the one with the most goals for
-#print(cup.rankingByGoalsAgainst()) #prints trigram and number of goals agains, where the first is the one with the least goals against
+
+
+#cup.printRankingGeneralForAndAgainst()
+#as we can see. Also here the ranking is different from the general ranking
+

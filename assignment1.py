@@ -216,13 +216,13 @@ def Championship_UpdateStatistics(championship):
         winner =""
         looser =""
         draw = False
-
         if (goals_home > goals_away):
             winner = tri_home
         elif(goals_away<goals_away):
             winner = tri_away
         elif(goals_away ==goals_home):
             draw = True
+        
         
 
                     
