@@ -72,10 +72,13 @@ class Team:
         return self.info[8]
     
     """" Part one of Task 5. This is equivalent to 'Print_Team' """
+
     def __str__(self):
-        return "Trigram: " + self.getTrigram() + "\nGames won: " + str(self.getNumGamesWon()) + \
+        f = open('teamFile.csv','w')
+        f.write( "Trigram: " + self.getTrigram() + "\nGames won: " + str(self.getNumGamesWon()) + \
             "\nGames draw: " + str(self.getNumGamesDraw()) + "\nGoals scored: " + str(self.getNumOfGoalsFor()) + \
-            "\nGoals conceded: " + str(self.getNumOfGoalsAgainst()) + "\nPoints: " + str(self.getTotalpoints())
+            "\nGoals conceded: " + str(self.getNumOfGoalsAgainst()) + "\nPoints: " + str(self.getTotalpoints()))
+        f.close()
 
 """ Task 2 """
 
@@ -132,12 +135,13 @@ class Game:
     """ Task 12 done"""
     
 
-    """Part two of Task 5. 
-    This is equivalent to 'Print_Game' 
+    """Part two of Task 5. - This is equivalent to 'Print_Game' 
     """
     def __str__(self):
-        return self.getTrigramHometeam() + "           " + str(self.getScoreHometeam()) + \
-            "             " + self.getTrigramVisitorteam() + "              " + str(self.getScoreVisitorteam())
+        f = open('gameFile.csv','w')
+        f.write(self.getTrigramHometeam() + "           " + str(self.getScoreHometeam()) + \
+            "             " + self.getTrigramVisitorteam() + "              " + str(self.getScoreVisitorteam()))
+        f.close()
 
 
     
@@ -177,16 +181,23 @@ class Championship:
     Prints all information associated with a championship"""
 
     def __str__(self):
-        print("#Name"+" "+"Code".rjust(25))
+
+        f = open('championshipFile.csv','w')
+
+        
+        
+
+        f.write("#Name"+" "+"Code".rjust(25)+"\n")
 
         for team in self.teams:
-            print(self.teams[team].getName() + " " + self.teams[team].getTrigram().rjust(30-len(self.teams[team].getName())))
+            f.write(self.teams[team].getName() + " " + self.teams[team].getTrigram().rjust(30-len(self.teams[team].getName()))+"\n")
         
-        print("\n#Home code"+ "    " + "Home score" + "    " + "#Visitor code" + "    " + "Visitor score")
+        f.write("\n"+"#Home code"+ "    " + "Home score" + "    " + "#Visitor code" + "    " + "Visitor score")
 
         for game in self.games:
-            print(game)
+            f.write("\n"+str(game))
 
+        f.close()
 
         return '' # Innebygde metoden sier at man må returnere en innebygd string. Omgår dette ved å sette denne
 
@@ -360,11 +371,16 @@ cup.newTeam("Odd ballklubb", "ODD")
 cup.newTeam("Rosenborg ballklubb", "RBK")
 cup.newTeam("Lyn FK", "LYN")
 cup.newGame("LYN", 2, "RBK", 1)
-cup.newGame("ODD", 12, "LYN", 1)
+cup.newGame("ODD", 9, "LYN", 1)
 cup.newGame("RBK", 1, "ODD", 4)
 cup.newGame("LYN", 1, "RBK", 4)
 cup.newGame("ODD", 3, "LYN", 2)
 #print(cup.getGames()) # Kan se i terminalen at tre game-objekter er opprettet
+
+""" Testing 5 """
+#print(cup)
+#print()
+
 
 """ Testing task 6 """
 newChamp = Championship()
@@ -388,7 +404,7 @@ cup.UpdateStatistics()
 #print(cup.allGamesByTeams) #dictionary with Trigrams as keys. "RBK":[[Games where RBK plays at home],[Games where RBK plays as visitor]]
 
 """ Test 11 """
-cup.printGameTable()
+#cup.printGameTable()
 
 """ Test 12"""
 #print(cup.getRanking()) #Task 8 (original)
