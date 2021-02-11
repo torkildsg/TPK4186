@@ -107,6 +107,10 @@ class Game:
 
     def getScoreVisitorteam(self):
         return self.gameInfo[3]
+
+    """ Part of task 5 """
+    def getGame(self):
+        return self.gameInfo
     
     """ Task 12"""
 
@@ -149,7 +153,7 @@ class Championship:
     def __init__(self):
         self.teams = dict() # vil se slik ut {"RBK" : [RBK, rosenborg], ...}
         self.games = [] # Inneholder Game-objekter, som igjen inneholder en liste. Må bruke Game gettere og settere for å aksessere
-
+        self.gameTable = 0
 
     def lookForTeam(self, trigram):
         if(trigram in self.teams):
@@ -182,7 +186,7 @@ class Championship:
         for team in self.teams:
             print(self.teams[team].getName() + " " + self.teams[team].getTrigram().rjust(30-len(self.teams[team].getName())))
         
-        print("\n#Home code"+ "    " + "Home score" + "    " + "#Visitor code" + "    " + "Visitor score")
+        print("\n#Home code"+ "    " + "Home score" + "    " + "#Visitor code" + "    " + "Visitor score") # Må fikses med .ljust(4)
 
         for game in self.games:
             print(game)
@@ -295,7 +299,58 @@ class Championship:
             self.allGamesByTeams[teamTrigram] = teamgames  
 
         return self.allGamesByTeams
-    
+
+
+    """ Task 11 """
+
+    # Helping function
+    def getGame(self, trigramHometeam, trigramVisitorteam):
+        for game in self.games:
+            if (game.getTrigramHometeam() == trigramHometeam and game.getTrigramVisitorteam() == trigramVisitorteam):
+                return game
+
+    # Helping function that makes and updates the championships 'gameTable'
+    def getGameTable(self):
+       
+        allTrigrams = []
+        teamList = []
+        teamList.append("Result")
+        allScores = []
+
+        for team in self.teams:
+            allTrigrams.append(self.teams[team].getTrigram())
+        allTrigrams.sort()
+
+        for trigram in allTrigrams:
+            teamList.append(trigram)
+        
+        allScores.append(teamList)
+
+
+        for trigramHometeam in allTrigrams:
+            teamScores = []
+            teamScores.append(self.teams[trigramHometeam].getName())
+            for trigramVisitorteam in allTrigrams:
+                if (trigramHometeam == trigramVisitorteam):
+                    teamScores.append(" ")
+                else:
+                    game = self.getGame(trigramHometeam, trigramVisitorteam)
+                    score = str(game.getScoreHometeam()) + "-" + str(game.getScoreVisitorteam())
+                    teamScores.append(score)
+            allScores.append(teamScores)
+        self.gameTable = allScores
+        
+    # Writes this championship's 'gameTable' 
+    def printGameTable(self):
+        self.getGameTable()
+        f = open('championshipGametable.tsv', 'w')
+
+        for x in self.gameTable:
+            for y in x:
+                f.write(y.ljust(15))
+            f.write("\n")
+        f.close()
+
     """ Task 12 """
 
     def getRankingByHome(self):
@@ -339,16 +394,9 @@ class Championship:
             newList.append([self.teams[team].getTrigram(), self.teams[team].getNumOfGoalsAgainst()])
         sortedList = sorted(newList, key=lambda l:l[1], reverse=False) 
         return sortedList
-
-
-
-
-
-
-        
-
     
-    
+
+ 
 
 """ Task 4 """
 cup = Championship()
@@ -356,10 +404,13 @@ cup.newTeam("Odd ballklubb", "ODD")
 cup.newTeam("Rosenborg ballklubb", "RBK")
 cup.newTeam("Lyn FK", "LYN")
 cup.newGame("LYN", 2, "RBK", 1)
-cup.newGame("ODD", 12, "LYN", 1)
-cup.newGame("RBK", 1, "ODD", 4)
-cup.newGame("LYN", 1, "RBK", 4)
-cup.newGame("ODD", 3, "LYN", 2)
+cup.newGame("RBK", 1, "LYN", 1)
+cup.newGame("ODD", 4, "LYN", 1)
+cup.newGame("LYN", 3, "ODD", 2)
+cup.newGame("RBK", 2, "ODD", 2)
+cup.newGame("ODD", 3, "RBK", 1)
+
+
 #print(cup.getGames()) # Kan se i terminalen at tre game-objekter er opprettet
 
 """ Testing task 6 """
@@ -376,20 +427,23 @@ cup.UpdateStatistics()
 #cup.getRanking()
 
 
-""" Test 9 """
+""" Testing Task 9 """
 #cup.printRanking()
 
-"""Test 10"""
+""" Testing Task 10 """
 #cup.updateGameLists()
 #print(cup.allGamesByTeams) #dictionary with Trigrams as keys. "RBK":[[Games where RBK plays at home],[Games where RBK plays as visitor]]
 
-""" Test 12"""
+""" Testing task 11 """
+cup.printGameTable()
+
+""" Testing Task 12 """
 #print(cup.getRanking()) #Task 8 (original)
 #print(cup.getRankingByHome()) # considering only the games played at home
 #print(cup.getRankingByVisitor()) # considering only the games played as visitors
 
 #As we kan see, there is a big difference
 
-""" Test 13 """
+""" Testing Task 13 """
 #print(cup.rankingByGoalsFor()) #prints trigram and number of goals for, where the first is the one with the most goals for
 #print(cup.rankingByGoalsAgainst()) #prints trigram and number of goals agains, where the first is the one with the least goals against
