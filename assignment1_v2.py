@@ -381,7 +381,16 @@ class Championship:
         
         sortedList = sorted(visitorRanking, key=lambda l:l[1], reverse=True) 
         return sortedList
-            
+    
+    def printRankingHomeAndAwayAndCombined(self):
+    
+        f = open('rankingHomeAwayCombined.tsv', 'w')
+        
+        f.write("General ranking:".ljust(20) + str(self.getRanking()) + "\n")
+        f.write("Home ranking:".ljust(20) + str(self.getRankingByHome()) + "\n")
+        f.write("Visitor ranking:".ljust(20) + str(self.getRankingByVisitor()) + "\n")
+        f.close()
+
     """ Task 13 """
     def rankingByGoalsFor(self):
         newList = []
@@ -422,7 +431,7 @@ newChamp.importChampionship(fileName)
 #print(newChamp)
 
 """ Testing task 7 """
-cup.UpdateStatistics()
+#cup.UpdateStatistics()
 #print(cup.teams["LYN"])
 
 """ Testing task 8 """
@@ -430,7 +439,7 @@ cup.UpdateStatistics()
 
 
 """ Testing Task 9 """
-cup.printRanking()
+#cup.printRanking()
 
 """ Testing Task 10 """
 #cup.updateGameLists()
@@ -440,9 +449,10 @@ cup.printRanking()
 #cup.printGameTable()
 
 """ Testing Task 12 """
-#print(cup.getRanking()) #Task 8 (original)
-#print(cup.getRankingByHome()) # considering only the games played at home
-#print(cup.getRankingByVisitor()) # considering only the games played as visitors
+print(cup.getRanking()) #Task 8 (original)
+print(cup.getRankingByHome()) # considering only the games played at home
+print(cup.getRankingByVisitor()) # considering only the games played as visitors
+cup.printRankingHomeAndAwayAndCombined()
 
 #As we kan see, there is a big difference
 
