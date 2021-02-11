@@ -281,18 +281,20 @@ class Championship:
     """Task 9"""
 
     def printRanking(self):
-        
-        print("Pos".ljust(7) + "Team".ljust(30) + "Played".ljust(10) + "Wins".ljust(10) + "Draws".ljust(10) + \
-            "Losses".ljust(10) + "Goals For".ljust(15) + "Goals Against".ljust(20) + "Goal Difference".ljust(20) + "Points")
+
+        f = open('championshipRanking.tsv', 'w')
+
+        f.write("Pos".ljust(7) + "Team".ljust(30) + "Played".ljust(10) + "Wins".ljust(10) + "Draws".ljust(10) + \
+            "Losses".ljust(10) + "Goals For".ljust(15) + "Goals Against".ljust(20) + "Goal Difference".ljust(20) + "Points\n")
+            
         ranking = 1
         for team in self.getRanking():
-
-            print(str(ranking).ljust(7) + self.teams[team[0]].getName().ljust(30) + str(self.teams[team[0]].getNumGamesDraw() + \
+            f.write(str(ranking).ljust(7) + self.teams[team[0]].getName().ljust(30) + str(self.teams[team[0]].getNumGamesDraw() + \
                 self.teams[team[0]].getNumGamesLost() + self.teams[team[0]].getNumGamesWon()).ljust(10) + str(self.teams[team[0]].getNumGamesWon()).ljust(10) + \
                     str(self.teams[team[0]].getNumGamesDraw()).ljust(10) + str(self.teams[team[0]].getNumGamesLost()).ljust(10) + str(self.teams[team[0]].getNumOfGoalsFor()).ljust(15) + \
-                        str(self.teams[team[0]].getNumOfGoalsAgainst()).ljust(20) + str(self.teams[team[0]].getGoalDifference()).ljust(20) + str(self.teams[team[0]].getTotalpoints()))
-
+                        str(self.teams[team[0]].getNumOfGoalsAgainst()).ljust(20) + str(self.teams[team[0]].getGoalDifference()).ljust(20) + str(self.teams[team[0]].getTotalpoints())+ "\n")
             ranking += 1
+        f.close()
 
     """Task 10"""
     
@@ -320,13 +322,13 @@ class Championship:
 
     """ Task 11 """
 
-    # Helping function
+    # Auxiliary function
     def getGame(self, trigramHometeam, trigramVisitorteam):
         for game in self.games:
             if (game.getTrigramHometeam() == trigramHometeam and game.getTrigramVisitorteam() == trigramVisitorteam):
                 return game
 
-    # Helping function that makes and updates the championships 'gameTable'
+    # Auxiliary function that makes and updates the championships 'gameTable'
     def getGameTable(self):
        
         allTrigrams = []
@@ -397,7 +399,16 @@ class Championship:
         
         sortedList = sorted(visitorRanking, key=lambda l:l[1], reverse=True) 
         return sortedList
-            
+    
+    def printRankingHomeAndAwayAndCombined(self):
+    
+        f = open('rankingHomeAwayCombined.tsv', 'w')
+        
+        f.write("General ranking:".ljust(20) + str(self.getRanking()) + "\n")
+        f.write("Home ranking:".ljust(20) + str(self.getRankingByHome()) + "\n")
+        f.write("Visitor ranking:".ljust(20) + str(self.getRankingByVisitor()) + "\n")
+        f.close()
+
     """ Task 13 """
     def rankingByGoalsFor(self):
         newList = []
@@ -461,7 +472,7 @@ newChamp.importChampionship(fileName)
 #print(newChamp)
 
 """ Testing task 7 """
-cup.UpdateStatistics()
+#cup.UpdateStatistics()
 #print(cup.teams["LYN"])
 
 """ Testing task 8 """
@@ -480,10 +491,11 @@ cup.UpdateStatistics()
 #cup.printGameTable()
 
 """ Testing Task 12 """
+print(cup.getRanking()) #Task 8 (original)
+print(cup.getRankingByHome()) # considering only the games played at home
+print(cup.getRankingByVisitor()) # considering only the games played as visitors
+#cup.printRankingHomeAndAwayAndCombined()
 
-#print(cup.getRanking()) #Task 8 (original)
-#print(cup.getRankingByHome()) # considering only the games played at home
-#print(cup.getRankingByVisitor()) # considering only the games played as visitors
 
 #As we kan see, there are a big differences between only receiving points at 1.Home or draw og 2. Visitor or draw
 
