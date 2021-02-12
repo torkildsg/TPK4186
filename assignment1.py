@@ -9,6 +9,7 @@ class Team:
     def __init__(self, name, trigram):
         self.info = [name, trigram, 0, 0, 0, 0, 0, 0, 0]
 
+    # List-indexes: 
     # 2 = number of games won, 3 = number of games lost, 4 = number of games draw, 
     # 5 = total points, 6 = number of goals for, 7 = number of goals against, 8 = goaldifference
     
@@ -60,7 +61,6 @@ class Team:
     
     def getNumOfGoalsFor(self):
         return self.info[6]
-        
 
     def setNumOfGoalsAgainst(self, numOfGoalsAgainst):
         self.info[7] += numOfGoalsAgainst
@@ -79,11 +79,13 @@ class Team:
     """" Part one of Task 5. This is equivalent to 'Print_Team' """
 
     def __str__(self):
-        f = open('teamFile.csv','w')
+        f = open('teamFile.tsv','w')
         f.write( "TeamName: "+self.getName()+"\nTrigram: " + self.getTrigram() + "\nGames won: " + str(self.getNumGamesWon()) + \
             "\nGames draw: " + str(self.getNumGamesDraw()) +"\nGames lost: " + str(self.getNumGamesLost()) + "\nGoals scored: " + str(self.getNumOfGoalsFor()) + \
             "\nGoals conceded: " + str(self.getNumOfGoalsAgainst()) + "\nPoints: " + str(self.getTotalpoints()))
         f.close()
+
+        return ''
 
 """ Task 2 """
 
@@ -116,13 +118,13 @@ class Game:
     def getScoreVisitorteam(self):
         return self.gameInfo[3]
 
-    """ Part of task 5 """
+    """ Auxiliary function to task 5 """
     def getGame(self):
         return self.gameInfo
     
-    """ Task 12"""
 
-    def pointHomeTeams(self): 
+    """ Task 12"""
+    def pointHomeTeams(self):
         homeTeamGoals = self.getScoreHometeam()
         visitorTeamGoals = self.getScoreVisitorteam()
         if homeTeamGoals > visitorTeamGoals:
@@ -140,29 +142,26 @@ class Game:
             return 1
         else: return 0
 
-    
-    """ Task 12 done"""
-    
+    def toStringGame(self):
+        return((self.getTrigramHometeam() + str(self.getScoreHometeam()).rjust(15) +\
+            self.getTrigramVisitorteam().rjust(15) + str(self.getScoreVisitorteam()).rjust(15)))
 
-    """Part two of Task 5. - This is equivalent to 'Print_Game' 
-    """
+    """Part two of Task 5. - This is equivalent to 'Print_Game' """
     def __str__(self):
-        f = open('gameFile.csv','w')
+        f = open('gameFile.tsv','w')
         f.write("HomeTeam:   HomeScore:   VisitorTeam:   VisitorScore:"+"\n")
         f.write(self.getTrigramHometeam().rjust(8) + str(self.getScoreHometeam()).rjust(13) +\
              self.getTrigramVisitorteam().rjust(15) + str(self.getScoreVisitorteam()).rjust(15))
         f.close()
+        return ''
 
-
-    
 
 """ Task 3 """
-
 class Championship:
 
     def __init__(self):
-        self.teams = dict() # vil se slik ut {"RBK" : [RBK, rosenborg], ...}
-        self.games = [] # Inneholder Game-objekter, som igjen inneholder en liste. Må bruke Game gettere og settere for å aksessere
+        self.teams = dict() # This will look like this {"ARS" : ['ARS', 'Arsenal'], ...}
+        self.games = [] # This contains Game-objects. Each Game-object contains a list. Need to use getters to access gameinfo
         self.gameTable = 0
 
     def lookForTeam(self, trigram):
@@ -172,7 +171,7 @@ class Championship:
             return print("The team '" + trigram + "' does not participate in this championship.")
 
     def newTeam(self, name, trigram):
-        newTeam = Team(name, trigram) # Kaller på Team-klassen
+        newTeam = Team(name, trigram) # Creates an intance of the Team-class
         self.teams[trigram] = newTeam 
 
     def getTeams(self):
@@ -192,21 +191,17 @@ class Championship:
 
     def __str__(self):
 
-        f = open('championshipFile.csv','w')
-
-        
-        
+        f = open('championshipFile.tsv','w')
 
         f.write("#Name"+" "+"Code".rjust(25)+"\n")
 
         for team in self.teams:
             f.write(self.teams[team].getName() + " " + self.teams[team].getTrigram().rjust(30-len(self.teams[team].getName()))+"\n")
         
-        f.write("\n"+"#Home code"+ "    " + "Home score" + "    " + "#Visitor code" + "    " + "Visitor score")
+        f.write("\n#Home code".ljust(15) + "Home score".ljust(15) + "#Visitor code".ljust(15) + "Visitor score")
 
         for game in self.games:
-            f.write("\n"+str(game))
-
+            f.write("\n" + game.toStringGame())
         f.close()
 
         return '' # Innebygde metoden sier at man må returnere en innebygd string. Omgår dette ved å sette denne
@@ -270,7 +265,7 @@ class Championship:
 
     """ Task 8 """
 
-    def getRanking(self): #Må få inn at den sorterer på målforskjell dersom likt antall poeng
+    def getRanking(self): 
 
         newList = []
         for team in self.teams:
@@ -342,9 +337,7 @@ class Championship:
 
         for trigram in allTrigrams:
             teamList.append(trigram)
-        
         allScores.append(teamList)
-
 
         for trigramHometeam in allTrigrams:
             teamScores = []
@@ -431,11 +424,17 @@ class Championship:
         f.write("Ranking by num goals for: "+str(self.rankingByGoalsFor())+" #prints trigram and number of goals for, where the first is the one with the most goals for"+"\n")
         f.write("Ranking by num goals against: "+str(self.rankingByGoalsAgainst())+" #prints trigram and number of goals agains, where the first is the one with the least goals against"+"\n")
         f.close()
-        
 
-    
 
- 
+""" Testing task 1 """
+testTeam = Team("TestTeam", "TRI")
+testTeam.setNumGamesLost(10)
+testTeam.setNumGamesWon(2)
+# You can check that the team exists, running the code in 'Testing part one of task 5'
+
+""" Testing task 2 """
+finale = Game("ODD", 6, "RBK", 6)
+# You can check that this game exits, running the code in 'Testing part two of task 5'
 
 """ Task 4 """
 cup = Championship()
@@ -448,21 +447,19 @@ cup.newGame("ODD", 4, "LYN", 1)
 cup.newGame("LYN", 3, "ODD", 2)
 cup.newGame("RBK", 2, "ODD", 2)
 cup.newGame("ODD", 3, "RBK", 1)
+#print(cup.getGames()) # After running this line, you could see that it prints a list holding six Game-objects.
 
 
+""" Testing task 5 """
 
-#print(cup.getGames()) # Kan se i terminalen at tre game-objekter er opprettet
+""" Part one of task 5 """
+#print(testTeam)
 
-""" Testing 5 """
-#print(cup)
-
-#finale = Game("ODD", 6, "RBK", 6)
+""" Part two of task 5 """
 #print(finale)
 
-testTeam = Team("TestTeam", "TRI")
-testTeam.setNumGamesLost(10)
-testTeam.setNumGamesWon(2)
-#print(testTeam)
+""" Part three of task 5 """
+#print(cup)
 
 
 """ Testing task 6 """
@@ -471,37 +468,35 @@ fileName = "PremierLeague2019-2020-Description.tsv"
 newChamp.importChampionship(fileName)
 #print(newChamp)
 
+
 """ Testing task 7 """
-#cup.UpdateStatistics()
+cup.UpdateStatistics()
 #print(cup.teams["LYN"])
 
+
 """ Testing task 8 """
-#cup.getRanking()
+#print(cup.getRanking())
 
 
 """ Testing Task 9 """
 #cup.printRanking()
 
+
 """ Testing Task 10 """
-#cup.updateGameLists()
+cup.updateGameLists()
 #print(cup.allGamesByTeams) #dictionary with Trigrams as keys. "RBK":[[Games where RBK plays at home],[Games where RBK plays as visitor]]
 
 
 """ Testing task 11 """
 #cup.printGameTable()
 
+
 """ Testing Task 12 """
-print(cup.getRanking()) #Task 8 (original)
-print(cup.getRankingByHome()) # considering only the games played at home
-print(cup.getRankingByVisitor()) # considering only the games played as visitors
-#cup.printRankingHomeAndAwayAndCombined()
-
-
+cup.printRankingHomeAndAwayAndCombined()
 #As we kan see, there are a big differences between only receiving points at 1.Home or draw og 2. Visitor or draw
 
+
 """ Testing Task 13 """
-
-
 #cup.printRankingGeneralForAndAgainst()
 #as we can see. Also here the ranking is different from the general ranking
 
