@@ -223,7 +223,7 @@ class Championship:
                   self.newGame(row[0], row[1], row[2], row[3])
         return self
         inputFile.close()
-    
+
     """Task 7"""
 
     def UpdateStatistics(self):
@@ -463,11 +463,11 @@ cup.newGame("ODD", 3, "RBK", 1)
 
 
 """ Testing task 6 """
-newChamp = Championship()
 fileName = "PremierLeague2019-2020-Description.tsv"
+newChamp = Championship()
 newChamp.importChampionship(fileName)
-#print(newChamp)
-
+print(newChamp)
+#print(os.getcwd())
 
 """ Testing task 7 """
 cup.UpdateStatistics()
@@ -492,7 +492,7 @@ cup.updateGameLists()
 
 
 """ Testing Task 12 """
-cup.printRankingHomeAndAwayAndCombined()
+#cup.printRankingHomeAndAwayAndCombined()
 #As we kan see, there are a big differences between only receiving points at 1.Home or draw og 2. Visitor or draw
 
 

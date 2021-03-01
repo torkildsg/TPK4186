@@ -4,7 +4,7 @@ class Node:
 
     def __init__(self, name):
         self.name = name
-        self.edgeList = []
+        self.thisNodesEdges = []
     
     def setName(self, name):
         self.name = name
@@ -12,9 +12,14 @@ class Node:
     def getName(self):
         return self.name
 
-    def addEdge(self, edge):
-        self.edgeList.append(edge)
-    
+    def addEdge(self, friendNode):
+        self.thisNodesEdges.append([self, friendNode])
+
     def getEdgeList(self):
-        return self.edgeList
+        return self.thisNodesEdges
+
     
+
+
+
+
