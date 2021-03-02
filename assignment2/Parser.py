@@ -5,6 +5,7 @@ from Edge import Edge
 from Node import Node
 import csv
 
+
 class Parser:
 
     
@@ -15,12 +16,64 @@ class Parser:
         except FileNotFoundError:
             print("The file " + fileName + "does not exist.")
         
-        read_tsv = csv.reader(inputFile, delimiter="\t")
+        lines = []
+        content = inputFile.readlines()
+        content = [x.strip() for x in content] 
+        for i in content:
+            if i not in ['arcs','nodes','end']:
+                i = i.replace(';','')
+                lines+=i.split(", ")
+        #print(lines)
+        
 
-        for row in read_tsv:
-            # Eivind mekker
+        nameOfGraph = lines[0][len('graph '):]
+        newGraph = Graph(nameOfGraph)
+        
+        for e in lines:
+            e =e.strip(",")
+            e = e.strip()
+            allNodes = []
+            if (len(e) == 3):
+                allNodes.append(e)
+                #print(e)
+                #Hver node
 
-    """
+            elif (len(e)==11):
+                person = e[:3]
+                friend = e[-3:]
+                
+                #hver arcs 
+                #print(person)
+                #print(friend)
+                if person not in allNodes:
+                    personNode = Node(friend)
+                    friendNode = Node(person)
+                    newGraph.addNode(personNode,[friendNode])
+                else:
+                    personNode = Node(person)
+                    friendNode = Node(friend)
+                    newGraph.addNode(personNode,[friendNode])
+                
+
+        return newGraph
+    
+       
+                
+parser = Parser()
+graph = parser.importGraphTSV("graph.tsv")
+print(graph.nodes) #Alt er som det skal, men får ikke ut node n11 
+print(graph.edges)
+
+
+
+"""dictWithNodes = graph.getNodes()
+for key,value in dictWithNodes.items():
+    print(value.getEdgeList())"""
+  
+
+
+
+"""
 
     def importChampionship(self, fileName):
         try:
@@ -38,4 +91,4 @@ class Parser:
         return self
         inputFile.close()
 
-    """
+"""
