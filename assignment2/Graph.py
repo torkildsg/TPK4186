@@ -4,10 +4,20 @@ from Node import Node
 
 class Graph:
 
-    def __init__(self):
+    def __init__(self, name):
         self.nodes = dict()
         self.edges = []
+        self.name = name
+
+    def getNodes(self):
+        return self.nodes
     
+    def getEdges(self):
+        return self.edges
+    
+    def getName(self):
+        return self.name
+
     def addNode(self, node, friendNodes): # friendNodes er en liste med Node-objekter som allerede eksisterer
 
         if not friendNodes:
@@ -33,17 +43,17 @@ class Graph:
         
 
 """ Testing Task 1 """
-venner = Graph()
+venner = Graph("venner")
 eivind = Node("Eivind")
 torkild = Node("Torkild")
 venner.addNode(eivind, [])
 venner.addNode(torkild, [eivind])
 
-print(venner.nodes)
+"""print(venner.nodes)
 print(venner.edges)
 venner.deleteNode(torkild)
 venner.deleteNode(eivind)
 print(venner.nodes)
 venner.deleteEdge(torkild, eivind)
 print(venner.edges)
-
+"""
