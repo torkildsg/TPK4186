@@ -1,3 +1,5 @@
+"""" Group 14: Eivind Stangebye Larsen & Torkild Sandnes Grøstad """
+
 from Graph import Graph
 from Node import Node
 from Edge import Edge

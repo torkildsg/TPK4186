@@ -1,3 +1,5 @@
+"""" Group 14: Eivind Stangebye Larsen & Torkild Sandnes Grøstad """
+
 from Node import Node
 from Edge import Edge
 from Node import Node
@@ -6,7 +8,7 @@ class Graph:
 
     def __init__(self, name):
         self.nodes = dict()
-        self.edges = []
+        self.edges = [] # List of Edge-objects
         self.name = name
 
     def getNodes(self):
