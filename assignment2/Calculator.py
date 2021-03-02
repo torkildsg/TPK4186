@@ -13,10 +13,13 @@ class Calculator:
 
         degreeDict = dict()
         nodes = graph.getNodes()
+        
+        for key, value in nodes.items():
+            thisNode = value
+            thisNodesEdges = thisNode.getEdgeList()
+            degreeDict[thisNode] = len(thisNodesEdges)
 
-        for node in nodes: 
-            #
-
+        return degreeDict # Will look like this: {node_1: degreeOfNode, node_2: degreeOfNode, ..., node_k: degreeOfNode}
 
 """ Testing task 4 """
 grid32 = Graph("Grid32")
@@ -33,5 +36,5 @@ grid32.addNode(n22, [n32])
 grid32.addNode(n31, [n32])
 grid32.addNode(n32, [])
 
-print(list(grid32.getNodes()))
-print(list())
+calc = Calculator()
+calc.degreeOfNodes(grid32)

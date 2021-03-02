@@ -52,6 +52,7 @@ venner.addNode(eivind, [])
 venner.addNode(torkild, [eivind])
 
 """print(venner.nodes)
+print()
 print(venner.edges)
 venner.deleteNode(torkild)
 venner.deleteNode(eivind)

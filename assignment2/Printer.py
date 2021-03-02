@@ -1,4 +1,4 @@
-"""" Group 14: Eivind Stangebye Larsen & Torkild Sandnes Grøstad """
+"""" Group 14: Eivind Stangebye Larsen and Torkild Sandnes Grøstad """
 
 from Graph import Graph
 from Node import Node
@@ -68,5 +68,5 @@ grid32.addNode(n22, [n32])
 grid32.addNode(n31, [n32])
 grid32.addNode(n32, [])
 
-printer = Printer()
-printer.printGraphTSV(grid32)
+#printer = Printer()
+#printer.printGraphTSV(grid32)
