@@ -3,7 +3,7 @@
 from Graph import Graph
 from Edge import Edge
 from Node import Node
-
+import matplotlib.pyplot as plt
 
 class Calculator: 
 
@@ -13,10 +13,34 @@ class Calculator:
 
         degreeDict = dict()
         nodes = graph.getNodes()
+        
+        for key, value in nodes.items():
+            thisNode = value
+            thisNodesEdges = thisNode.getEdgeList()
+            degreeDict[thisNode] = len(thisNodesEdges)
 
-        for node in nodes: 
-            #
+        return degreeDict # Will look like this: {node_1: degreeOfNode, node_2: degreeOfNode, ..., node_k: degreeOfNode}
 
+    def plotDegreeOfNodes(self, graph):
+
+        nodes = self.degreeOfNodes(graph)
+        labels = []
+        sizes = []
+
+        for key, value in nodes.items():
+            labels.append(key.getName())
+            sizes.append(value)
+
+        # Pie chart, where the slices will be ordered and plotted counter-clockwise:
+        #labels = 'Frogs', 'Hogs', 'Dogs', 'Logs'
+        #sizes = [15, 30, 45, 10]
+        explode = (0, 0, 0, 0, 0, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
+
+        fig1, ax1 = plt.subplots()
+        ax1.pie(sizes, explode=explode, labels=labels, startangle=90)
+        ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+        plt.show()
 
 """ Testing task 4 """
 grid32 = Graph("Grid32")
@@ -33,5 +57,6 @@ grid32.addNode(n22, [n32])
 grid32.addNode(n31, [n32])
 grid32.addNode(n32, [])
 
-print(list(grid32.getNodes()))
-print(list())
+calc = Calculator()
+calc.degreeOfNodes(grid32)
+calc.plotDegreeOfNodes(grid32)

@@ -13,13 +13,12 @@ class Node:
         return self.name
 
     def addEdge(self, friendNode):
-        self.thisNodesEdges.append([self, friendNode])
+        self.thisNodesEdges.append([friendNode])
 
     def getEdgeList(self):
         return self.thisNodesEdges
 
     
 
-
-
+ 
 

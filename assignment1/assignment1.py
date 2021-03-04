@@ -171,7 +171,7 @@ class Championship:
             return print("The team '" + trigram + "' does not participate in this championship.")
 
     def newTeam(self, name, trigram):
-        newTeam = Team(name, trigram) # Creates an intance of the Team-class
+        newTeam = Team(name, trigram) # Creates an instance of the Team-class
         self.teams[trigram] = newTeam 
 
     def getTeams(self):
@@ -466,8 +466,7 @@ cup.newGame("ODD", 3, "RBK", 1)
 fileName = "PremierLeague2019-2020-Description.tsv"
 newChamp = Championship()
 newChamp.importChampionship(fileName)
-print(newChamp)
-#print(os.getcwd())
+#print(newChamp)
 
 """ Testing task 7 """
 cup.UpdateStatistics()
@@ -497,6 +496,6 @@ cup.updateGameLists()
 
 
 """ Testing Task 13 """
-#cup.printRankingGeneralForAndAgainst()
+cup.printRankingGeneralForAndAgainst()
 #as we can see. Also here the ranking is different from the general ranking
 

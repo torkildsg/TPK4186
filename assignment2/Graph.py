@@ -20,6 +20,8 @@ class Graph:
     def getName(self):
         return self.name
 
+    # Legge til en addEdge?
+
     def addNode(self, node, friendNodes): # friendNodes er en liste med Node-objekter som allerede eksisterer
 
         if not friendNodes:
@@ -52,6 +54,7 @@ venner.addNode(eivind, [])
 venner.addNode(torkild, [eivind])
 
 """print(venner.nodes)
+print()
 print(venner.edges)
 venner.deleteNode(torkild)
 venner.deleteNode(eivind)
