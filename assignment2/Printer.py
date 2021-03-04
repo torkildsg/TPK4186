@@ -27,34 +27,10 @@ class Printer:
         if list(nodeList)[len(nodeList)-1] not in checkNodes:
             nodeString += "  " + list(nodeList)[len(nodeList)-1] + "  "    
         nodeString = nodeString[:-2]
-    
         file.write(nodeString)
+
         file.write(";\narcs\n")
 
-        """ Old version, handles the nodes
-        if len(nodeList) > 3 and len(nodeList) % 2 == 0:
-            for i in range(0, len(nodeList)-3, 2):
-                nodeString += "  " + list(nodeList)[i] + ", " + list(nodeList)[i+1] + ",\n"
-            nodeString += "  " + list(nodeList)[len(nodeList)-2] + ", " + list(nodeList)[len(nodeList)-1] + ";"
-            file.write(nodeString)
-        
-        elif len(nodeList) > 3 and len(nodeList) % 2 != 0:
-            for i in range(0, len(nodeList)-2, 2):
-                nodeString += "  " + list(nodeList)[i] + ", " + list(nodeList)[i+1] + ",\n"
-            nodeString += "  " + list(nodeList)[len(nodeList)-1] + ";"
-            file.write(nodeString)
-
-        elif len(nodeList) == 3: 
-            file.write("  " + list(nodeList)[0] + ", " + list(nodeList)[1] + ",")
-            file.write("  " + list(nodeList)[2] + ";")
-        
-        elif len(nodeList) == 2:
-            file.write("  " + list(nodeList)[0] + ", " + list(nodeList)[1] + ";")
-
-        elif len(nodeList) == 1:
-            file.write("  " + list(nodeList)[0] + ";")
-        """
-        
         for count, i in enumerate(range(0, len(arcList)), 1): # Start counting from 1
             arcString += "  " + str(arcList[i][0].getName()) + " <-> " + str(arcList[i][1].getName()) + ","
             if i == (len(arcList)-1):
@@ -62,16 +38,8 @@ class Printer:
             if count % 3 == 0 and i != (len(arcList)-1):
                 arcString += "\n"
         file.write(arcString)
+        
         file.write("\nend")
-
-        """ Old version
-        for x in range(0, len(arcList)-1, 3):
-                arcString += "  " + str(arcList[x][0].getName()) + " <-> " + str(arcList[x][1].getName()) + "," +\
-                    "  " + str(arcList[x+1][0].getName()) + " <-> " + str(arcList[x+1][1].getName()) + "," +\
-                        "  " + str(arcList[x+2][0].getName()) + " <-> " + str(arcList[x+2][1].getName()) + ",\n" 
-        arcString += "  " + str(arcList[len(arcList)-1][0].getName()) + " <-> " + str(arcList[len(arcList)-1][1].getName()) + ";"
-        file.write(arcString)
-        """        
         
 """ Testing Task 2 """
 grid32 = Graph("Grid32")
