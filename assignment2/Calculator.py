@@ -37,7 +37,7 @@ class Calculator:
         explode = (0, 0, 0, 0, 0, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
 
         fig1, ax1 = plt.subplots()
-        ax1.pie(sizes=sizes, explode=explode, labels=labels, startangle=90)
+        ax1.pie(sizes, explode=explode, labels=labels, startangle=90)
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
         plt.show()
