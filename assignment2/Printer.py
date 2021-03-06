@@ -31,6 +31,7 @@ class Printer:
 
         file.write(";\narcs\n")
 
+        """ Handles the arcs """
         for count, i in enumerate(range(0, len(arcList)), 1): # Start counting from 1
             arcString += "  " + str(arcList[i][0].getName()) + " <-> " + str(arcList[i][1].getName()) + ","
             if i == (len(arcList)-1):
@@ -38,7 +39,7 @@ class Printer:
             if count % 3 == 0 and i != (len(arcList)-1):
                 arcString += "\n"
         file.write(arcString)
-        
+
         file.write("\nend")
         
 """ Testing Task 2 """
