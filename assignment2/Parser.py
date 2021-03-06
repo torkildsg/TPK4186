@@ -17,45 +17,59 @@ class Parser:
             print("The file " + fileName + "does not exist.")
         
         lines = []
+        cleanLines = []
         content = inputFile.readlines()
         content = [x.strip() for x in content] 
         for i in content:
-            if i not in ['arcs','nodes','end']:
-                i = i.replace(';','')
-                lines+=i.split(", ")
-        #print(lines)
+            #print(i)
+            i = i.replace(';','')
+            lines+=i.split(", ") 
         
+        for el in lines:
+            el = el.replace(',','').strip()
+            cleanLines.append(el)
 
         nameOfGraph = lines[0][len('graph '):]
         newGraph = Graph(nameOfGraph)
-        
+
         allNodes = []
-        for e in lines:
-            e =e.strip(",")
-            e = e.strip()
-            #print(e)
-            if (len(e) <=3): #works as long as there is less than 99 nodes
-                allNodes.append(e)
-                #print(e)
-                #Hver node
+        visitedNodes = []
+        for p in range(len(cleanLines)):
             
-            if (len(e) ==11):
-                person = e[:3]
-                friend = e[-3:]
+            if (cleanLines[p] == "nodes"):
+                nodeStart = p
+            elif cleanLines[p] == "arcs":
+                arcsStart = p
+
+        for q in range(nodeStart+1,arcsStart):
+            allNodes.append(cleanLines[q])
+        z=0
+        for d in range(arcsStart+1, len(cleanLines)-1):
+            #print(cleanLines[d])
+            lenPerson = len(cleanLines[d].split(" <-> ")[0])
+            lenFriend = len(cleanLines[d].split(" <-> ")[1])
+            person = cleanLines[d][:lenPerson]
+            friend = cleanLines[d][-lenFriend:]
+            if allNodes[z]==person:
+                personNode = Node(person)
+                friendNode = Node(friend)
+                newGraph.addNode(personNode,[friendNode])
+                newGraph.addNode(friendNode,[personNode])
+                z+=1
+            elif allNodes[z]==friend:
+                personNode = Node(person)
+                friendNode = Node(friend)
+                newGraph.addNode(friendNode,[personNode])
+                newGraph.addNode(personNode,[friendNode])
+                z+=1
+                    
+
+
+            
                 
-                #hver arcs 
-                #print(person)
-                #print(friend)
-                if person not in allNodes:
-                    personNode = Node(friend)
-                    friendNode = Node(person)
-                    newGraph.addNode(personNode,[friendNode])
-                else:
-                    personNode = Node(person)
-                    friendNode = Node(friend)
-                    newGraph.addNode(personNode,[friendNode])
                 
-            #print(allNodes)
+                
+            
         
         #print(allNodes)
         return newGraph
@@ -65,7 +79,7 @@ class Parser:
 parser = Parser()
 graph = parser.importGraphTSV("graph.tsv")
 print(graph.nodes) #Alt er som det skal, men får ikke ut node n11 
-#print(graph.edges) 
+print(graph.edges) 
 
 
 
