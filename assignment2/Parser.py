@@ -31,15 +31,10 @@ class Parser:
 
         nameOfGraph = lines[0][len('graph '):]
         newGraph = Graph(nameOfGraph)
-
         allNodes = []
-        visitedNodes = []
-        for p in range(len(cleanLines)):
-            
-            if (cleanLines[p] == "nodes"):
-                nodeStart = p
-            elif cleanLines[p] == "arcs":
-                arcsStart = p
+
+        nodeStart = cleanLines.index("nodes")
+        arcsStart = cleanLines.index("arcs")
 
         for q in range(nodeStart+1,arcsStart):
             allNodes.append(cleanLines[q])
