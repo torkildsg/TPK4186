@@ -29,16 +29,17 @@ class Parser:
         nameOfGraph = lines[0][len('graph '):]
         newGraph = Graph(nameOfGraph)
         
+        allNodes = []
         for e in lines:
             e =e.strip(",")
             e = e.strip()
-            allNodes = []
-            if (len(e) == 3):
+            #print(e)
+            if (len(e) <=3): #works as long as there is less than 99 nodes
                 allNodes.append(e)
                 #print(e)
                 #Hver node
-
-            elif (len(e)==11):
+            
+            if (len(e) ==11):
                 person = e[:3]
                 friend = e[-3:]
                 
@@ -54,7 +55,9 @@ class Parser:
                     friendNode = Node(friend)
                     newGraph.addNode(personNode,[friendNode])
                 
-
+            #print(allNodes)
+        
+        #print(allNodes)
         return newGraph
     
        
@@ -62,7 +65,7 @@ class Parser:
 parser = Parser()
 graph = parser.importGraphTSV("graph.tsv")
 print(graph.nodes) #Alt er som det skal, men får ikke ut node n11 
-print(graph.edges)
+#print(graph.edges) 
 
 
 
