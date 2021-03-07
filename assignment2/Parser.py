@@ -5,9 +5,7 @@ from Edge import Edge
 from Node import Node
 import csv
 
-
 class Parser:
-
     
     def importGraphTSV(self, fileName):
 
@@ -18,30 +16,21 @@ class Parser:
         
         lines = []
         cleanLines = []
-        content = inputFile.readlines()
-        content = [x.strip() for x in content] 
+        content = [x.strip().replace(';','') for x in inputFile.readlines()] 
+
         for i in content:
-            #print(i)
-            i = i.replace(';','')
-            lines+=i.split(", ") 
-        
-        for el in lines:
-            el = el.replace(',','').strip()
-            cleanLines.append(el)
+            lines += i.split(", ")
+
+        for line in lines:
+            line = line.replace(',','').strip()
+            cleanLines.append(line)
 
         nameOfGraph = lines[0][len('graph '):]
         newGraph = Graph(nameOfGraph)
-        allNodes = []
-
         nodeStart = cleanLines.index("nodes")
         arcsStart = cleanLines.index("arcs")
-
-        for q in range(nodeStart+1,arcsStart):
-            allNodes.append(cleanLines[q])
         
-        #print(allNodes)
         for d in range(arcsStart+1, len(cleanLines)-1):
-            print(cleanLines[d])
             lenPerson = len(cleanLines[d].split(" <-> ")[0])
             lenFriend = len(cleanLines[d].split(" <-> ")[1])
             person = cleanLines[d][:lenPerson]
@@ -53,17 +42,11 @@ class Parser:
             newGraph.addNode(personNode,[friendNode])
             newGraph.addNode(friendNode,[personNode])
             
-                                   
-        
-        #print(allNodes)
         return newGraph
-              
+                
+""" Testing """
 parser = Parser()
 graph = parser.importGraphTSV("graph.tsv")
-print(graph.nodes) #Alt er som det skal, men får ikke ut node n11 
-for i in graph.edges:
-    print('\n')
-    for j in i.getEdge():
-        print(j.getName())
+#print(graph.nodes)
+#print(graph.edges)
 
-#print(graph.edges) 
