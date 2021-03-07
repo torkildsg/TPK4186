@@ -29,21 +29,38 @@ class Parser:
 
         nameOfGraph = lines[0][len('graph '):]
         newGraph = Graph(nameOfGraph)
-
         allNodes = []
-        visitedNodes = []
-        for p in range(len(cleanLines)):
-            
-            if (cleanLines[p] == "nodes"):
-                nodeStart = p
-            elif cleanLines[p] == "arcs":
-                arcsStart = p
+        nodeStart = cleanLines.index("nodes")
+        arcsStart = cleanLines.index("arcs")
 
         for q in range(nodeStart+1,arcsStart):
             allNodes.append(cleanLines[q])
-        z=0
+        
+        #print(allNodes)
+        #z=0
         for d in range(arcsStart+1, len(cleanLines)-1):
-            #print(cleanLines[d])
+            
+            lenPerson = len(cleanLines[d].split(" <-> ")[0])
+            lenFriend = len(cleanLines[d].split(" <-> ")[1])
+            person = cleanLines[d][:lenPerson]
+            friend = cleanLines[d][-lenFriend:]
+            personNode = Node(person)
+            friendNode = Node(friend)
+            newGraph.addNode(personNode,[friendNode])
+            #newGraph.addNode(friendNode,[personNode])
+            #print(person)
+            #print(friend)
+
+        print(allNodes)
+        print(newGraph.nodes)
+        for key, value in newGraph.nodes.items():
+            print(key)
+            """if key not in allNodes:
+                newNode = Node(key)
+                newGraph.addNode(newNode, [])"""
+        #print(newGraph.nodes)
+
+        """
             lenPerson = len(cleanLines[d].split(" <-> ")[0])
             lenFriend = len(cleanLines[d].split(" <-> ")[1])
             person = cleanLines[d][:lenPerson]
@@ -59,11 +76,21 @@ class Parser:
                 friendNode = Node(friend)
                 newGraph.addNode(friendNode,[personNode])
                 newGraph.addNode(personNode,[friendNode])
-                z+=1
-                    
+                z+=1        
+        return newGraph
+        """
         return newGraph
                 
 parser = Parser()
 graph = parser.importGraphTSV("graph.tsv")
-print(graph.nodes) #Alt er som det skal, men får ikke ut node n11 
-print(graph.edges) 
+
+#print(graph.nodes) #Alt er som det skal, men får ikke ut node n11 
+#print(graph.edges) 
+
+
+"""for i in graph.edges:
+    for j in i.getEdge():
+        print(j.getName())
+    print("\n")
+
+"""

@@ -32,7 +32,8 @@ class Graph:
     def addNode(self, node, friendNodes): # friendNodes er en liste med Node-objekter som allerede eksisterer
 
         if not friendNodes:
-            self.nodes[node.getName()] = node
+            if node not in self.nodes:
+                self.nodes[node.getName()] = node
         else:
             for friend in friendNodes:
                 if not self.edgeExist(node, friend):
@@ -40,7 +41,8 @@ class Graph:
                     node.addEdge(newEdge)
                     friend.addEdge(newEdge)
                     self.edges.append(newEdge)
-                self.nodes[node.getName()] = node
+                if node not in self.nodes:
+                    self.nodes[node.getName()] = node
 
     def deleteNode(self, node):
         for edge in self.edges:
@@ -58,12 +60,19 @@ class Graph:
 venner = Graph("venner")
 eivind = Node("Eivind")
 torkild = Node("Torkild")
+henrik = Node("Henrik")
 venner.addNode(eivind, [torkild])
 venner.addNode(torkild, [eivind])
+venner.addNode(henrik, [torkild, eivind])
 
 #print(venner.nodes)
 #print(venner.edges)
-
+"""
+for i in venner.edges:
+    for j in i.getEdge():
+        print(j.getName())
+    print("\n")
+"""
 
 
 
