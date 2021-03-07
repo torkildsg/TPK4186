@@ -39,6 +39,7 @@ class Parser:
         for q in range(nodeStart+1,arcsStart):
             allNodes.append(cleanLines[q])
         
+        #print(allNodes)
         for d in range(arcsStart+1, len(cleanLines)-1):
             print(cleanLines[d])
             lenPerson = len(cleanLines[d].split(" <-> ")[0])
