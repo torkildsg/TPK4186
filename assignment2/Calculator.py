@@ -1,4 +1,4 @@
-"""" Group 14: Eivind Stangebye Larsen & Torkild Sandnes Grøstad """
+"""" Group 14: Eivind Stangebye Larsen and Torkild Sandnes Grøstad """
 
 from Graph import Graph
 from Edge import Edge
@@ -18,24 +18,26 @@ class Calculator:
             thisNode = value
             thisNodesEdges = thisNode.getEdgeList()
             degreeDict[thisNode] = len(thisNodesEdges)
-
         return degreeDict # Will look like this: {node_1: degreeOfNode, node_2: degreeOfNode, ..., node_k: degreeOfNode}
 
     def plotDegreeOfNodes(self, graph):
 
         nodes = self.degreeOfNodes(graph)
         labels = []
-        sizes = []
+        degrees = []
 
         for key, value in nodes.items():
             labels.append(key.getName())
-            sizes.append(value)
-
-        explode = (0, 0, 0, 0, 0, 0)  
-        fig1, ax1 = plt.subplots()
-        ax1.pie(sizes, explode=explode, labels=labels, startangle=90)
-        ax1.axis('equal')  
-        plt.show()
+            degrees.append(value)
+        
+        ticklabel_y = [i for i in range(0, len(labels))] 
+  
+        plt.scatter(labels, degrees) 
+        plt.xlabel('Node', fontsize=15)
+        plt.ylabel('Degree of node', fontsize=15)
+        plt.yticks(ticklabel_y)
+        plt.grid()
+        plt.show() 
 
 """ Testing task 4 """
 grid32 = Graph("Grid32")

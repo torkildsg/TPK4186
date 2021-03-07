@@ -1,4 +1,4 @@
-"""" Group 14: Eivind Stangebye Larsen & Torkild Sandnes Grøstad """    
+"""" Group 14: Eivind Stangebye Larsen and Torkild Sandnes Grøstad """    
 
 class Edge:
 
