@@ -16,81 +16,37 @@ class Parser:
         
         lines = []
         cleanLines = []
-        content = inputFile.readlines()
-        content = [x.strip() for x in content] 
+        content = [x.strip().replace(';','') for x in inputFile.readlines()] 
+
         for i in content:
-            #print(i)
-            i = i.replace(';','')
-            lines+=i.split(", ") 
-        
-        for el in lines:
-            el = el.replace(',','').strip()
-            cleanLines.append(el)
+            lines += i.split(", ")
+
+        for line in lines:
+            line = line.replace(',','').strip()
+            cleanLines.append(line)
 
         nameOfGraph = lines[0][len('graph '):]
         newGraph = Graph(nameOfGraph)
-        allNodes = []
         nodeStart = cleanLines.index("nodes")
         arcsStart = cleanLines.index("arcs")
-
-        for q in range(nodeStart+1,arcsStart):
-            allNodes.append(cleanLines[q])
         
-        #print(allNodes)
-        #z=0
         for d in range(arcsStart+1, len(cleanLines)-1):
-            
             lenPerson = len(cleanLines[d].split(" <-> ")[0])
             lenFriend = len(cleanLines[d].split(" <-> ")[1])
             person = cleanLines[d][:lenPerson]
             friend = cleanLines[d][-lenFriend:]
+    
             personNode = Node(person)
             friendNode = Node(friend)
+
             newGraph.addNode(personNode,[friendNode])
-            #newGraph.addNode(friendNode,[personNode])
-            #print(person)
-            #print(friend)
-
-        print(allNodes)
-        print(newGraph.nodes)
-        for key, value in newGraph.nodes.items():
-            print(key)
-            """if key not in allNodes:
-                newNode = Node(key)
-                newGraph.addNode(newNode, [])"""
-        #print(newGraph.nodes)
-
-        """
-            lenPerson = len(cleanLines[d].split(" <-> ")[0])
-            lenFriend = len(cleanLines[d].split(" <-> ")[1])
-            person = cleanLines[d][:lenPerson]
-            friend = cleanLines[d][-lenFriend:]
-            if allNodes[z]==person:
-                personNode = Node(person)
-                friendNode = Node(friend)
-                newGraph.addNode(personNode,[friendNode])
-                newGraph.addNode(friendNode,[personNode])
-                z+=1
-            elif allNodes[z]==friend:
-                personNode = Node(person)
-                friendNode = Node(friend)
-                newGraph.addNode(friendNode,[personNode])
-                newGraph.addNode(personNode,[friendNode])
-                z+=1        
-        return newGraph
-        """
+            newGraph.addNode(friendNode,[personNode])
+            
         return newGraph
                 
+""" Testing """
 parser = Parser()
 graph = parser.importGraphTSV("graph.tsv")
+#print(graph.nodes)
+#print(graph.edges)
 
-#print(graph.nodes) #Alt er som det skal, men får ikke ut node n11 
-#print(graph.edges) 
-
-
-"""for i in graph.edges:
-    for j in i.getEdge():
-        print(j.getName())
-    print("\n")
-
-"""
