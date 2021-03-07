@@ -38,25 +38,22 @@ class Parser:
 
         for q in range(nodeStart+1,arcsStart):
             allNodes.append(cleanLines[q])
-        z=0
+        
+        #print(allNodes)
         for d in range(arcsStart+1, len(cleanLines)-1):
-            #print(cleanLines[d])
+            print(cleanLines[d])
             lenPerson = len(cleanLines[d].split(" <-> ")[0])
             lenFriend = len(cleanLines[d].split(" <-> ")[1])
             person = cleanLines[d][:lenPerson]
             friend = cleanLines[d][-lenFriend:]
-            if allNodes[z]==person:
-                personNode = Node(person)
-                friendNode = Node(friend)
-                newGraph.addNode(personNode,[friendNode])
-                newGraph.addNode(friendNode,[personNode])
-                z+=1
-            elif allNodes[z]==friend:
-                personNode = Node(person)
-                friendNode = Node(friend)
-                newGraph.addNode(friendNode,[personNode])
-                newGraph.addNode(personNode,[friendNode])
-                z+=1                
+    
+            personNode = Node(person)
+            friendNode = Node(friend)
+
+            newGraph.addNode(personNode,[friendNode])
+            newGraph.addNode(friendNode,[personNode])
+            
+                                   
         
         #print(allNodes)
         return newGraph
@@ -64,4 +61,9 @@ class Parser:
 parser = Parser()
 graph = parser.importGraphTSV("graph.tsv")
 print(graph.nodes) #Alt er som det skal, men får ikke ut node n11 
-print(graph.edges) 
+for i in graph.edges:
+    print('\n')
+    for j in i.getEdge():
+        print(j.getName())
+
+#print(graph.edges) 
