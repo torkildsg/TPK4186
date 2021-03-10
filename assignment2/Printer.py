@@ -39,23 +39,6 @@ class Printer:
             if count % 3 == 0 and i != (len(arcList)-1):
                 arcString += "\n"
         file.write(arcString)
-
         file.write("\nend")
         
-""" Testing Task 2 """
-grid32 = Graph("Grid32")
-n11 = Node("n11")
-n12 = Node("n12")
-n21 = Node("n21")
-n22 = Node("n22")
-n31 = Node("n31")
-n32 = Node("n32")
-grid32.addNode(n11, [n12, n21])
-grid32.addNode(n12, [n22])
-grid32.addNode(n21, [n22, n31])
-grid32.addNode(n22, [n32])
-grid32.addNode(n31, [n32])
-grid32.addNode(n32, [])
 
-printer = Printer()
-printer.printGraphTSV(grid32)

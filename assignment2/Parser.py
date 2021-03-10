@@ -35,18 +35,13 @@ class Parser:
             lenFriend = len(cleanLines[d].split(" <-> ")[1])
             person = cleanLines[d][:lenPerson]
             friend = cleanLines[d][-lenFriend:]
-    
+
             personNode = Node(person)
             friendNode = Node(friend)
 
             newGraph.addNode(personNode,[friendNode])
-            newGraph.addNode(friendNode,[personNode])
-            
+            newGraph.addNode(friendNode,[personNode])       
         return newGraph
                 
-""" Testing """
-parser = Parser()
-graph = parser.importGraphTSV("graph.tsv")
-#print(graph.nodes)
-#print(graph.edges)
+
 

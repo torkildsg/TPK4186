@@ -4,6 +4,8 @@ from Graph import Graph
 from Edge import Edge
 from Node import Node
 from Calculator import Calculator
+from Printer import Printer
+from Parser import Parser
 import random
 
 class Generator:
@@ -36,6 +38,7 @@ class Generator:
             i+=1
         return graph
 
-""" Testing task 11 """
-gen = Generator()
+
+
+
 

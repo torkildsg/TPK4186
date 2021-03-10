@@ -78,20 +78,6 @@ class Graph:
                 self.edges.remove(edge)
         
 
-""" Testing Task 1 """
-venner = Graph("venner")
-eivind = Node("Eivind")
-torkild = Node("Torkild")
-henrik = Node("Henrik")
-tom = Node("Tom")
-venner.addNode(eivind, [torkild])
-venner.addNode(torkild, [eivind])
-venner.addNode(henrik, [torkild, eivind])
-venner.addNode(henrik, [tom, torkild])
-
-#print(venner.nodes)
-#print(venner.edges)
-
 
 
 
