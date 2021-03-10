@@ -3,6 +3,7 @@
 from Node import Node
 from Edge import Edge
 from Node import Node
+from collections import defaultdict
 
 class Graph:
 
@@ -23,7 +24,17 @@ class Graph:
     def edgeExist(self, node1, node2):
         return any(edge.getEdge() == [node1, node2] or edge.getEdge() == [node2, node1] for edge in self.edges)
 
-    # Legge til en addEdge?
+    """ Auxiliary function for Task 9 """
+    def buildGraph(self): 
+        edgeNodes = []
+        for edge in self.edges:
+            edgeNodes.append(edge.getEdge())
+        graph = defaultdict(list)
+        for edge in edgeNodes:
+            i, j = edge[0].getName(), edge[1].getName()
+            graph[i].append(j)
+            graph[j].append(i)
+        return graph 
 
     def addNode(self, node, friendNodes): # friendNodes er en liste med Node-objekter som allerede eksisterer
 
