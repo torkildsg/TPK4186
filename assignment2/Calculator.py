@@ -212,6 +212,3 @@ grid70.addNode(n62, [n82, n61])
 
 """ Testing task 10 """
 #print(calc.diameterOfGraph(grid32))
-
-""" Testing task 11 """
-print(calc.getProbability(grid32, n11))
