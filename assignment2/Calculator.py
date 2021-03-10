@@ -74,9 +74,55 @@ class Calculator:
             nodesInGraph -= componentsOfNode
         return componentsOfGraph
 
-    """Task 8 
-    def plotDegreeOfNodes():
-    """
+    """ Task 8 """ 
+    def plotSizesOfConnectedComp(self, graph):
+
+        compOfGraph = self.extractComponentsOfGraph(graph)
+        labels = []
+        degrees = []
+
+        for count, i in enumerate(range(0, len(compOfGraph)), 1): # Start counting from 1
+            labels.append('Subgraph #' + str(count))
+            degrees.append(len(compOfGraph[i]))
+       
+        plt.scatter(labels, degrees) 
+        plt.xlabel('Subgraph', fontsize=15)
+        plt.ylabel('Size of subgraph', fontsize=15)
+        plt.yticks([i for i in range(0, max(degrees)+2)])
+        plt.grid()
+        plt.show() 
+    
+    """ Task 9 """
+    def shortestPathBFS(self, graph, start, goal): 
+        explored = []  
+        queue = [[start]] 
+         
+        if start == goal: 
+            print("End") 
+            return 
+
+        while queue: 
+            path = queue.pop(0) 
+            node = path[-1] 
+            
+            if node not in explored: 
+                neighbours = graph[node] 
+                
+                for neighbour in neighbours: 
+                    newPath = list(path) 
+                    newPath.append(neighbour) 
+                    queue.append(newPath) 
+                    
+                    if neighbour == goal: 
+                        return len(newPath)
+                explored.append(node) 
+        return False
+    
+    def distanceToAllNodes(self, graph, node):
+       nodesInGraph = [key for key in graph.getNodes().items()] 
+       print(nodesInGraph)
+       node = node.getName()
+       #for i in range(len(nodesInGraph)):
 
 
 """ Testing task 4 """
@@ -100,23 +146,33 @@ calc = Calculator()
 #calc.plotDegreeOfNodes(grid32)
 
 """ Testing task 6 """
-#print(calc.extractComponentsOfNode(n11))
-#for i in calc.extractComponentsOfNode(n11):
-#    print(i.getName())
+"""print(calc.extractComponentsOfNode(n11))
+for i in calc.extractComponentsOfNode(n11):
+    print(i.getName())"""
 
 """ Testing task 7 """
-grid70 = Graph("Grid70")
-n11 = Node("n11")
-n12 = Node("n12")
-n21 = Node("n21")
-n22 = Node("n22")
-n31 = Node("n31")
-n32 = Node("n32")
-grid70.addNode(n11, [n12, n21])
-grid70.addNode(n12, [n12, n21])
-grid70.addNode(n21, [n12, n11])
-grid70.addNode(n22, [n32, n31])
-grid70.addNode(n31, [n22, n32])
-grid70.addNode(n32, [n22, n31])
+grid70 = Graph("Grid70")  
+n41 = Node("n41")
+n42 = Node("n42")
+n81 = Node("n81")
+n82 = Node("n82")
+n61 = Node("n61")
+n62 = Node("n62")
+grid70.addNode(n41, [n42, n81])
+grid70.addNode(n42, [n41, n81])
+grid70.addNode(n81, [n42, n41])
+grid70.addNode(n82, [n62, n61])
+grid70.addNode(n61, [n82, n62])
+grid70.addNode(n62, [n82, n61])
+#print(calc.extractComponentsOfGraph(grid70))
 
-print(calc.extractComponentsOfGraph(grid70))
+""" Testing task 8 """
+#calc.plotSizesOfConnectedComp(grid70)
+
+""" Testing task 9 """
+#print(grid32.edges)
+cleanGraph = grid32.buildGraph()
+#print(list(cleanGraph.keys())[-1])
+#print(calc.shortestPathBFS(cleanGraph, list(cleanGraph.keys())[0], list(cleanGraph.keys())[-1]))
+#print(n11.getNeighbours())
+#calc.distanceToAllNodes(grid32, n11)
