@@ -34,7 +34,7 @@ class Graph:
             i, j = edge[0].getName(), edge[1].getName()
             graph[i].append(j)
             graph[j].append(i)
-        return graph 
+        return dict(graph)
 
     def addNode(self, node, friendNodes): # friendNodes er en liste med Node-objekter som allerede eksisterer
 

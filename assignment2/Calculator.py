@@ -114,15 +114,25 @@ class Calculator:
                     queue.append(newPath) 
                     
                     if neighbour == goal: 
-                        return len(newPath)
+                        return len(newPath)-1
                 explored.append(node) 
         return False
     
-    def distanceToAllNodes(self, graph, node):
-       nodesInGraph = [key for key in graph.getNodes().items()] 
-       print(nodesInGraph)
-       node = node.getName()
-       #for i in range(len(nodesInGraph)):
+    def distanceToAllNodes(self, graph, startNode):
+        startNode = startNode.getName()
+        dictGraph = graph.buildGraph()
+        #print(dictGraph)
+        nodesInGraph = [key[0] for key in graph.getNodes().items()]
+        nodesInGraph.remove(startNode)
+        distanceDict = dict()
+
+        
+        for node in nodesInGraph:
+            length = self.shortestPathBFS(dictGraph, startNode, node)
+            distanceDict[node] = length
+        
+        return distanceDict
+       
 
 
 """ Testing task 4 """
@@ -175,4 +185,4 @@ cleanGraph = grid32.buildGraph()
 #print(list(cleanGraph.keys())[-1])
 #print(calc.shortestPathBFS(cleanGraph, list(cleanGraph.keys())[0], list(cleanGraph.keys())[-1]))
 #print(n11.getNeighbours())
-#calc.distanceToAllNodes(grid32, n11)
+print(calc.distanceToAllNodes(grid32, n11))
