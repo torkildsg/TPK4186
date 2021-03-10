@@ -4,6 +4,7 @@ from Graph import Graph
 from Edge import Edge
 from Node import Node
 import matplotlib.pyplot as plt
+import operator
 
 class Calculator: 
 
@@ -131,10 +132,22 @@ class Calculator:
             length = self.shortestPathBFS(dictGraph, startNode, node)
             distanceDict[node] = length
         
-        return distanceDict
-       
+        return distanceDict 
+        
+    """ Task 10 """
+    def diameterOfGraph(self,graph):
+        
+        dictGraph = graph.buildGraph()
+        combDict = dict()
+        nodesInGraph = [key[1] for key in graph.getNodes().items()]
+   
+        for node in nodesInGraph:
+            dictWithDistances = self.distanceToAllNodes(graph, node)
+            for n in dictWithDistances:
+                combDict[node.getName() + " -> "+ n] = str("Diameter: "+str(dictWithDistances[n]))
+        return list(max(combDict.items(), key = operator.itemgetter(1)))
 
-
+    
 """ Testing task 4 """
 grid32 = Graph("Grid32")
 n11 = Node("n11")
@@ -185,4 +198,5 @@ cleanGraph = grid32.buildGraph()
 #print(list(cleanGraph.keys())[-1])
 #print(calc.shortestPathBFS(cleanGraph, list(cleanGraph.keys())[0], list(cleanGraph.keys())[-1]))
 #print(n11.getNeighbours())
-print(calc.distanceToAllNodes(grid32, n11))
+#print(calc.distanceToAllNodes(grid32, n11))
+print(calc.diameterOfGraph(grid32))
