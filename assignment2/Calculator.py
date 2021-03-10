@@ -21,6 +21,21 @@ class Calculator:
             degreeDict[thisNode] = len(thisNodesEdges)
         return degreeDict # Will look like this: {node_1: degreeOfNode, node_2: degreeOfNode, ..., node_k: degreeOfNode}
 
+    """ Part of task 11 """
+    def sumOfDegrees(self, graph):
+        thisDict = self.degreeOfNodes(graph)
+        sum = 0
+        for value in thisDict.items():
+            sum += value[1]
+        return sum
+    
+    def getProbability(self, graph, node):
+        denominator = self.sumOfDegrees(graph)
+        thisNodesEdge = node.getEdgeList()
+        numerator = len(thisNodesEdge)
+        fraction = float(numerator/denominator)
+        return fraction
+
     """ Task 5 """
     def plotDegreeOfNodes(self, graph):
 
@@ -192,11 +207,11 @@ grid70.addNode(n62, [n82, n61])
 """ Testing task 8 """
 #calc.plotSizesOfConnectedComp(grid70)
 
-""" Testing task 9 """
-#print(grid32.edges)
-cleanGraph = grid32.buildGraph()
-#print(list(cleanGraph.keys())[-1])
-#print(calc.shortestPathBFS(cleanGraph, list(cleanGraph.keys())[0], list(cleanGraph.keys())[-1]))
-#print(n11.getNeighbours())
+""" Testing task 9"""
 #print(calc.distanceToAllNodes(grid32, n11))
-print(calc.diameterOfGraph(grid32))
+
+""" Testing task 10 """
+#print(calc.diameterOfGraph(grid32))
+
+""" Testing task 11 """
+print(calc.getProbability(grid32, n11))
