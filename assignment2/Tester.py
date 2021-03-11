@@ -9,7 +9,7 @@ from Calculator import Calculator
 from Generator import Generator
 
 """ Testing Task 1 """
-"""venner = Graph("venner")
+venner = Graph("venner")
 eivind = Node("Eivind")
 torkild = Node("Torkild")
 henrik = Node("Henrik")
@@ -18,9 +18,16 @@ venner.addNode(eivind, [torkild])
 venner.addNode(torkild, [eivind])
 venner.addNode(henrik, [torkild, eivind])
 venner.addNode(henrik, [tom, torkild])
-# Må slette venner her for å vise testingen
+"""
 print(venner.nodes)
-print(venner.edges)"""
+print(venner.edges)
+
+# Deleting one node, and one edge
+venner.deleteNode(tom)
+venner.deleteEdge(henrik, eivind)
+print(venner.nodes)
+print(venner.edges)
+"""
 
 
 """ Testing task 2 """
@@ -94,7 +101,7 @@ grid70.addNode(n62, [n82, n61])
 
 """ Testing task 11 """
 generator = Generator()
-graph = generator.barabasiAlbert(12)
+graph = generator.barabasiAlbert(50)
 
 
 """ Task 12 (and test of Task 11) """
@@ -115,8 +122,7 @@ print(parsedGraph.getEdges())"""
 
 # Test if you could extract and plot the distributions of the degree of nodes
 """print(calc.degreeOfNodes(graph))
-calc.plotDegreeOfNodes(graph)
-"""
+calc.plotDegreeOfNodes(graph)"""
 
 # Test if you can calculate the diameter of the network
 """print(calc.diameterOfGraph(graph))"""
