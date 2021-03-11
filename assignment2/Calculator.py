@@ -96,16 +96,17 @@ class Calculator:
 
         compOfGraph = self.extractComponentsOfGraph(graph)
         labels = []
-        degrees = []
+        sizes = []
 
         for count, i in enumerate(range(0, len(compOfGraph)), 1): # Start counting from 1
             labels.append('Subgraph #' + str(count))
-            degrees.append(len(compOfGraph[i]))
+            sizes.append(len(compOfGraph[i]))
        
-        plt.scatter(labels, degrees) 
+        #plt.scatter(labels, degrees) 
+        plt.bar(labels, sizes, color ='blue', width = 0.2)
         plt.xlabel('Subgraph', fontsize=15)
         plt.ylabel('Size of subgraph', fontsize=15)
-        plt.yticks([i for i in range(0, max(degrees)+2)])
+        plt.yticks([i for i in range(0, max(sizes)+2)])
         plt.grid()
         plt.show() 
     
@@ -134,7 +135,7 @@ class Calculator:
                         return len(newPath)-1
                 explored.append(node) 
         return False
-        
+
     def distanceToAllNodes(self, graph, startNode):
         startNode = startNode.getName()
         dictGraph = graph.buildGraph()
