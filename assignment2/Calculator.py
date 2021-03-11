@@ -69,13 +69,13 @@ class Calculator:
             queue = [n]
     
             while queue:
-                n = queue.pop(0) # Get the next item from queue
-                neighbours = set(n.getNeighbours()) # Fetch the neighbors
-                neighbours.difference_update(group)  # Remove the neighbors already visited
-                k.difference_update(neighbours)  # Remove the remaining nodes from the global set
-                group.update(neighbours) # Add them to the group of connected nodes.
-                queue.extend(neighbours)  # Add them to the queue, so we visit them in the next iterations.
-            c.append(group) # Add the group to the list of groups.
+                n = queue.pop(0) 
+                neighbours = set(n.getNeighbours()) 
+                neighbours.difference_update(group)  
+                k.difference_update(neighbours)  
+                group.update(neighbours) 
+                queue.extend(neighbours)  
+            c.append(group) 
         return list(c[0])
     
     """ Task 7 """
@@ -134,20 +134,17 @@ class Calculator:
                         return len(newPath)-1
                 explored.append(node) 
         return False
-    
+        
     def distanceToAllNodes(self, graph, startNode):
         startNode = startNode.getName()
         dictGraph = graph.buildGraph()
-        #print(dictGraph)
         nodesInGraph = [key[0] for key in graph.getNodes().items()]
         nodesInGraph.remove(startNode)
         distanceDict = dict()
-
         
         for node in nodesInGraph:
             length = self.shortestPathBFS(dictGraph, startNode, node)
             distanceDict[node] = length
-        
         return distanceDict 
         
     """ Task 10 """
@@ -162,4 +159,3 @@ class Calculator:
             for n in dictWithDistances:
                 combDict[node.getName() + " -> "+ n] = str("Diameter: "+str(dictWithDistances[n]))
         return list(max(combDict.items(), key = operator.itemgetter(1)))
-
