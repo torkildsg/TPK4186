@@ -49,18 +49,16 @@ print(graph.edges)"""
 
 
 """ Testing task 4 """
-"""calc = Calculator()
-calc.degreeOfNodes(grid32)"""
+calc = Calculator()
+"""calc.degreeOfNodes(grid32)"""
 
 
 """ Testing task 5 """
-"""calc = Calculator()
-calc.plotDegreeOfNodes(grid32)"""
+"""calc.plotDegreeOfNodes(grid32)"""
 
 
 """ Testing task 6 """
-"""calc = Calculator()
-print(calc.extractComponentsOfNode(n11))
+"""print(calc.extractComponentsOfNode(n11))
 for i in calc.extractComponentsOfNode(n11):
     print(i.getName())"""
 
@@ -83,28 +81,23 @@ grid70.addNode(n62, [n82, n61])
 
 
 """ Testing task 8 """
-"""calc = Calculator()
-calc.plotSizesOfConnectedComp(grid70)"""
+"""calc.plotSizesOfConnectedComp(grid70)"""
 
 
 """ Testing task 9"""
-"""calc = Calculator()
-print(calc.distanceToAllNodes(grid32, n11))"""
+"""print(calc.distanceToAllNodes(grid32, n11))"""
 
 
 """ Testing task 10 """
-"""calc = Calculator()
-print(calc.diameterOfGraph(grid32))"""
+"""print(calc.diameterOfGraph(grid32))"""
 
 
 """ Testing task 11 """
-"""gen = Generator()
-graph = gen.barabasiAlbert(12)"""
+generator = Generator()
+graph = generator.barabasiAlbert(12)
 
 
 """ Task 12 (and test of Task 11) """
-generator = Generator()
-graph = generator.barabasiAlbert(12)
 
 # Test printing and parsing of the generated network
 """printer = Printer()
@@ -117,15 +110,14 @@ print(parsedGraph.getEdges())"""
 
 
 # Test if the generated network is made of one single connected component
-"""calc = Calculator()
-print("Number of connected components: " + str(len(calc.extractComponentsOfGraph(graph))))"""
+"""print("Number of connected components: " + str(len(calc.extractComponentsOfGraph(graph))))"""
 
 
 # Test if you could extract and plot the distributions of the degree of nodes
-# Do something ----
-
+"""print(calc.degreeOfNodes(graph))
+calc.plotDegreeOfNodes(graph)
+"""
 
 # Test if you can calculate the diameter of the network
-"""calc = Calculator()
-print(calc.diameterOfGraph(graph))"""
+"""print(calc.diameterOfGraph(graph))"""
 

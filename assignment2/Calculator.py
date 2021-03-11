@@ -46,14 +46,14 @@ class Calculator:
         for key, value in nodes.items():
             labels.append(key.getName())
             degrees.append(value)
-        
-        ticklabel_y = [i for i in range(0, len(labels))] 
-  
-        plt.scatter(labels, degrees) 
+            
+        value = max(enumerate(degrees), key=operator.itemgetter(1))[1]
+        ticklabel_y = [i for i in range(0, value+1)] 
+        fig = plt.figure(figsize = (14, 5))
+        plt.bar(labels, degrees, color ='blue', width = 0.2)
         plt.xlabel('Node', fontsize=15)
         plt.ylabel('Degree of node', fontsize=15)
         plt.yticks(ticklabel_y)
-        plt.grid()
         plt.show() 
 
     """ Task 6 """
