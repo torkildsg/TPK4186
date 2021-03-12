@@ -49,7 +49,7 @@ class Calculator:
             
         value = max(enumerate(degrees), key=operator.itemgetter(1))[1]
         ticklabel_y = [i for i in range(0, value+1)] 
-        plt.figure(figsize = (80, 20))
+        plt.figure(figsize = (40, 20))
         plt.bar(labels, degrees, color ='blue', align='edge', width = 0.4)
         plt.xlabel('Node', fontsize=15)
         plt.ylabel('Degree of node', fontsize=15)
@@ -76,20 +76,24 @@ class Calculator:
                 k.difference_update(neighbours)  
                 group.update(neighbours) 
                 queue.extend(neighbours)  
-            c.append(group) 
-        return list(c[0])
+            c.append(group)
+        components = list(c[0])
+        components.remove(node) 
+        return components
     
     """ Task 7 """
     def extractComponentsOfGraph(self, graph):
 
         componentsOfGraph = [] # List of connected components found
-        nodesInGraph = set(list(graph.getNodes().values())) # The neighbours of this node
-
+        nodesInGraph = list(graph.getNodes().values())
+        
         while nodesInGraph:
-            n = list(nodesInGraph)[0]
-            componentsOfNode = set(self.extractComponentsOfNode(n))
-            componentsOfGraph.append(list(componentsOfNode))
-            nodesInGraph -= componentsOfNode
+            n = nodesInGraph[0]
+            componentsOfNode = self.extractComponentsOfNode(n)
+            componentsOfNode.append(n)
+            componentsOfGraph.append(componentsOfNode)
+            for x in componentsOfNode:
+                nodesInGraph.remove(x)
         return componentsOfGraph
 
     """ Task 8 """ 
