@@ -49,10 +49,11 @@ class Calculator:
             
         value = max(enumerate(degrees), key=operator.itemgetter(1))[1]
         ticklabel_y = [i for i in range(0, value+1)] 
-        fig = plt.figure(figsize = (35, 7))
-        plt.bar(labels, degrees, color ='blue', width = 0.2)
+        plt.figure(figsize = (80, 20))
+        plt.bar(labels, degrees, color ='blue', align='edge', width = 0.4)
         plt.xlabel('Node', fontsize=15)
         plt.ylabel('Degree of node', fontsize=15)
+        plt.xticks(labels, rotation = 45, fontsize = 7)
         plt.yticks(ticklabel_y)
         plt.grid()
         plt.show() 

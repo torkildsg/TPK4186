@@ -24,7 +24,7 @@ class Generator:
         nodeProb = dict()
         calc = Calculator()
 
-        while i <= numberOfNodes:
+        while len(graph.getNodes()) < numberOfNodes:
             for key, value in graph.getNodes().items():
                 nodeProb[value] = calc.getProbability(graph, value)
             newNodeName = "n" + str(i)
