@@ -88,7 +88,7 @@ grid70.addNode(n62, [n82, n61])
 
 
 """ Testing task 8 """
-"""calc.plotSizesOfConnectedComp(grid70)"""
+calc.plotSizesOfConnectedComp(grid70)
 
 
 """ Testing task 9"""
