@@ -102,8 +102,7 @@ class Calculator:
         for count, i in enumerate(range(0, len(compOfGraph)), 1): # Start counting from 1
             labels.append('Subgraph #' + str(count))
             sizes.append(len(compOfGraph[i]))
-       
-        #plt.scatter(labels, degrees) 
+        
         plt.bar(labels, sizes, color ='blue', width = 0.2)
         plt.xlabel('Subgraph', fontsize=15)
         plt.ylabel('Size of subgraph', fontsize=15)
