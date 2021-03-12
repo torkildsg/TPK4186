@@ -76,21 +76,18 @@ class Calculator:
                 k.difference_update(neighbours)  
                 group.update(neighbours) 
                 queue.extend(neighbours)  
-            c.append(group)
-        components = list(c[0])
-        components.remove(node) 
-        return components
+            c.append(group) 
+        return list(c[0])
     
     """ Task 7 """
     def extractComponentsOfGraph(self, graph):
 
         componentsOfGraph = [] # List of connected components found
-        nodesInGraph = list(graph.getNodes().values())
-        
+        nodesInGraph = list(graph.getNodes().values()) # The neighbours of this node
+
         while nodesInGraph:
             n = nodesInGraph[0]
             componentsOfNode = self.extractComponentsOfNode(n)
-            componentsOfNode.append(n)
             componentsOfGraph.append(componentsOfNode)
             for x in componentsOfNode:
                 nodesInGraph.remove(x)
