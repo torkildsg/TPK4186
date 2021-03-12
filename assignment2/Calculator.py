@@ -49,10 +49,11 @@ class Calculator:
             
         value = max(enumerate(degrees), key=operator.itemgetter(1))[1]
         ticklabel_y = [i for i in range(0, value+1)] 
-        fig = plt.figure(figsize = (35, 7))
-        plt.bar(labels, degrees, color ='blue', width = 0.2)
+        plt.figure(figsize = (80, 20))
+        plt.bar(labels, degrees, color ='blue', align='edge', width = 0.4)
         plt.xlabel('Node', fontsize=15)
         plt.ylabel('Degree of node', fontsize=15)
+        plt.xticks(labels, rotation = 45, fontsize = 7)
         plt.yticks(ticklabel_y)
         plt.grid()
         plt.show() 
@@ -101,8 +102,7 @@ class Calculator:
         for count, i in enumerate(range(0, len(compOfGraph)), 1): # Start counting from 1
             labels.append('Subgraph #' + str(count))
             sizes.append(len(compOfGraph[i]))
-       
-        #plt.scatter(labels, degrees) 
+        
         plt.bar(labels, sizes, color ='blue', width = 0.2)
         plt.xlabel('Subgraph', fontsize=15)
         plt.ylabel('Size of subgraph', fontsize=15)

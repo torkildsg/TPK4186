@@ -122,7 +122,9 @@ print(parsedGraph.getEdges())"""
 
 # Test if you could extract and plot the distributions of the degree of nodes
 """print(calc.degreeOfNodes(graph))
-calc.plotDegreeOfNodes(graph)"""
+calc.plotDegreeOfNodes(graph)
+print(len(graph.getNodes()))""" # Here you can see the number of nodes in the graph
+
 
 # Test if you can calculate the diameter of the network
 """print(calc.diameterOfGraph(graph))"""
