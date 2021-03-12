@@ -57,7 +57,7 @@ print(graph.edges)"""
 
 """ Testing task 4 """
 calc = Calculator()
-"""calc.degreeOfNodes(grid32)"""
+"""print(calc.degreeOfNodes(grid32))"""
 
 
 """ Testing task 5 """
@@ -101,19 +101,19 @@ grid70.addNode(n62, [n82, n61])
 
 """ Testing task 11 """
 generator = Generator()
-graph = generator.barabasiAlbert(50)
+graph = generator.barabasiAlbert(50) # 50 nodes
 
 
 """ Task 12 (and test of Task 11) """
 
 # Test printing and parsing of the generated network
 """printer = Printer()
-printer.printGraphTSV(graph)
+printer.printGraphTSV(graph)"""
 
-parser = Parser()
+"""parser = Parser()
 parsedGraph = parser.importGraphTSV('graph.tsv')
-print(parsedGraph.getNodes())
-print(parsedGraph.getEdges())"""
+print("Number of nodes: " + str(len(parsedGraph.getNodes())))
+print("Number of edges: " + str(len(parsedGraph.getEdges())))"""
 
 
 # Test if the generated network is made of one single connected component
@@ -123,8 +123,8 @@ print(parsedGraph.getEdges())"""
 # Test if you could extract and plot the distributions of the degree of nodes
 """print(calc.degreeOfNodes(graph))
 calc.plotDegreeOfNodes(graph)
-print(len(graph.getNodes()))""" # Here you can see the number of nodes in the graph
-
+print("Number of nodes: " + str(len(graph.getNodes()))) # Here you can see the number of nodes in the graph
+"""
 
 # Test if you can calculate the diameter of the network
 """print(calc.diameterOfGraph(graph))"""
