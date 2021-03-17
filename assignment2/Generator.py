@@ -18,9 +18,11 @@ class Generator:
         graph = Graph("Graph")
         n1 = Node("n1")
         n2 = Node("n2")
-        graph.addNode(n1, [n2])
-        graph.addNode(n2, [n1])
-        i = 3
+        n3 = Node("n3")
+        graph.addNode(n1, [n2, n3])
+        graph.addNode(n2, [n1, n3])
+        graph.addNode(n3, [n1, n2])
+        i = 4
         nodeProb = dict()
         calc = Calculator()
 

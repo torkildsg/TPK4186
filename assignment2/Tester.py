@@ -101,7 +101,7 @@ grid70.addNode(n62, [n82, n61])
 
 """ Testing task 11 """
 generator = Generator()
-graph = generator.barabasiAlbert(50) # 50 nodes
+graph = generator.barabasiAlbert(200) 
 
 
 """ Task 12 (and test of Task 11) """
@@ -123,8 +123,8 @@ print("Number of edges: " + str(len(parsedGraph.getEdges())))"""
 # Test if you could extract and plot the distributions of the degree of nodes
 """print(calc.degreeOfNodes(graph))
 calc.plotDegreeOfNodes(graph)
-print("Number of nodes: " + str(len(graph.getNodes()))) # Here you can see the number of nodes in the graph
 """
+
 
 # Test if you can calculate the diameter of the network
 """print(calc.diameterOfGraph(graph))"""
