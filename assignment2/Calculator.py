@@ -40,23 +40,27 @@ class Calculator:
     def plotDegreeOfNodes(self, graph):
 
         nodes = self.degreeOfNodes(graph)
-        labels = []
-        degrees = []
-
-        for key, value in nodes.items():
-            labels.append(key.getName())
-            degrees.append(value)
-            
-        value = max(enumerate(degrees), key=operator.itemgetter(1))[1]
-        ticklabel_y = [i for i in range(0, value+1)] 
-        plt.figure(figsize = (40, 20))
-        plt.bar(labels, degrees, color ='blue', align='edge', width = 0.4)
-        plt.xlabel('Node', fontsize=15)
-        plt.ylabel('Degree of node', fontsize=15)
-        plt.xticks(labels, rotation = 45, fontsize = 7)
-        plt.yticks(ticklabel_y)
+        maxDegree = max(nodes.values())
+        degreeOfNode = [i for i in range(0, maxDegree+1)]  # Degree 0-max of degreeOfNdoes
+        numberOfNodes = [0*i for i in range(0, maxDegree+1)]  # Number of nodes with this degree
+        
+        for i in range(0, len(degreeOfNode)+1):
+            for key, value in nodes.items():
+                if value == i: # If this nodes degree is equal to i
+                    numberOfNodes[i] += 1
+                
+        maxNodes = max(enumerate(numberOfNodes), key=operator.itemgetter(1))[1]
+        
+        plt.figure(figsize = (40, 30))
+        plt.bar(degreeOfNode, numberOfNodes, color ='blue', align='edge', width = 0.4)
+        plt.xlabel('Degree of node', fontsize=15)
+        plt.ylabel('Number of nodes', fontsize=15)
+        plt.xticks([i for i in range(0, maxDegree+1)], fontsize = 7)
+        plt.yticks([i for i in range(0, maxNodes+1)])
+        plt.text(maxDegree, maxNodes, "Number of nodes in total: " + str(len(graph.getNodes())), size=12, ha="right", va="center",
+         bbox=dict(boxstyle="round",ec=(1., 0.5, 0.5), fc=(1., 0.8, 0.8)))
         plt.grid()
-        plt.show() 
+        plt.show()
 
     """ Task 6 """
     def extractComponentsOfNode(self, node):
