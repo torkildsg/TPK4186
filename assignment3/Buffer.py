@@ -2,9 +2,26 @@
 
 class Buffer:
 
-    def __init__(self, capacity, queueOfBatches):
-        self.capacity = capacity
-        self.queueOfBatches = queueOfBatches # FIFO-queue: Only use .pop(0) to get, and .append() to add
+    def __init__(self, capacity, sourceTask, targetTask):
+        self.capacity = capacity # 120?
+        self.queueOfBatches = [] # FIFO-queue: Only use .pop(0) to get, and .append() to add
+        self.sourceTask = sourceTask
+        self.targetTask = targetTask
+
+    def setTargetTask(self, task):
+        self.targetTask = task
+    
+    def getTargetTask(self):
+        return self.targetTask
+    
+    def setSourceTask(self, task):
+        self.sourceTask = task
+    
+    def getSourceTask(self):
+        return self.sourceTask
+
+    def getBuffer(self):
+        return self.queueOfBatches
     
     def enqueueBuffer(self, batch):
         if len(self.queueOfBatches) == capacity:
@@ -15,5 +32,5 @@ class Buffer:
     def dequeueBuffer(self):
         if len(self.queueOfBatches) < 1:
             return None
-        return self.queue.pop(0)
+        return self.queueOfBatches.pop(0)
 
