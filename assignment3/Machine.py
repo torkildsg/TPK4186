@@ -11,18 +11,22 @@ class Machine:
     
     def getName(self):
         return self.machineName
+    
+    def getTasks(self):
+        return self.tasks
 
     def lookForTask(self, name):
-        return self.tasks.get(name, False)
+        return self.tasks.get(name, None)
     
     def newTask(self, name):
-        if lookForTask(name):
+        if self.lookForTask(name) is not None:
             return False
         else:
             task = Task(name)
             self.tasks[name] = task
+        return task
     
     def deleteTask(self, task):
         del self.tasks[task.getName()]
     
-Machine = Machine("enigma")
+
