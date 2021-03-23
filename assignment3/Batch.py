@@ -2,12 +2,12 @@
 
 class Batch: 
 
-    def __init__(self, bufferCode, numOfWafers):
-        self.bufferCode = bufferCode
+    def __init__(self, batchCode, numOfWafers):
+        self.batchCode = batchCode
         self.numOfWafers = numOfWafers # Batch contains 20-50 wafers reguarly 
     
-    def getBufferCode(self):
-        return self.bufferCode
+    def getBatchCode(self):
+        return self.batchCode
     
     def setNumOfWafers(self, num):
         self.numOfWafers = num
