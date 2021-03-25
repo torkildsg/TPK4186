@@ -8,6 +8,12 @@ class Buffer:
         self.sourceTask = sourceTask
         self.targetTask = targetTask
 
+    def setCapacity(self, cap):
+        self.capacity = cap
+    
+    def getCapacity(self):
+        return self.capacity
+
     def setTargetTask(self, task):
         self.targetTask = task
     

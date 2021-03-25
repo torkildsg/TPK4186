@@ -3,16 +3,22 @@
 from Batch import Batch
 
 class Task:
+    TASK = 0
+    EVENT = 1
 
-    def __init__(self, name): # , inputBuffer, outputBuffer, loadTime, unloadTime, processTime
+    def __init__(self, type, name): # , inputBuffer, outputBuffer, loadTime, unloadTime, processTime
         self.name = name
-        self.incomingBuffer = 0
-        self.outgoingBuffer = 0
+        self.type = type
+        self.incomingBuffer = []
+        self.outgoingBuffer = []
         self.loadTime = 2 # Per buffer going into the task
         self.unloadTime = 2 # Per buffer going into the task
         self.processTime = 0 # Per wafer in a batch
         self.duration = 0
         
+    def getType(self):
+        return self.type
+
     def getName(self):
         return self.name
     
@@ -43,16 +49,16 @@ class Task:
     def getDuration(self):
         return self.duration
 
-    def setIncomingBuffer(self, buffer):
-        self.incomingBuffer = buffer
+    def addIncomingBuffer(self, buffer):
+        self.incomingBuffer.append(buffer)
 
-    def getIncomingBuffer(self):
+    def getIncomingBuffers(self):
         return self.incomingBuffer
 
-    def setOutgoingBuffer(self, buffer):
-        self.outgoingBuffer = buffer
+    def addOutgoingBuffer(self, buffer):
+        self.outgoingBuffer.append(buffer)
 
-    def getOutgoingBuffer(self):
+    def getOutgoingBuffers(self):
         return self.outgoingBuffer
 	
 

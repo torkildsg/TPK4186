@@ -4,6 +4,7 @@ from Batch import Batch
 from Buffer import Buffer
 from Task import Task
 from Machine import Machine
+from Printer import Printer
 
 class Plant:
 
@@ -11,10 +12,30 @@ class Plant:
         self.name = name
         self.machines = []
         self.allBuffers = []
+        self.allTasksEvents = []
+
+    def getAllTasksEvents(self):
+        return self.allTasksEvents
+    
+    def newTask(self, name, machine):
+        if machine.lookForTask(name) is not None:
+            return False
+        else:
+            task = Task(Task.TASK, name)
+            machine.tasks[name] = task
+            self.allTasksEvents.append(task)
+        return task
+        
+    def deleteTask(self, task, machine):
+        del machine.tasks[task.getName()]
 
     def newEvent(self, name):
-        event = Task(name)
+        event = Task(Task.EVENT, name)
+        self.allTasksEvents.append(event)
         return event
+    
+    #def deleteEvent(self, event):
+        
 
     def getName(self):
         return self.name
@@ -38,8 +59,8 @@ class Plant:
     def newBuffer(self, sourceTask, targetTask):
         buffer = Buffer(sourceTask, targetTask)
         self.allBuffers.append(buffer)
-        sourceTask.setOutgoingBuffer(buffer)
-        targetTask.setIncomingBuffer(buffer)
+        sourceTask.addOutgoingBuffer(buffer)
+        targetTask.addIncomingBuffer(buffer)
         return buffer
     
     def deleteBuffer(self, sourceTask, targetTask):
@@ -63,17 +84,17 @@ machine2 = waferprod.newMachine("machine2")
 machine3 = waferprod.newMachine("machine3")
 
 start = waferprod.newEvent("Start")
-task1 = machine1.newTask("Task1")
-task3 = machine1.newTask("Task3")
-task6 = machine1.newTask("Task6")
-task9 = machine1.newTask("Task9")
+task1 = waferprod.newTask("Task1", machine1)
+task3 = waferprod.newTask("Task3", machine1)
+task6 = waferprod.newTask("Task6", machine1)
+task9 = waferprod.newTask("Task9", machine1)
 
-task2 = machine2.newTask("Task2")
-task5 = machine2.newTask("Task5")
-task7 = machine2.newTask("Task7")
+task2 = waferprod.newTask("Task2", machine2)
+task5 = waferprod.newTask("Task5", machine2)
+task7 = waferprod.newTask("Task7", machine2)
 
-task4 = machine3.newTask("Task4")
-task8 = machine3.newTask("Task8")
+task4 = waferprod.newTask("Task4", machine3)
+task8 = waferprod.newTask("Task8", machine3)
 end = waferprod.newEvent("End")
 
 waferprod.newBuffer(start, task1)
@@ -83,6 +104,7 @@ waferprod.newBuffer(task3, task4)
 waferprod.newBuffer(task4, task5)
 waferprod.newBuffer(task5, task6)
 waferprod.newBuffer(task6, task7)
+waferprod.newBuffer(task7, task8)
 waferprod.newBuffer(task8, task9)
 waferprod.newBuffer(task9, end)
 
@@ -97,10 +119,16 @@ task8.setProcessTime(1.9)
 task9.setProcessTime(0.3)
 
 print(waferprod.name)
-print(len(waferprod.allBuffers))
+for buffer in waferprod.allBuffers:
+    print(buffer)
 for m in waferprod.machines:
     print(m.getName())
 
+for task in waferprod.getAllTasksEvents():
+    print(task.getName())
+
+printer = Printer()
+printer.exportPlantCSV(waferprod, 'plant.csv')
 
 
 
