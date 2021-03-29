@@ -4,6 +4,7 @@ from Graph import Graph
 from Edge import Edge
 from Node import Node
 import matplotlib.pyplot as plt
+import numpy as np
 import operator
 
 class Calculator: 
@@ -56,7 +57,8 @@ class Calculator:
         plt.xlabel('Degree of node', fontsize=15)
         plt.ylabel('Number of nodes', fontsize=15)
         plt.xticks([i for i in range(0, maxDegree+1)], fontsize = 7)
-        plt.yticks([i for i in range(0, maxNodes+1)])
+        #plt.yticks([i for i in range(0, maxNodes+1)])
+        plt.yticks(np.arange(0, maxNodes+1, 5))
         plt.text(maxDegree, maxNodes, "Number of nodes in total: " + str(len(graph.getNodes())), size=12, ha="right", va="center",
          bbox=dict(boxstyle="round",ec=(1., 0.5, 0.5), fc=(1., 0.8, 0.8)))
         plt.grid()

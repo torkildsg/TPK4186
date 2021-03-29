@@ -13,7 +13,7 @@ class Machine:
         return self.machineName
     
     def getTasks(self):
-        return self.tasks
+        return self.tasks.values()
 
     def lookForTask(self, name):
         return self.tasks.get(name, None)
