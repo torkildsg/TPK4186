@@ -29,48 +29,48 @@ class Team:
             self.info[1] = trigram
     
     def setNumGamesWon(self, gamesWon):
-        self.info[2] += gamesWon
+        self.info[2] += int(gamesWon)
         self.setTotalpoints()
 
     def getNumGamesWon(self):
         return self.info[2]
     
     def setNumGamesLost(self, gamesLost):
-        self.info[3] += gamesLost
+        self.info[3] += int(gamesLost)
     
     def getNumGamesLost(self):
         return self.info[3]
 
     def setNumGamesDraw(self, gamesDraw):
-        self.info[4] += gamesDraw
+        self.info[4] += int(gamesDraw)
         self.setTotalpoints()
     
     def getNumGamesDraw(self):
         return self.info[4]
     
     def setTotalpoints(self):
-        totalPoints = self.getNumGamesWon() * 3 + self.getNumGamesDraw() 
+        totalPoints = int(self.getNumGamesWon() * 3 + self.getNumGamesDraw())
         self.info[5] = totalPoints
 
     def getTotalpoints(self):
         return self.info[5]
     
     def setNumOfGoalsFor(self, numOfGoalsFor):
-        self.info[6] += numOfGoalsFor
+        self.info[6] += int(numOfGoalsFor)
         self.setGoalDifference()
     
     def getNumOfGoalsFor(self):
         return self.info[6]
 
     def setNumOfGoalsAgainst(self, numOfGoalsAgainst):
-        self.info[7] += numOfGoalsAgainst
+        self.info[7] += int(numOfGoalsAgainst)
         self.setGoalDifference()
 
     def getNumOfGoalsAgainst(self):
         return self.info[7]
 
     def setGoalDifference(self):
-        goalDifference = self.getNumOfGoalsFor() - self.getNumOfGoalsAgainst()
+        goalDifference = int(self.getNumOfGoalsFor() - self.getNumOfGoalsAgainst())
         self.info[8] = goalDifference
 
     def getGoalDifference(self):
@@ -474,7 +474,7 @@ cup.UpdateStatistics()
 
 
 """ Testing task 8 """
-#print(cup.getRanking())
+#print(cup.getRanking()) # Comes out in terminal
 
 
 """ Testing Task 9 """
@@ -492,10 +492,10 @@ cup.updateGameLists()
 
 """ Testing Task 12 """
 #cup.printRankingHomeAndAwayAndCombined()
-#As we kan see, there are a big differences between only receiving points at 1.Home or draw og 2. Visitor or draw
+#As we kan see, there are a big differences between only receiving points at 1)Home or draw and 2) Visitor or draw
 
 
 """ Testing Task 13 """
-cup.printRankingGeneralForAndAgainst()
+#cup.printRankingGeneralForAndAgainst()
 #as we can see. Also here the ranking is different from the general ranking
 
