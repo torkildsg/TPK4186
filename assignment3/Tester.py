@@ -69,5 +69,5 @@ waferprod.enqueueBatchIntoBuffer(batch5, startbuffer)
 printer = Printer()
 printer.exportPlantCSV(waferprod, 'plant.csv')
 
-#waferprod.batchEntersTask(batch1, task1)
+waferprod.batchEntersTask(batch1, task1)
 

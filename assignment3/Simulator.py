@@ -17,7 +17,7 @@ class Simulator:
     def insertEvent(self, event):
         if event not in self.schedule:
             position = 0
-            while position < lene(self.schedule):
+            while position < len(self.schedule):
                 otherEvent = self.schedule[position]
                 if otherEvent.getDate() > event.getDate():
                     break
