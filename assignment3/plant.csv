@@ -1,0 +1,27 @@
+Name of plant:        Waferprod
+Number of machines:   3
+Number of tasks:      9
+Number of buffers:    10
+
+Batch states:
+Batch in buffer = 0
+Batch is processed by task = 1
+
+Batchcode:1	  State of batch:0	  Number of wafers:20
+Batchcode:2	  State of batch:0	  Number of wafers:25
+Batchcode:3	  State of batch:0	  Number of wafers:30
+Batchcode:4	  State of batch:0	  Number of wafers:35
+Batchcode:5	  State of batch:0	  Number of wafers:40
+Batchcode:6	  State of batch:0	  Number of wafers:45
+Batchcode:7	  State of batch:0	  Number of wafers:50
+
+Buffer: Start --> Task1  	Capacity: 110/120
+Buffer: Task1 --> Task2  	Capacity: 0/120
+Buffer: Task2 --> Task3  	Capacity: 0/120
+Buffer: Task3 --> Task4  	Capacity: 0/120
+Buffer: Task4 --> Task5  	Capacity: 0/120
+Buffer: Task5 --> Task6  	Capacity: 0/120
+Buffer: Task6 --> Task7  	Capacity: 0/120
+Buffer: Task7 --> Task8  	Capacity: 0/120
+Buffer: Task8 --> Task9  	Capacity: 0/120
+Buffer: Task9 --> End   	Capacity: 0/120

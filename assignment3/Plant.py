@@ -33,11 +33,11 @@ class Plant:
     def getBatches(self):
         return self.batches
     
-    def newTask(self, name, machine):
+    def newTask(self, name, processtime, machine):
         if machine.lookForTask(name) is not None:
             return False
         else:
-            task = Task(Task.TASK, name)
+            task = Task(Task.TASK, name, processtime)
             machine.tasks[name] = task
             self.allTasksEvents.append(task)
         return task
@@ -46,7 +46,7 @@ class Plant:
         del machine.tasks[task.getName()]
 
     def newEvent(self, name):
-        event = Task(Task.EVENT, name)
+        event = Task(Task.EVENT, name, 0)
         self.allTasksEvents.append(event)
         return event
 
@@ -117,7 +117,8 @@ class Plant:
         self.dequeueBatchFromBuffer(batch)
         batch.setState(Batch.PROCESSING_TASK)
         task.setState(Task.PROCESSING_BUFFER)
-        return True
+        duration = int(task.getLoadTime() + task.getUnloadTime() + task.getProcessTime() * batch.getNumOfWafers())
+        return duration
             
          
         

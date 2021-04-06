@@ -77,4 +77,13 @@ class Printer:
         file.write('\t{0:g}'.format(task.getLateCompletionDate()))"""
 
         file.write('\n')
+    
+    def printSchedule(self, simulator, file):
+        file.write('Schedule:\n')
+        for event in simulator.getSchedule():
+            self.printEvent(event, file)
+        
+    def printEvent(self, event, file):
+        file.write('\t{type}\t{date}'.format(type = event.getType(), date = event.getDate()))
+        
         
