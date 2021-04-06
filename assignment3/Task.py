@@ -8,7 +8,7 @@ class Task:
     PROCESSING_BUFFER = 2
     IDLE = 3
 
-    def __init__(self, type, name): # , inputBuffer, outputBuffer, loadTime, unloadTime, processTime
+    def __init__(self, type, name, processTime): # , inputBuffer, outputBuffer, loadTime, unloadTime, processTime
         self.name = name
         self.type = type
         self.state = Task.IDLE
@@ -16,8 +16,7 @@ class Task:
         self.outgoingBuffer = []
         self.loadTime = 2 # Per buffer going into the task
         self.unloadTime = 2 # Per buffer going into the task
-        self.processTime = 0 # Per wafer in a batch
-        self.duration = float(self.getUnloadTime() + self.getLoadTime() + self.getProcessTime())
+        self.processTime = processTime # Per wafer in a batch
         """self.earlyStartDate = -1
         self.earlyCompletionDate = -1
         self.lateStartDate = -1
@@ -55,12 +54,6 @@ class Task:
 	
     def setProcessTime(self, processTime): # Per wafer
         self.processTime = processTime
-    
-    def setDuration(self, batch):
-        self.duration = float(self.getUnloadTime() + self.getLoadTime() + self.getProcessTime() * batch.getNumOfWafers())
-    
-    def getDuration(self):
-        return self.duration
 
     def addIncomingBuffer(self, buffer):
         self.incomingBuffer.append(buffer)
