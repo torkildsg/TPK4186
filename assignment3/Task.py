@@ -5,7 +5,7 @@ from Batch import Batch
 class Task:
     TASK = 0
     EVENT = 1
-    PROCESSING_BUFFER = 2
+    PROCESSING_BATCH = 2
     IDLE = 3
 
     def __init__(self, type, name, processTime): # , inputBuffer, outputBuffer, loadTime, unloadTime, processTime
@@ -14,6 +14,7 @@ class Task:
         self.state = Task.IDLE
         self.incomingBuffer = []
         self.outgoingBuffer = []
+        self.holdingBatch = None
         self.loadTime = 2 # Per buffer going into the task
         self.unloadTime = 2 # Per buffer going into the task
         self.processTime = processTime # Per wafer in a batch
@@ -21,6 +22,14 @@ class Task:
         self.earlyCompletionDate = -1
         self.lateStartDate = -1
         self.lateCompletionDate = -1"""
+
+    def setHoldingBatch(self, batch):
+        if self.holdingBatch:
+            return False
+        else: self.holdingBatch = batch
+    
+    def getHoldingBatch(self):
+        return self.holdingBatch
 
     def getState(self):
         return self.state
@@ -58,13 +67,13 @@ class Task:
     def addIncomingBuffer(self, buffer):
         self.incomingBuffer.append(buffer)
     
-    def getIncomingBuffers(self):
+    def getIncomingBuffer(self):
         return self.incomingBuffer
 
     def addOutgoingBuffer(self, buffer):
         self.outgoingBuffer.append(buffer)
 
-    def getOutgoingBuffers(self):
+    def getOutgoingBuffer(self):
         return self.outgoingBuffer
     
     """def getEarlyStartDate(self):

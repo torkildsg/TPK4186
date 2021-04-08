@@ -1,31 +1,46 @@
 """" Group 14: Eivind Stangebye Larsen and Torkild Sandnes Grøstad """
 
+from Schedule import Schedule
+from Plant import Plant
+from Event import Event
+
 class Simulator:
     def __init__(self, plant):
         self.plant = plant
-        self.schedule = []
+        self.executionTime = dict() # Key: batchCode, value: total time for all tasks
+        self.execution = []
+        self.eventNumber = 0
     
-    def getSchedule(self):
-        return self.schedule
+    def getExecution(self):
+        return self.execution
     
-    def isScheduleEmpty(self):
-        return len(self.schedule)==0
+    def getExecutionTime(self):
+        return self.executionTime
     
-    def popFirstEvent(self):
-        return self.schedule.pop(0)
+    def simulationLoop(self, schedule):
+        while schedule.getSchedule():
+            event = schedule.popFirstEvent()
+            self.execution.append(event)
+            self.executeEvent(event, schedule)
     
-    def insertEvent(self, event):
-        if event not in self.schedule:
-            position = 0
-            while position < lene(self.schedule):
-                otherEvent = self.schedule[position]
-                if otherEvent.getDate() > event.getDate():
-                    break
-                position += 1
-            self.schedule.insert(event)
-    
-    # Et event hvor man flytter en batch fra buffer til task til buffer
-    def newEvent(self, type, batch, buffer):
-        event = Event(type, date)
-        event.set
-    
+    def executeEvent(self, thisEvent, schedule):
+        self.currentDate = thisEvent.getDate()
+        thisBatch = thisEvent.getBatch()
+        thisTask = thisEvent.getTask()
+        outgoingBuffer = thisTask.getOutgoingBuffer()
+        incomingBuffer = thisTask.getIncomingBuffer()
+        thisBuffer = thisEvent.getBuffer()
+        if thisEvent.getType() == Event.BATCH_TO_TASK:
+            schedule.scheduleBatchToTask(thisTask)
+            duration = self.plant.taskServesBatch(thisBatch, thisTask)
+            self.executionTime[thisBatch.getBatchCode()] += duration
+            #schedule.scheduleBatchToBuffer(thisBuffer)
+        elif thisEvent.getType() == Event.BATCH_TO_BUFFER:
+            schedule.scheduleBatchToBuffer(thisBuffer)
+            self.plant.enqueueBatchIntoBuffer(thisBatch, thisBuffer)
+        
+        
+            
+            
+
+
