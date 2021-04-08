@@ -9,6 +9,9 @@ class Buffer:
         self.sourceTask = sourceTask
         self.targetTask = targetTask
 
+    def getAvailableCap(self):
+        return (self.capacity - self.getWafers())
+    
     def setWafers(self):
         count = 0
         for batch in self.queueOfBatches:

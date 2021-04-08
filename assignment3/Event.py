@@ -1,9 +1,8 @@
 """ Group 14: Eivind Stangebye Larsen and Torkild Sandnes Grøstad """
 
 class Event:
-    BATCH_TO_TASK = 1 
-    BATCH_IN_TASK = 2
-    BATCH_TO_BUFFER = 3
+    BATCH_TO_TASK = 1
+    BATCH_TO_BUFFER = 2
 
     def __init__(self, type, number, date):
         self.type = type

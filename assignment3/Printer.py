@@ -7,7 +7,7 @@ from Task import Task
 from Machine import Machine
 from Calculator import Calculator
 from Plant import Plant
-
+from Event import Event
 
 class Printer:
 
@@ -46,44 +46,21 @@ class Printer:
                 file.write('  \tCapacity: {num}/{cap}\n'.format(num = buffer.getWafers(), cap = buffer.getCapacity()))
 
     def printTaskCSV(self, task, file):
-        """if task.getType() == Task.TASK:
-            file.write('{0:10}'.format('task\t'))
-        else:
-            file.write('{0:11}'.format('event\t'))
-        file.write('{0:10}\t'.format(task.getName()))
-
-        first = True
-        for buffer in task.getOutgoingBuffers():
-            targetTask = buffer.getTargetTask()
-            if first:
-                first = False
-            else:
-                file.write(' ')
-            file.write('{0:10}'.format(targetTask.getName()))
-        
-        if task.getName() == 'End':
-            file.write('{0:10}'.format("    "))
-        """
-
         file.write('{0:10}'.format('task\t'))
         file.write('{0:10}\t'.format(task.getName()))
-
-
-        """ Uncertain if we need this
-        file.write("{0:d}\t".format(task.getDuration()))
-        file.write('\t{0:g}'.format(task.getEarlyStartDate()))
-        file.write('\t{0:g}'.format(task.getEarlyCompletionDate()))
-        file.write('\t{0:g}'.format(task.getLateStartDate()))
-        file.write('\t{0:g}'.format(task.getLateCompletionDate()))"""
-
         file.write('\n')
     
-    def printSchedule(self, simulator, file):
+    def printSchedule(self, schedule, file):
         file.write('Schedule:\n')
-        for event in simulator.getSchedule():
+        for event in schedule.getSchedule():
             self.printEvent(event, file)
         
     def printEvent(self, event, file):
-        file.write('\t{type}\t{date}'.format(type = event.getType(), date = event.getDate()))
-        
+        file.write('Event {type} at {date}:\n'.format(type = event.getType(), date = event.getDate()))
+        if event.getType() == Event.BATCH_TO_TASK:
+            file.write('Batch: {batch} enters {task}.\n'.format(batch = event.getBatch().getBatchCode(), task = event.getTask().getName()))
+        elif event.getType() == Event.BATCH_TO_BUFFER:
+            file.write('Batch {batch} enters {buffer}.+n'.format(batch = event.getBatch().getBatchCode(), buffer = event.getBuffer()))
+        file.write('\n')
+
         

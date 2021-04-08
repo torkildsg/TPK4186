@@ -4,7 +4,6 @@ from Batch import Batch
 from Buffer import Buffer
 from Task import Task
 from Machine import Machine
-from Calculator import Calculator
 from Plant import Plant
 from Printer import Printer
 
@@ -57,9 +56,6 @@ for m in waferprod.machines:
 for task in waferprod.getAllTasksEvents():
     print(task.getName())"""
 
-#calc = Calculator()
-#calc.calculateDates(waferprod)
-
 waferprod.enqueueBatchIntoBuffer(batch1, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch2, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch3, startbuffer)
@@ -69,5 +65,5 @@ waferprod.enqueueBatchIntoBuffer(batch5, startbuffer)
 printer = Printer()
 printer.exportPlantCSV(waferprod, 'plant.csv')
 
-waferprod.batchEntersTask(batch1, task1)
+#waferprod.batchEntersTask(batch1, task1)
 

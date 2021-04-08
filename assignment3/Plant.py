@@ -53,7 +53,10 @@ class Plant:
     def getAllTasksEvents(self):
         return self.allTasksEvents
     
-    #def deleteEvent(self, event):    
+    def deleteEvent(self, event):
+        for e in self.allTasksEvents:
+            if e == event:
+                self.allTasksEvents.remove(event)
 
     def newMachine(self, name):
         machine = Machine(name)
@@ -92,12 +95,15 @@ class Plant:
 
     def batchEntersTask(self, batch):
         batch.setState(Batch.PROCESSING_TASK)
+    
+    def batchEntersBuffer(self, batch):
+        batch.setState(Batch.IN_BUFFER)
 
     def enqueueBatchIntoBuffer(self, batch, buffer):
         if batch in buffer.getQueue():
             return False
         else:
-            batch.setState(Batch.IN_BUFFER)
+            self.batchEntersBuffer(batch)
             buffer.enqueueBuffer(batch)
             return True
     
@@ -115,8 +121,8 @@ class Plant:
                 return False
         # Else dequeue the batch from its buffer, and set the task to process the batch.
         self.dequeueBatchFromBuffer(batch)
-        batch.setState(Batch.PROCESSING_TASK)
-        task.setState(Task.PROCESSING_BUFFER)
+        self.batchEntersTask(batch)
+        task.setState(Task.PROCESSING_BATCH)
         duration = int(task.getLoadTime() + task.getUnloadTime() + task.getProcessTime() * batch.getNumOfWafers())
         return duration
             
