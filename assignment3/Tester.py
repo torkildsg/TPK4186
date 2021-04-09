@@ -6,6 +6,11 @@ from Task import Task
 from Machine import Machine
 from Plant import Plant
 from Printer import Printer
+from Event import Event
+from Schedule import Schedule
+from Simulator import Simulator
+
+import sys
 
 """ Testing Task 1 """
 waferprod = Plant("Waferprod")
@@ -63,7 +68,17 @@ waferprod.enqueueBatchIntoBuffer(batch4, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch5, startbuffer)
 
 printer = Printer()
-printer.exportPlantCSV(waferprod, 'plant.csv')
+#printer.exportPlantCSV(waferprod, 'plant.csv')
 
-#waferprod.batchEntersTask(batch1, task1)
+schedule = Schedule(waferprod)
+simulator = Simulator(waferprod)
+event1 = schedule.scheduleBatchToTask(task1)
+event2 = schedule.scheduleBatchToTask(task1)
+event3 = schedule.scheduleBatchToTask(task1)
+
+
+
+# Fortsette her, sjekk om det funker
+
+printer.printSchedule(schedule, sys.stdout)
 

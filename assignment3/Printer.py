@@ -56,11 +56,11 @@ class Printer:
             self.printEvent(event, file)
         
     def printEvent(self, event, file):
-        file.write('Event {type} at {date}:\n'.format(type = event.getType(), date = event.getDate()))
+        file.write('Event {type} at date {date}: '.format(type = event.getType(), date = event.getDate()))
         if event.getType() == Event.BATCH_TO_TASK:
-            file.write('Batch: {batch} enters {task}.\n'.format(batch = event.getBatch().getBatchCode(), task = event.getTask().getName()))
+            file.write('Batch {batch} enters {task}.'.format(batch = event.getBatch().getBatchCode(), task = event.getTask().getName()))
         elif event.getType() == Event.BATCH_TO_BUFFER:
-            file.write('Batch {batch} enters {buffer}.+n'.format(batch = event.getBatch().getBatchCode(), buffer = event.getBuffer()))
+            file.write('Batch {batch} enters buffer {sourceTask} -> {targetTask}.'.format(batch = event.getBatch().getBatchCode(), sourceTask = event.getBuffer().getSourceTask().getName(), targetTask = event.getBuffer().getTargetTask().getName()))
         file.write('\n')
 
         

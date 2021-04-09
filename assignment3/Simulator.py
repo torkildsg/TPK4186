@@ -38,8 +38,9 @@ class Simulator:
         elif thisEvent.getType() == Event.BATCH_TO_BUFFER:
             schedule.scheduleBatchToBuffer(thisBuffer)
             self.plant.enqueueBatchIntoBuffer(thisBatch, thisBuffer)
+        print(self.executionTime)
         
-        
+
             
             
 
