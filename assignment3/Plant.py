@@ -100,7 +100,7 @@ class Plant:
         batch.setState(Batch.IN_BUFFER)
 
     def enqueueBatchIntoBuffer(self, batch, buffer):
-        if batch in buffer.getQueue():
+        if batch in buffer.getQueueOfBatches():
             return False
         else:
             self.batchEntersBuffer(batch)
@@ -108,9 +108,12 @@ class Plant:
             return True
     
     def dequeueBatchFromBuffer(self, batch):
+        print("FØR BEGGE LØKKENE")
         for buffer in self.allBuffers:
-            for j in buffer.getQueue():
+            for j in buffer.getQueueOfBatches():
+                print("Før IF")
                 if j == batch:
+                    print("Heisann")
                     buffer.dequeueBuffer()
                 else: continue
     
@@ -120,6 +123,7 @@ class Plant:
             if t.getState() == Task.PROCESSING_BUFFER: # If this tasks' machine is already processing a batch in a other task, return false
                 return False
         # Else dequeue the batch from its buffer, and set the task to process the batch.
+        print("Før kall på 'dequeueBatchFromBuffer'")
         self.dequeueBatchFromBuffer(batch)
         self.batchEntersTask(batch)
         task.setState(Task.PROCESSING_BATCH)

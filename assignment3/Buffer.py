@@ -43,7 +43,7 @@ class Buffer:
     def getSourceTask(self):
         return self.sourceTask
 
-    def getQueue(self):
+    def getQueueOfBatches(self):
         return self.queueOfBatches
     
     def enqueueBuffer(self, batch):

@@ -37,30 +37,36 @@ class Schedule:
                 position += 1
             self.schedule.insert(position, event)
         # self.printer.PrintEvent(event, sys.stdout)
+        print(self.schedule)
         return event
     
+    # MÅ FIKSE DETTE: If two input buffers of a machine contains
+    # batches, the machine has to choose which task to perform
+
     def scheduleBatchToTask(self, task): # Muligens splitte opp batcher for å kjøre gjennom halve batcher
-        capOutgoingBuffer = task.getOutgoingBuffer().getAvailableCap()
-        numOfWafersIncomingBatch = task.getIncomingBuffer()[0].getNumOfWafers()
-        incomingBatch = task.getIncomingBuffer()[0]
-        incomingBuffer = task.getIncomingBuffer()
-        outgoingBuffer = task.getOutgoingBuffer()
+        capOutgoingBuffer = task.getOutgoingBuffer()[0].getAvailableCap()
+        #print(task.getIncomingBuffer()[0].getQueueOfBatches())
+        numOfWafersIncomingBatch = task.getIncomingBuffer()[0].getQueueOfBatches()[0].getNumOfWafers()
+        incomingBatch = task.getIncomingBuffer()[0].getQueueOfBatches()[0]
+        #print("Incoming Batch: " + str(incomingBatch))
+        incomingBuffer = task.getIncomingBuffer()[0]
+        outgoingBuffer = task.getOutgoingBuffer()[0]
 
         # En maskin kan bare utføre en task av gangen, må legges til
         if capOutgoingBuffer >= numOfWafersIncomingBatch:
             self.scheduleEvent(Event.BATCH_TO_TASK, self.currentDate, incomingBatch, incomingBuffer, task) # bør heller kalle på 
+            task.setHoldingBatch(incomingBatch)
             self.currentDate += int(1)
             self.scheduleBatchToBuffer(outgoingBuffer)
         else:
             return str("Could not schedule, outgoing_buffer does not have space for this batch.")
+    
     # Finne ut om en TASK kan holde på en batch selvom output_buffer er full? Send mail
     def scheduleBatchToBuffer(self, buffer):
-        incomingTask = buffer.getSourceTask()
-        incomingBatch = incomingTask.getHoldingBatch()
+        sourceTask = buffer.getSourceTask()
+        incomingBatch = sourceTask.getHoldingBatch()
+        #print("SourceTask:" + str(sourceTask))
+        #print("incomingBatch: " + str(incomingBatch))
         if incomingBatch:
-            self.scheduleEvent(Event.BATCH_TO_BUFFER, self.currentDate, incomingBatch, buffer, incomingTask)
+            self.scheduleEvent(Event.BATCH_TO_BUFFER, self.currentDate, incomingBatch, buffer, sourceTask)
             self.currentDate += int(1)
-
-
-
-        
