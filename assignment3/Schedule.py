@@ -61,9 +61,7 @@ class Schedule:
             # En maskin kan bare utføre en task av gangen, må legges til
             if capOutgoingBuffer >= numOfWafersIncomingBatch:
                 self.currentDate += int(1)
-                #print("Batchcode #" + str(incomingBatch.getBatchCode()) + " is scheduled to enter " + str(task.getName()))
                 return self.scheduleEvent(Event.BATCH_TO_TASK, int(self.currentDate-1), incomingBatch, incomingBuffer, task) 
-                #self.scheduleBatchToBuffer(outgoingBuffer)
             else: return False
         
     # Finne ut om en TASK kan holde på en batch selvom output_buffer er full? Nei det kan den ikke. 

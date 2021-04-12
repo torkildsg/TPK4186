@@ -41,7 +41,7 @@ end = waferprod.newEvent("End")
 
 
 startbuffer = waferprod.newBuffer(start, task1)
-startbuffer.setCapacity(9999)
+startbuffer.setCapacity(9999) # Startbuffer has unlimited space
 buffer1 = waferprod.newBuffer(task1, task2)
 buffer2 = waferprod.newBuffer(task2, task3)
 buffer3 = waferprod.newBuffer(task3, task4)
@@ -51,19 +51,7 @@ buffer6 = waferprod.newBuffer(task6, task7)
 buffer7 = waferprod.newBuffer(task7, task8)
 buffer8 = waferprod.newBuffer(task8, task9)
 endbuffer = waferprod.newBuffer(task9, end)
-endbuffer.setCapacity(9999)
-
-"""
-print(waferprod.name)
-for buffer in waferprod.allBuffers:
-    print(buffer.getQueue)
-
-for m in waferprod.machines:
-    print(m.getName())
-"""
-"""for task in waferprod.getAllTasksEvents():
-    print(str(task.getFirstOfOutgoingBuffers().getSourceTask().getName()) + " -> " + str(task.getFirstOfOutgoingBuffers().getTargetTask().getName()))
-"""
+endbuffer.setCapacity(9999) # Endbuffer has unlimited space
 
 waferprod.enqueueBatchIntoBuffer(batch1, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch2, startbuffer)
@@ -76,8 +64,8 @@ printer = Printer()
 
 schedule = Schedule(waferprod)
 simulator = Simulator(waferprod)
-
 #event1 = schedule.scheduleBatchToTask(task1)
+
 
 simulator.simulationLoop(schedule)
 printer.printSchedule(schedule, sys.stdout)

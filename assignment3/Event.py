@@ -41,8 +41,3 @@ class Event:
     
     def getTask(self):
         return self.task
-    
-    
-    
-    
-    

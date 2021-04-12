@@ -80,9 +80,3 @@ class Task:
 
     def getFirstOfIncomingBuffers(self):
         return self.incomingBuffer[0]
-
-"""
-if outgoingBuffer.getTargetTask().getName() == 'End':
-            return False
-
-"""
