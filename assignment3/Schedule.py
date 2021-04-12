@@ -3,7 +3,10 @@
 from Plant import Plant
 from Event import Event
 from Buffer import Buffer
+from Batch import Batch
 from Task import Task
+from Printer import Printer
+import sys
 
 class Schedule:
     def __init__(self, plant):
@@ -13,6 +16,9 @@ class Schedule:
         self.batches = []
         self.eventNumber = 0
     
+    def getPlant(self):
+        return self.plant
+
     def getSchedule(self):
         return self.schedule
     
@@ -36,37 +42,33 @@ class Schedule:
                     break
                 position += 1
             self.schedule.insert(position, event)
-        # self.printer.PrintEvent(event, sys.stdout)
-        print(self.schedule)
         return event
     
     # MÅ FIKSE DETTE: If two input buffers of a machine contains
     # batches, the machine has to choose which task to perform
 
     def scheduleBatchToTask(self, task): # Muligens splitte opp batcher for å kjøre gjennom halve batcher
-        capOutgoingBuffer = task.getOutgoingBuffer()[0].getAvailableCap()
-        #print(task.getIncomingBuffer()[0].getQueueOfBatches())
-        numOfWafersIncomingBatch = task.getIncomingBuffer()[0].getQueueOfBatches()[0].getNumOfWafers()
-        incomingBatch = task.getIncomingBuffer()[0].getQueueOfBatches()[0]
-        #print("Incoming Batch: " + str(incomingBatch))
-        incomingBuffer = task.getIncomingBuffer()[0]
-        outgoingBuffer = task.getOutgoingBuffer()[0]
-
-        # En maskin kan bare utføre en task av gangen, må legges til
-        if capOutgoingBuffer >= numOfWafersIncomingBatch:
-            self.scheduleEvent(Event.BATCH_TO_TASK, self.currentDate, incomingBatch, incomingBuffer, task) # bør heller kalle på 
-            task.setHoldingBatch(incomingBatch)
-            self.currentDate += int(1)
-            self.scheduleBatchToBuffer(outgoingBuffer)
+        
+        if task.getName() == 'End': 
+            return False
         else:
-            return str("Could not schedule, outgoing_buffer does not have space for this batch.")
-    
-    # Finne ut om en TASK kan holde på en batch selvom output_buffer er full? Send mail
+            capOutgoingBuffer = task.getFirstOfOutgoingBuffers().getAvailableCap()
+            incomingBatch = task.getFirstOfIncomingBuffers().getFirstBatchInQueue()
+            numOfWafersIncomingBatch = incomingBatch.getNumOfWafers()
+            incomingBuffer = task.getFirstOfIncomingBuffers()
+            outgoingBuffer = task.getFirstOfOutgoingBuffers()
+            
+            # En maskin kan bare utføre en task av gangen, må legges til
+            if capOutgoingBuffer >= numOfWafersIncomingBatch:
+                self.currentDate += int(1)
+                return self.scheduleEvent(Event.BATCH_TO_TASK, int(self.currentDate-1), incomingBatch, incomingBuffer, task) 
+            else: return False
+        
+    # Finne ut om en TASK kan holde på en batch selvom output_buffer er full? Nei det kan den ikke. 
     def scheduleBatchToBuffer(self, buffer):
         sourceTask = buffer.getSourceTask()
         incomingBatch = sourceTask.getHoldingBatch()
-        #print("SourceTask:" + str(sourceTask))
-        #print("incomingBatch: " + str(incomingBatch))
         if incomingBatch:
-            self.scheduleEvent(Event.BATCH_TO_BUFFER, self.currentDate, incomingBatch, buffer, sourceTask)
             self.currentDate += int(1)
+            return self.scheduleEvent(Event.BATCH_TO_BUFFER, int(self.currentDate-1), incomingBatch, buffer, sourceTask)
+    

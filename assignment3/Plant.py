@@ -53,6 +53,9 @@ class Plant:
     def getAllTasksEvents(self):
         return self.allTasksEvents
     
+    def getFirstTask(self):
+        return self.allTasksEvents[1]
+    
     def deleteEvent(self, event):
         for e in self.allTasksEvents:
             if e == event:
@@ -108,22 +111,18 @@ class Plant:
             return True
     
     def dequeueBatchFromBuffer(self, batch):
-        print("FØR BEGGE LØKKENE")
         for buffer in self.allBuffers:
             for j in buffer.getQueueOfBatches():
-                print("Før IF")
                 if j == batch:
-                    print("Heisann")
                     buffer.dequeueBuffer()
                 else: continue
     
     def taskServesBatch(self, batch, task):
         machine = self.getMachine(task)
         for t in machine.getTasks():    
-            if t.getState() == Task.PROCESSING_BUFFER: # If this tasks' machine is already processing a batch in a other task, return false
+            if t.getState() == Task.PROCESSING_BATCH: # If this tasks' machine is already processing a batch in a other task, return false
                 return False
         # Else dequeue the batch from its buffer, and set the task to process the batch.
-        print("Før kall på 'dequeueBatchFromBuffer'")
         self.dequeueBatchFromBuffer(batch)
         self.batchEntersTask(batch)
         task.setState(Task.PROCESSING_BATCH)
