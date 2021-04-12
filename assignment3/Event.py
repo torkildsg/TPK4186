@@ -21,6 +21,9 @@ class Event:
     def getDate(self):
         return self.date
     
+    def getNumber(self):
+        return self.number
+    
     def setBatch(self, batch):
         self.batch = batch
     

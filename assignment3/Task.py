@@ -18,15 +18,14 @@ class Task:
         self.loadTime = 2 # Per buffer going into the task
         self.unloadTime = 2 # Per buffer going into the task
         self.processTime = processTime # Per wafer in a batch
-        """self.earlyStartDate = -1
-        self.earlyCompletionDate = -1
-        self.lateStartDate = -1
-        self.lateCompletionDate = -1"""
 
     def setHoldingBatch(self, batch):
-        if self.holdingBatch:
-            return False
-        else: self.holdingBatch = batch
+        self.holdingBatch = batch
+        self.setState(Task.PROCESSING_BATCH)
+        
+    def batchIsDone(self):
+        self.holdingBatch = None
+        self.setState(Task.IDLE)
     
     def getHoldingBatch(self):
         return self.holdingBatch
@@ -76,32 +75,14 @@ class Task:
     def getOutgoingBuffer(self):
         return self.outgoingBuffer
     
-    """def getEarlyStartDate(self):
-        return self.earlyStartDate
-    
-    def setEarlyStartDate(self, date):
-        self.earlyStartDate = date
+    def getFirstOfOutgoingBuffers(self):
+        return self.outgoingBuffer[0]
 
-    def getEarlyCompletionDate(self):
-        return self.earlyCompletionDate
-    
-    def setEarlyCompletionDate(self, date):
-        self.earlyCompletionDate = date
+    def getFirstOfIncomingBuffers(self):
+        return self.incomingBuffer[0]
 
-    def getLateStartDate(self):
-        return self.lateStartDate
-    
-    def setLateStartDate(self, date):
-        self.lateStartDate = date
+"""
+if outgoingBuffer.getTargetTask().getName() == 'End':
+            return False
 
-    def getLateCompletionDate(self):
-        return self.lateCompletionDate
-    
-    def setLateCompletionDate(self, date):
-        self.lateCompletionDate = date"""
-
-    
-
-    
-	
-
+"""

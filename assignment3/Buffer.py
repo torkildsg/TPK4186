@@ -9,6 +9,9 @@ class Buffer:
         self.sourceTask = sourceTask
         self.targetTask = targetTask
 
+    def isEmpty(self):
+        return self.queueOfBatches == []
+
     def getAvailableCap(self):
         return (self.capacity - self.getWafers())
     
@@ -45,6 +48,9 @@ class Buffer:
 
     def getQueueOfBatches(self):
         return self.queueOfBatches
+
+    def getFirstBatchInQueue(self):
+        return self.queueOfBatches[0]
     
     def enqueueBuffer(self, batch):
         if self.getCapacity() < (self.getWafers() + batch.getNumOfWafers()):
