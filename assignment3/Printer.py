@@ -9,16 +9,16 @@ from Event import Event
 
 class Printer:
 
-    def exportPlantCSV(self, plant, filename):
+    def exportPlant(self, plant, filename):
         try:
             file = open(filename, 'w')
         except:
             sys.stderr.write('Cannot open the file {0:s}\n'.format(filename))
             sys.stderr.flush()
             sys.exit()
-        self.printPlantCSV(plant, file)
+        self.printPlant(plant, file)
     
-    def printPlantCSV(self, plant, file):
+    def printPlant(self, plant, file):
         file.write('{text}        {number}\n'.format(text = 'Name of plant:', number = plant.getName()))
         file.write('{text}   {number}\n'.format(text = 'Number of machines:', number = len(plant.getAllMachines())))
         file.write('{text}      {number}\n'.format(text = 'Number of tasks:', number = len(plant.getAllTasksEvents())-2))
@@ -43,15 +43,16 @@ class Printer:
             else:
                 file.write('  \tCapacity: {num}/{cap}\n'.format(num = buffer.getWafers(), cap = buffer.getCapacity()))
 
-    def printTaskCSV(self, task, file):
+    def printTask(self, task, file):
         file.write('{0:10}'.format('task\t'))
         file.write('{0:10}\t'.format(task.getName()))
         file.write('\n')
     
+    """ Denne må endres"""
     def printSchedule(self, schedule, file):
         file.write('Schedule:\n')
-        for event in schedule.getSchedule():
-            self.printEvent(event, file)
+        for event in schedule.getFinalSchedule():
+            file.write('Event {e}, '.format(e = event.getNumber()))
         file.write('\n')
         
     def printEvent(self, event, file):

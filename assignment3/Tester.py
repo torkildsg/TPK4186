@@ -55,9 +55,9 @@ endbuffer.setCapacity(9999) # Endbuffer has unlimited space
 
 waferprod.enqueueBatchIntoBuffer(batch1, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch2, startbuffer)
-#waferprod.enqueueBatchIntoBuffer(batch3, startbuffer)
-#waferprod.enqueueBatchIntoBuffer(batch4, startbuffer)
-#waferprod.enqueueBatchIntoBuffer(batch5, startbuffer)
+waferprod.enqueueBatchIntoBuffer(batch3, startbuffer)
+waferprod.enqueueBatchIntoBuffer(batch4, startbuffer)
+waferprod.enqueueBatchIntoBuffer(batch5, startbuffer)
  
 printer = Printer()
 #printer.exportPlantCSV(waferprod, 'plant.csv')
@@ -68,8 +68,8 @@ simulator = Simulator(waferprod)
 
 
 simulator.simulationLoop(schedule)
-printer.printSchedule(schedule, sys.stdout)
+#printer.printSchedule(schedule, sys.stdout)
 printer.printExecution(simulator, sys.stdout)
 print(simulator.getExecutionTime())
-
+print(len(simulator.getExecution()))
 
