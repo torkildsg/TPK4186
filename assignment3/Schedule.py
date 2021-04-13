@@ -12,15 +12,25 @@ class Schedule:
     def __init__(self, plant):
         self.plant = plant
         self.schedule = []
-        self.currentDate = 0
+        self.finalSchedule = []
+        self.currentDate = 1
         self.batches = []
         self.eventNumber = 0
+    
+    def decreaseEventNum(self):
+        self.eventNumber -= int(1)
+    
+    def decreaseCurrentDate(self):
+        self.currentDate -= int(1)
     
     def getPlant(self):
         return self.plant
 
     def getSchedule(self):
         return self.schedule
+    
+    def getFinalSchedule(self):
+        return self.finalSchedule
     
     def popFirstEvent(self):
         return self.schedule.pop(0)
@@ -42,6 +52,7 @@ class Schedule:
                     break
                 position += 1
             self.schedule.insert(position, event)
+            self.finalSchedule.append(event)
         return event
     
     # MÅ FIKSE DETTE: If two input buffers of a machine contains

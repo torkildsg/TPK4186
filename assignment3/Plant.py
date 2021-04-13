@@ -115,25 +115,23 @@ class Plant:
             for j in buffer.getQueueOfBatches():
                 if j == batch:
                     buffer.dequeueBuffer()
+                    return True
                 else: continue
+        return False
     
     def taskServesBatch(self, batch, task):
         machine = self.getMachine(task)
         for t in machine.getTasks():    
             if t.getState() == Task.PROCESSING_BATCH: # If this tasks' machine is already processing a batch in a other task, return false
+                #print(str(machine.getName()) + " is currently busy with " + str(t.getName()))
                 return False
         # Else dequeue the batch from its buffer, and set the task to process the batch.
-        self.dequeueBatchFromBuffer(batch)
-        self.batchEntersTask(batch)
-        task.setState(Task.PROCESSING_BATCH)
-        duration = int(task.getLoadTime() + task.getUnloadTime() + task.getProcessTime() * batch.getNumOfWafers())
-        return duration
-            
-         
-        
+        if self.dequeueBatchFromBuffer(batch):
+            self.batchEntersTask(batch)
+            task.setState(Task.PROCESSING_BATCH)
+            duration = int(task.getLoadTime() + task.getUnloadTime() + task.getProcessTime() * batch.getNumOfWafers())
+            return duration
 
-        
-        
 
 
 
