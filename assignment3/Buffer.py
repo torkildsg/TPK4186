@@ -6,11 +6,18 @@ class Buffer:
         self.capacity = 120 # 120?
         self.wafers = 0
         self.queueOfBatches = [] # FIFO-queue: Only use .pop(0) to get, and .append() to add
+        self.historyQueueOfBatches = []
         self.sourceTask = sourceTask
         self.targetTask = targetTask
 
     def isEmpty(self):
         return self.queueOfBatches == []
+    
+    def getHistoryQueueOfBatches(self):
+        return self.historyQueueOfBatches
+
+    def appendToHistoryQueueOfBatches(self, batch):
+        self.historyQueueOfBatches.append(batch)
 
     def getAvailableCap(self):
         return (self.capacity - self.getWafers())
@@ -57,6 +64,7 @@ class Buffer:
             return False
         else:
             self.queueOfBatches.append(batch)
+            self.appendToHistoryQueueOfBatches(batch)
             self.setWafers()
 
     def dequeueBuffer(self):
