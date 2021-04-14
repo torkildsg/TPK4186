@@ -54,7 +54,7 @@ class Schedule:
                     break
                 position += 1
             self.schedule.insert(position, event)
-            self.finalSchedule.append(event)
+            self.finalSchedule.append(event) # Kan slettes
         return event
     
     # MÅ FIKSE DETTE: If two input buffers of a machine contains
@@ -82,7 +82,30 @@ class Schedule:
         sourceTask = buffer.getSourceTask()
         incomingBatch = sourceTask.getHoldingBatch()
         
-        if incomingBatch: 
+        
+        
+
+        if incomingBatch != None and incomingBatch not in buffer.getHistoryQueueOfBatches(): #and buffer.getTargetTask().getName() == "Task2":
+            # ----
+            """
+            historyList = []
+            for r in buffer.getHistoryQueueOfBatches():
+                    historyList.append(r.getBatchCode())
+            
+            print("historylist: ")
+            print(historyList) 
+
+            print("incoming batch: "+str(incomingBatch.getBatchCode()))
+
+            listOfBatchCodesInBuffer = []
+            for e in buffer.getQueueOfBatches():
+                listOfBatchCodesInBuffer.append(e.getBatchCode())
+            print("List of batchcodes in outbuffer: ")
+            print(listOfBatchCodesInBuffer)
+            print("\n NEW_Iteration \n")"""
+            
+            # ----
+
             self.currentDate += int(1)
             return self.scheduleEvent(Event.TASK_TO_BUFFER, int(self.currentDate-1), incomingBatch, buffer, sourceTask)
         else: return False # Denne linjen kan kanskje slettes

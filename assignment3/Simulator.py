@@ -47,10 +47,16 @@ class Simulator:
             if not thisBuffer.isEmpty() and sourceTask.getName() != 'End':
                 executed = self.executeBatchToTask(event, thisBuffer, thisBatch, targetTask, schedule)
                 schedule.scheduleTaskToBuffer(nextBuffer)  # Schedule the batch into the outputbuffer
+                
+                if len(thisBuffer.getQueueOfBatches())>0:
+                    schedule.scheduleBufferToTask(thisBuffer.getTargetTask())
+
+                """
                 firstBuffer = self.plant.getFirstTask().getFirstOfIncomingBuffers()
                 if not firstBuffer.isEmpty():
                     print(firstBuffer)
                     schedule.scheduleBufferToTask(self.plant.getFirstTask())
+                """
                 return executed
 
         elif event.getType() == Event.TASK_TO_BUFFER:
@@ -61,7 +67,7 @@ class Simulator:
             nextTask = targetBuffer.getTargetTask()
 
             executed = self.executeBatchToBuffer(targetBuffer, thisBatch, schedule)
-            if not targetBuffer.isEmpty() and targetBuffer.getTargetTask().getName() != 'End':
+            if targetBuffer.getTargetTask().getName() != 'End':
                 schedule.scheduleBufferToTask(nextTask) # Schedule a new batch into the next task
             return executed
 
@@ -88,7 +94,7 @@ class Simulator:
         sourceTask = buffer.getSourceTask()
         targetTask = buffer.getTargetTask() 
 
-        if buffer.getAvailableCap() >= batch.getNumOfWafers():
+        if buffer.getAvailableCap() >= batch.getNumOfWafers() and batch not in buffer.getHistoryQueueOfBatches():
             sourceTask.batchIsDone() # Removes the batch that the task holds, and sets the Task's state to idle
             self.plant.enqueueBatchIntoBuffer(batch, buffer)
             return True
