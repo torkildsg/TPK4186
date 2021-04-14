@@ -31,9 +31,8 @@ class Simulator:
             if self.executeEvent(event, schedule):
                 self.execution.append(event)
             else: 
-                continue# Hvis executevent returnerte True, append
+                continue
             
-
     def executeEvent(self, event, schedule):
         self.currentDate = event.getDate()
         thisBatch = event.getBatch()
@@ -48,7 +47,9 @@ class Simulator:
             if not thisBuffer.isEmpty() and sourceTask.getName() != 'End':
                 executed = self.executeBatchToTask(event, thisBuffer, thisBatch, targetTask, schedule)
                 schedule.scheduleTaskToBuffer(nextBuffer)  # Schedule the batch into the outputbuffer
-                if not self.plant.getFirstTask().getFirstOfIncomingBuffers().isEmpty():
+                firstBuffer = self.plant.getFirstTask().getFirstOfIncomingBuffers()
+                if not firstBuffer.isEmpty():
+                    print(firstBuffer)
                     schedule.scheduleBufferToTask(self.plant.getFirstTask())
                 return executed
 
