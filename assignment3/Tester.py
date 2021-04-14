@@ -71,5 +71,10 @@ simulator.simulationLoop(schedule)
 #printer.printSchedule(schedule, sys.stdout)
 printer.printExecution(simulator, sys.stdout)
 print(simulator.getExecutionTime())
+print(len(schedule.finalSchedule))
 print(len(simulator.getExecution()))
 
+"""
+for e in simulator.getExecution():
+    if e.getType() == Event.BUFFER_TO_TASK:
+        print()"""

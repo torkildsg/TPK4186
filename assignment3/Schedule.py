@@ -17,9 +17,11 @@ class Schedule:
         self.batches = []
         self.eventNumber = 0
     
+    # Kan muligens slettes
     def decreaseEventNum(self):
         self.eventNumber -= int(1)
     
+    #Kan muligens slettes
     def decreaseCurrentDate(self):
         self.currentDate -= int(1)
     
@@ -58,7 +60,7 @@ class Schedule:
     # MÅ FIKSE DETTE: If two input buffers of a machine contains
     # batches, the machine has to choose which task to perform
 
-    def scheduleBatchToTask(self, task): # Muligens splitte opp batcher for å kjøre gjennom halve batcher
+    def scheduleBufferToTask(self, task): # Muligens splitte opp batcher for å kjøre gjennom halve batcher
         
         if task.getName() == 'End': 
             return False
@@ -68,18 +70,20 @@ class Schedule:
             numOfWafersIncomingBatch = incomingBatch.getNumOfWafers()
             incomingBuffer = task.getFirstOfIncomingBuffers()
             outgoingBuffer = task.getFirstOfOutgoingBuffers()
-            
+        
             # En maskin kan bare utføre en task av gangen, må legges til
             if capOutgoingBuffer >= numOfWafersIncomingBatch:
                 self.currentDate += int(1)
-                return self.scheduleEvent(Event.BATCH_TO_TASK, int(self.currentDate-1), incomingBatch, incomingBuffer, task) 
+                return self.scheduleEvent(Event.BUFFER_TO_TASK, int(self.currentDate-1), incomingBatch, incomingBuffer, task) 
             else: return False
-        
+    
     # Finne ut om en TASK kan holde på en batch selvom output_buffer er full? Nei det kan den ikke. 
-    def scheduleBatchToBuffer(self, buffer):
+    def scheduleTaskToBuffer(self, buffer):
         sourceTask = buffer.getSourceTask()
         incomingBatch = sourceTask.getHoldingBatch()
-        if incomingBatch:
+        
+        if incomingBatch: 
             self.currentDate += int(1)
-            return self.scheduleEvent(Event.BATCH_TO_BUFFER, int(self.currentDate-1), incomingBatch, buffer, sourceTask)
+            return self.scheduleEvent(Event.TASK_TO_BUFFER, int(self.currentDate-1), incomingBatch, buffer, sourceTask)
+        else: return False # Denne linjen kan kanskje slettes
     
