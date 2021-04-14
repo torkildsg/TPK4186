@@ -24,7 +24,7 @@ class Simulator:
     def simulationLoop(self, schedule):
         self.execution = []
         firstTask = schedule.getPlant().getFirstTask() # Her skal det være event... ikke task?
-        schedule.scheduleBatchToTask(firstTask)
+        schedule.scheduleBufferToTask(firstTask)
 
         while not schedule.isScheduleEmpty(): 
             event = schedule.popFirstEvent()
@@ -34,60 +34,67 @@ class Simulator:
                 continue# Hvis executevent returnerte True, append
             
 
-    def executeEvent(self, thisEvent, schedule):
-        self.currentDate = thisEvent.getDate()
-        thisBatch = thisEvent.getBatch()
-        thisTask = thisEvent.getTask()
-        outgoingBuffer = thisTask.getFirstOfOutgoingBuffers()
-        incomingBuffer = thisTask.getFirstOfIncomingBuffers()
-        thisBuffer = thisEvent.getBuffer()
+    def executeEvent(self, event, schedule):
+        self.currentDate = event.getDate()
+        thisBatch = event.getBatch()
 
-        if thisEvent.getType() == Event.BATCH_TO_TASK:
-            if not incomingBuffer.isEmpty() and thisTask.getName() != 'End':
-                executed = self.executeBatchToTask(thisEvent, thisBuffer, thisBatch, thisTask, schedule)
-                schedule.scheduleBatchToBuffer(outgoingBuffer)  # Schedule the batch into the outputbuffer
+        if event.getType() == Event.BUFFER_TO_TASK:
+            targetTask = event.getTask()
+            thisBuffer = event.getBuffer()
+            sourceTask = thisBuffer.getSourceTask()
+            nextBuffer = targetTask.getFirstOfOutgoingBuffers()
+            task = thisBuffer.getTargetTask()
+
+            if not thisBuffer.isEmpty() and sourceTask.getName() != 'End':
+                executed = self.executeBatchToTask(event, thisBuffer, thisBatch, targetTask, schedule)
+                schedule.scheduleTaskToBuffer(nextBuffer)  # Schedule the batch into the outputbuffer
+                if not self.plant.getFirstTask().getFirstOfIncomingBuffers().isEmpty():
+                    schedule.scheduleBufferToTask(self.plant.getFirstTask())
                 return executed
-            
 
-        elif thisEvent.getType() == Event.BATCH_TO_BUFFER:
-            executed = self.executeBatchToBuffer(outgoingBuffer, thisBatch, schedule)
-            if not incomingBuffer.isEmpty() and thisTask.getName() != 'End':
-                schedule.scheduleBatchToTask(thisTask) # Schedule a new batch into this task
-            if not outgoingBuffer.isEmpty() and outgoingBuffer.getTargetTask().getName() != 'End':
-                schedule.scheduleBatchToTask(outgoingBuffer.getTargetTask()) # Schedule a new batch into the next task
+        elif event.getType() == Event.TASK_TO_BUFFER:
+
+            thisTask = event.getTask()
+            targetBuffer = thisTask.getFirstOfOutgoingBuffers()
+            sourceBuffer = thisTask.getFirstOfIncomingBuffers()
+            nextTask = targetBuffer.getTargetTask()
+
+            executed = self.executeBatchToBuffer(targetBuffer, thisBatch, schedule)
+            if not targetBuffer.isEmpty() and targetBuffer.getTargetTask().getName() != 'End':
+                schedule.scheduleBufferToTask(nextTask) # Schedule a new batch into the next task
             return executed
 
 
-    def executeBatchToTask(self, thisEvent, thisBuffer, thisBatch, thisTask, schedule):
+    def executeBatchToTask(self, event, buffer, batch, task, schedule):
         #if thisTask.getName() != 'End':
-        duration = self.plant.taskServesBatch(thisBatch, thisTask)
+        duration = self.plant.taskServesBatch(batch, task)
         if duration:
-            thisTask.setHoldingBatch(thisBatch)
-            if not thisBatch.getBatchCode() in self.executionTime.keys():
-                self.executionTime[thisBatch.getBatchCode()] = float(duration)
+            task.setHoldingBatch(batch)
+            if not batch.getBatchCode() in self.executionTime.keys():
+                self.executionTime[batch.getBatchCode()] = float(duration)
             else:
-                self.executionTime[thisBatch.getBatchCode()] += float(duration)
+                self.executionTime[batch.getBatchCode()] += float(duration)
             return True
         else: 
             #schedule.decreaseEventNum() # Funker ikke, indekserer feil
             #schedule.decreaseCurrentDate()
             # Må lage et nytt event med den batchen, og legge det til i sc
-            #schedule.scheduleBatchToTask(thisTask)
+            #schedule.scheduleBufferToTask(thisTask)
             return False
     
 
-    def executeBatchToBuffer(self, outgoingBuffer, thisBatch, schedule):
-        sourceTask = outgoingBuffer.getSourceTask()
-        targetTask = outgoingBuffer.getTargetTask() 
+    def executeBatchToBuffer(self, buffer, batch, schedule):
+        sourceTask = buffer.getSourceTask()
+        targetTask = buffer.getTargetTask() 
 
-        if outgoingBuffer.getAvailableCap() >= thisBatch.getNumOfWafers():
+        if buffer.getAvailableCap() >= batch.getNumOfWafers():
             sourceTask.batchIsDone() # Removes the batch that the task holds, and sets the Task's state to idle
-            self.plant.enqueueBatchIntoBuffer(thisBatch, outgoingBuffer)
+            self.plant.enqueueBatchIntoBuffer(batch, buffer)
             return True
         else:
             #schedule.decreaseEventNum()
             #schedule.decreaseCurrentDate() 
-            schedule.scheduleBatchToBuffer(outgoingBuffer)
+            #schedule.scheduleTaskToBuffer(outgoingBuffer) # Ifølge S skal denne ikke schedules
             return False
 
 
