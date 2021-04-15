@@ -10,6 +10,9 @@ class Machine:
         self.tasks = dict()
         self.machinePolicies = []
     
+    def resetMachine(self):
+        self.machinePolicies = []
+
     def getName(self):
         return self.machineName
     

@@ -14,6 +14,12 @@ class Simulator:
         self.numOfIterationsInQueue = dict() # Skal vi bruke denne?
         self.eventNumber = 0
         self.terminationDates = dict()
+    
+    def resetSimulator(self):
+        self.executionTime.clear()
+        self.execution = []
+        self.eventNumber = 0
+        return True
 
     def getSimulationExecutionTime(self):
         values = self.executionTime.values()
@@ -41,7 +47,7 @@ class Simulator:
                 continue
 
     def simulationLoopForOptimizer(self, schedule, policyCombination):
-        self.executionTime = dict()
+        #self.executionTime = dict()
         self.execution = []
         schedule.currentSchedule = []
         plant = schedule.getPlant()
@@ -84,30 +90,34 @@ class Simulator:
             return executed
 
     def MonteCarloSimulation(self, optimizer, plant, schedule):
-        terminationDates = dict()
+        terminationDates = []
         optimizer.generateAllPossiblePolicyCombinations(plant)
         allPolicyCombinations = optimizer.allPossiblePolicyCombinations
         allPossibleBatchSizes = [i for i in range(20, 51)]
-        
+        bestTermination = [None, 9999999999]
         
         for batchSize in allPossibleBatchSizes:
-            for policyComb in allPolicyCombinations:
-                optimizer.initiatePlant(plant, batchSize, 1000)
+            print(len(terminationDates))
+            for policyComb in allPolicyCombinations:    
+                plant.resetPlant()
+                schedule.resetSchedule()
+                self.resetSimulator()
+                
+                optimizer.initiatePlant(plant, batchSize, 1000) 
                 self.simulationLoopForOptimizer(schedule, policyComb)
-                terminationDates['policyComb'] = self.getSimulationExecutionTime()
-        
-        return terminationDates
+                #if policyComb == allPolicyCombinations[-1]:
+                #    pass
+                #else: 
+                terminationDates.append(schedule.currentDate)
+                if schedule.currentDate < bestTermination[1]:
+                    bestTermination[1] = schedule.currentDate
+                    bestTermination[0] = policyComb
 
+            #terminationDates[policyComb] = self.getSimulationExecutionTime()
+            #terminationDates.append([policyComb, self.getSimulationExecutionTime()])
+        # terminationDates har 288 elementer for mye!
+        return len(terminationDates), bestTermination, min(terminationDates)
 
-        
-        """for policyComb in 
-
-        for index in range(0, numberOfExecutions):
-            self.SimulationLoop(numberOfClients)
-            terminationDates.append(self.currentDate)
-        return terminationDates"""
-
-            
     def executeEvent(self, event, schedule):
         self.currentDate = event.getDate()
         thisBatch = event.getBatch()

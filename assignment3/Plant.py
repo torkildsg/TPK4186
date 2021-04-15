@@ -14,6 +14,16 @@ class Plant:
         self.allTasksEvents = []
         self.batches = []
 
+    def resetPlant(self):
+        for buffer in self.allBuffers:
+            buffer.resetBuffer()
+        for task in self.allTasksEvents:
+            task.resetTask()
+        for machine in self.allMachines:
+            machine.resetMachine()
+        self.batches = []
+        return True
+    
     def getName(self):
         return self.name
 

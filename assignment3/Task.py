@@ -19,6 +19,10 @@ class Task:
         self.loadTime = 2 # Per buffer going into the task
         self.unloadTime = 2 # Per buffer going into the task
         self.processTime = processTime # Per wafer in a batch
+    
+    def resetTask(self):
+        self.state = Task.IDLE
+        self.holdingBatch = None
 
     def setHoldingBatch(self, batch):
         self.holdingBatch = batch
