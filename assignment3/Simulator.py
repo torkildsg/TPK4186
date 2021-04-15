@@ -35,18 +35,64 @@ class Simulator:
             else: 
                 continue
 
-    """def simulationLoopForOptimizer(self, num):
-        self.execution = []
-        thisPlant = Plant()
-        firstTask = schedule.getPlant().getFirstTask() 
-        schedule.scheduleBufferToTask(firstTask)
+    """def MonteCarloSimulation(self, numberOfClients, numberOfExecutions):
+        terminationDates = []
+        for index in range(0, numberOfExecutions):
+            self.SimulationLoop(numberOfClients)
+            terminationDates.append(self.currentDate)
+        return terminationDates"""
 
-        while not schedule.isCurrentScheduleEmpty(): 
+    def simulationLoopForOptimizer(self, schedule, policyCombination):
+        self.execution = []
+        schedule.currentSchedule = []
+        plant = schedule.getPlant()
+        firstTask = plant.getFirstTask() 
+        schedule.scheduleBufferToTask(firstTask)
+        lastBatch = plant.getStartBuffer().getLastBatchInQueue()
+        endBuffer = plant.getEndBuffer().getQueueOfBatches()
+
+        while lastBatch not in endBuffer and not schedule.isCurrentScheduleEmpty():
             event = schedule.popFirstEvent()
-            if self.executeEvent(event, schedule):
+            if self.executeEventForOptimizer(event, schedule):
                 self.execution.append(event)
+                for index, machine in enumerate(plant.getAllMachines(), 0):
+                    plant.runMachinePolicy(self, schedule, machine, policyCombination[index])
             else: 
-                continue"""
+                continue
+    
+    def executeEventForOptimizer(self, event, schedule):
+        self.currentDate = event.getDate()
+        thisBatch = event.getBatch()
+
+        if event.getType() == Event.BUFFER_TO_TASK:
+            targetTask = event.getTask()
+            thisBuffer = event.getBuffer()
+            sourceTask = thisBuffer.getSourceTask()
+            nextBuffer = targetTask.getFirstOfOutgoingBuffers()
+            task = thisBuffer.getTargetTask()
+
+            if not thisBuffer.isEmpty() and sourceTask.getName() != 'End':
+                executed = self.executeBufferToTask(event, thisBuffer, thisBatch, targetTask, schedule)
+                schedule.scheduleTaskToBuffer(nextBuffer)  # Schedule the batch into the outputbuffer
+                
+                """if len(thisBuffer.getQueueOfBatches()) > 0:
+                    schedule.scheduleBufferToTask(thisBuffer.getTargetTask())
+                """
+                return executed
+        
+        elif event.getType() == Event.TASK_TO_BUFFER:
+
+            thisTask = event.getTask()
+            targetBuffer = thisTask.getFirstOfOutgoingBuffers()
+            sourceBuffer = thisTask.getFirstOfIncomingBuffers()
+            nextTask = targetBuffer.getTargetTask()
+
+            executed = self.executeTaskToBuffer(targetBuffer, thisBatch, schedule)
+            """if targetBuffer.getTargetTask().getName() != 'End':
+                schedule.scheduleBufferToTask(nextTask) # Schedule a new batch into the next task
+            """
+            return executed
+
             
     def executeEvent(self, event, schedule):
         self.currentDate = event.getDate()
@@ -104,6 +150,8 @@ class Simulator:
             return True
         else:
             return False
+        
+    
 
 
     

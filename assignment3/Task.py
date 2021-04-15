@@ -1,6 +1,7 @@
 """" Group 14: Eivind Stangebye Larsen and Torkild Sandnes Grøstad """
 
 from Batch import Batch
+from Buffer import Buffer
 
 class Task:
     TASK = 0
@@ -81,5 +82,14 @@ class Task:
     def getFirstOfIncomingBuffers(self):
         return self.incomingBuffer[0]
     
-    def __str__(self):
-        print(self.name)
+    def taskCanBePerformed(self):
+        inputBuffer = self.getFirstOfIncomingBuffers()
+        outputBuffer = self.getFirstOfOutgoingBuffers()
+        if inputBuffer.isEmpty():
+            return False
+        else:
+            batch = inputBuffer.getFirstBatchInQueue()
+            if self.getState() == Task.IDLE and not inputBuffer.isEmpty() and outputBuffer.hasSpace(batch):
+                return True
+            else: return False
+    
