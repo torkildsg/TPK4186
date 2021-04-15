@@ -82,6 +82,7 @@ class Schedule:
         sourceTask = buffer.getSourceTask() # The predecessor task to this buffer
         incomingBatch = sourceTask.getHoldingBatch() # The batch that the task is holding, and we want to enter the buffer
         
+
         if incomingBatch != None and incomingBatch not in buffer.getHistoryQueueOfBatches(): #and buffer.getTargetTask().getName() == "Task2":
             # ----
             """
@@ -104,6 +105,7 @@ class Schedule:
             # ----
 
             self.currentDate += int(1)
-            return self.scheduleEvent(Event.TASK_TO_BUFFER, int(self.currentDate-1), incomingBatch, buffer, sourceTask)
+            evv = self.scheduleEvent(Event.TASK_TO_BUFFER, int(self.currentDate-1), incomingBatch, buffer, sourceTask)
+            return evv
         else: return False # Denne linjen kan kanskje slettes
     
