@@ -10,6 +10,11 @@ class Buffer:
         self.sourceTask = sourceTask
         self.targetTask = targetTask
 
+    def resetBuffer(self):
+        self.historyQueueOfBatches = []
+        self.wafers = 0
+        self.queueOfBatches = []
+    
     def isEmpty(self):
         return self.queueOfBatches == []
     

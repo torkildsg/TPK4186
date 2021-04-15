@@ -14,17 +14,15 @@ class Schedule:
         self.currentSchedule = []
         self.allScheduledEvents = []
         self.currentDate = 1
-        self.batches = []
+        #self.batches = []
         self.eventNumber = 0
     
-    # Kan muligens slettes
-    def decreaseEventNum(self):
-        self.eventNumber -= int(1)
-    
-    #Kan muligens slettes
-    def decreaseCurrentDate(self):
-        self.currentDate -= int(1)
-    
+    def resetSchedule(self):
+        self.currentDate = 1
+        self.allScheduledEvents = []
+        self.currentSchedule = []
+        return True
+
     def getPlant(self):
         return self.plant
 

@@ -80,14 +80,17 @@ scheduleOpti = Schedule(waferprod)
 simOpti = Simulator(waferprod)
 opti = Optimizer("opti")
 printOpti = Printer()
-opti.initiatePlant(waferprod, 50, 1000)
+
+"""opti.initiatePlant(waferprod, 50, 1000)
 opti.generateOperationPoliciesForMachines(waferprod)
 opti.generateAllPossiblePolicyCombinations(waferprod)
 firstComb = opti.allPossiblePolicyCombinations[0] # Lag getter her 
 simOpti.simulationLoopForOptimizer(scheduleOpti, firstComb)
+"""
+
+
 print(simOpti.MonteCarloSimulation(opti, waferprod, scheduleOpti))
-"""printOpti.printExecution(simOpti, sys.stdout)
-print(simOpti.getExecutionTime())"""
+print(simOpti.getExecutionTime())
 
 
 
