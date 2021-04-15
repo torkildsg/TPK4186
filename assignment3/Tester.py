@@ -16,13 +16,13 @@ import sys
 """ Testing Task 1 """
 waferprod = Plant("Waferprod")
 
-batch1 = waferprod.newBatch(1, 20)
+"""batch1 = waferprod.newBatch(1, 20)
 batch2 = waferprod.newBatch(2, 25)
 batch3 = waferprod.newBatch(3, 30)
 batch4 = waferprod.newBatch(4, 35)
 batch5 = waferprod.newBatch(5, 40)
 batch6 = waferprod.newBatch(6, 45)
-batch7 = waferprod.newBatch(7, 50)
+batch7 = waferprod.newBatch(7, 50)"""
 
 machine1 = waferprod.newMachine("machine1")
 machine2 = waferprod.newMachine("machine2")
@@ -83,9 +83,11 @@ printOpti = Printer()
 opti.initiatePlant(waferprod, 50, 1000)
 opti.generateOperationPoliciesForMachines(waferprod)
 opti.generateAllPossiblePolicyCombinations(waferprod)
-
 firstComb = opti.allPossiblePolicyCombinations[0] # Lag getter her 
-
 simOpti.simulationLoopForOptimizer(scheduleOpti, firstComb)
-#print(simOpti.getExecutionTime())
-printOpti.printExecution(simOpti, sys.stdout)
+print(simOpti.MonteCarloSimulation(opti, waferprod, scheduleOpti))
+"""printOpti.printExecution(simOpti, sys.stdout)
+print(simOpti.getExecutionTime())"""
+
+
+
