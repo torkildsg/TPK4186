@@ -119,25 +119,28 @@ class Plant:
                 else: continue
         return False
     
-    def taskServesBatch(self, batch, task):
+    def isMachineBusy(self, simulator, batch, task):
         machine = self.getMachine(task)
         for t in machine.getTasks():    
             if t.getState() == Task.PROCESSING_BATCH: # If this tasks' machine is already processing a batch in a other task, return false
-                #print(str(machine.getName()) + " is currently busy with " + str(t.getName()))
-                return False
-        # Else dequeue the batch from its buffer, and set the task to process the batch.
-        if self.dequeueBatchFromBuffer(batch):
-            self.batchEntersTask(batch)
-            task.setState(Task.PROCESSING_BATCH)
-            duration = int(task.getLoadTime() + task.getUnloadTime() + task.getProcessTime() * batch.getNumOfWafers())
-            return duration
-
-
-
-
-
-
+                #print(str(machine.getName()) + " is currently running " + str(t.getName()) + " with batch #" + str(t.getHoldingBatch().getBatchCode()))
+                if not batch.getBatchCode() in simulator.numOfIterationsInQueue.keys():
+                    simulator.numOfIterationsInQueue[batch.getBatchCode()] = int(1)
+                else:
+                    simulator.numOfIterationsInQueue[batch.getBatchCode()] += int(1)
+                return True
+        return False
     
+    def taskServesBatch(self, simulator, batch, task):
+        if self.isMachineBusy(simulator, batch, task):
+            return False
+        else:
+            # Else dequeue the batch from its buffer, and set the task to process the batch.
+            if self.dequeueBatchFromBuffer(batch):
+                self.batchEntersTask(batch)
+                task.setState(Task.PROCESSING_BATCH)
+                duration = float(task.getLoadTime() + task.getUnloadTime() + task.getProcessTime() * batch.getNumOfWafers())
+                return duration
 
 
 
