@@ -34,6 +34,19 @@ class Simulator:
                 self.execution.append(event)
             else: 
                 continue
+
+    """def simulationLoopForOptimizer(self, num):
+        self.execution = []
+        thisPlant = Plant()
+        firstTask = schedule.getPlant().getFirstTask() 
+        schedule.scheduleBufferToTask(firstTask)
+
+        while not schedule.isCurrentScheduleEmpty(): 
+            event = schedule.popFirstEvent()
+            if self.executeEvent(event, schedule):
+                self.execution.append(event)
+            else: 
+                continue"""
             
     def executeEvent(self, event, schedule):
         self.currentDate = event.getDate()
