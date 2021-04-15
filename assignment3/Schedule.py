@@ -82,7 +82,7 @@ class Schedule:
         sourceTask = buffer.getSourceTask()
         incomingBatch = sourceTask.getHoldingBatch()
         
-        
+        evv = False
         
 
         if incomingBatch != None and incomingBatch not in buffer.getHistoryQueueOfBatches(): #and buffer.getTargetTask().getName() == "Task2":
@@ -107,6 +107,7 @@ class Schedule:
             # ----
 
             self.currentDate += int(1)
-            return self.scheduleEvent(Event.TASK_TO_BUFFER, int(self.currentDate-1), incomingBatch, buffer, sourceTask)
+            evv = self.scheduleEvent(Event.TASK_TO_BUFFER, int(self.currentDate-1), incomingBatch, buffer, sourceTask)
+            return evv
         else: return False # Denne linjen kan kanskje slettes
     

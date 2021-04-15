@@ -57,8 +57,11 @@ waferprod.enqueueBatchIntoBuffer(batch1, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch2, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch3, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch4, startbuffer)
-#waferprod.enqueueBatchIntoBuffer(batch5, startbuffer)
- 
+waferprod.enqueueBatchIntoBuffer(batch5, startbuffer)
+
+
+
+
 printer = Printer()
 #printer.exportPlantCSV(waferprod, 'plant.csv')
 
