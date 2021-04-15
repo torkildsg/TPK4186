@@ -42,7 +42,7 @@ end = waferprod.newEvent("End")
 
 
 startbuffer = waferprod.newBuffer(start, task1)
-startbuffer.setCapacity(9999) # Startbuffer has unlimited space
+startbuffer.setCapacity(999999) # Startbuffer has unlimited space
 buffer1 = waferprod.newBuffer(task1, task2)
 buffer2 = waferprod.newBuffer(task2, task3)
 buffer3 = waferprod.newBuffer(task3, task4)
@@ -52,8 +52,11 @@ buffer6 = waferprod.newBuffer(task6, task7)
 buffer7 = waferprod.newBuffer(task7, task8)
 buffer8 = waferprod.newBuffer(task8, task9)
 endbuffer = waferprod.newBuffer(task9, end)
-endbuffer.setCapacity(9999) # Endbuffer has unlimited space
+endbuffer.setCapacity(999999) # Endbuffer has unlimited space
 
+
+""" Testing Task 2 """
+"""
 waferprod.enqueueBatchIntoBuffer(batch1, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch2, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch3, startbuffer)
@@ -66,20 +69,21 @@ printer = Printer()
 
 schedule = Schedule(waferprod)
 simulator = Simulator(waferprod)
-#event1 = schedule.scheduleBatchToTask(task1)
-
-
-#simulator.simulationLoop(schedule)
-#printer.printSchedule(schedule, sys.stdout)
-"""printer.printExecution(simulator, sys.stdout)
+simulator.simulationLoop(schedule)
+printer.printSchedule(schedule, sys.stdout)
+printer.printExecution(simulator, sys.stdout)
 print(simulator.getExecutionTime())
-print(len(schedule.allScheduledEvents))
-print(len(simulator.getExecution()))
-print(simulator.numOfIterationsInQueue)"""
+"""
+
 
 """ Testing Task 3 """
 opti = Optimizer("opti")
-optiPlant = Plant("optiPlant")
+opti.initiatePlant(waferprod, 50, 220)
 
-print(opti.generateBatches(50,220, optiPlant))
+
+
+
+
+
+
 

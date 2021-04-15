@@ -19,6 +19,11 @@ class Buffer:
     def appendToHistoryQueueOfBatches(self, batch):
         self.historyQueueOfBatches.append(batch)
 
+    def hasSpace(self, batch):
+        if (self.getAvailableCap() - batch.getNumOfWafers()) > 0:
+            return True
+        else: return False
+
     def getAvailableCap(self):
         return (self.capacity - self.getWafers())
     
@@ -58,6 +63,9 @@ class Buffer:
 
     def getFirstBatchInQueue(self):
         return self.queueOfBatches[0]
+    
+    def getLastBatchInQueue(self):
+        return self.queueOfBatches[-1]
     
     def enqueueBuffer(self, batch):
         if self.getCapacity() < (self.getWafers() + batch.getNumOfWafers()):

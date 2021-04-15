@@ -56,6 +56,12 @@ class Plant:
     def getFirstTask(self):
         return self.allTasksEvents[1]
     
+    def getStartBuffer(self):
+        return self.allBuffers[0]
+    
+    def getEndBuffer(self):
+        return self.allBuffers[-1]
+    
     def deleteEvent(self, event):
         for e in self.allTasksEvents:
             if e == event:
@@ -119,20 +125,15 @@ class Plant:
                 else: continue
         return False
     
-    def isMachineBusy(self, simulator, batch, task):
-        machine = self.getMachine(task)
+    def isMachineBusy(self, simulator, machine):
         for t in machine.getTasks():    
             if t.getState() == Task.PROCESSING_BATCH: # If this tasks' machine is already processing a batch in a other task, return false
-                #print(str(machine.getName()) + " is currently running " + str(t.getName()) + " with batch #" + str(t.getHoldingBatch().getBatchCode()))
-                if not batch.getBatchCode() in simulator.numOfIterationsInQueue.keys():
-                    simulator.numOfIterationsInQueue[batch.getBatchCode()] = int(1)
-                else:
-                    simulator.numOfIterationsInQueue[batch.getBatchCode()] += int(1)
                 return True
         return False
-    
+
     def taskServesBatch(self, simulator, batch, task):
-        if self.isMachineBusy(simulator, batch, task):
+        machine = self.getMachine(task)
+        if self.isMachineBusy(simulator, machine):
             return False
         else:
             # Else dequeue the batch from its buffer, and set the task to process the batch.
@@ -141,6 +142,15 @@ class Plant:
                 task.setState(Task.PROCESSING_BATCH)
                 duration = float(task.getLoadTime() + task.getUnloadTime() + task.getProcessTime() * batch.getNumOfWafers())
                 return duration
+        
+        
+    def runMachinePolicy(self, simulator, schedule, machine, priority):
+        for task in priority:
+            if not self.isMachineBusy(simulator, machine) and task.taskCanBePerformed(self):
+                schedule.scheduleBufferToTask(task)
+                return True
+            else: continue
+        return False
 
 
-
+        
