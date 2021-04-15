@@ -11,8 +11,8 @@ import sys
 class Schedule:
     def __init__(self, plant):
         self.plant = plant
-        self.schedule = []
-        self.finalSchedule = []
+        self.currentSchedule = []
+        self.allScheduledEvents = []
         self.currentDate = 1
         self.batches = []
         self.eventNumber = 0
@@ -28,17 +28,17 @@ class Schedule:
     def getPlant(self):
         return self.plant
 
-    def getSchedule(self):
-        return self.schedule
+    def getCurrentSchedule(self):
+        return self.currentSchedule
     
-    def getFinalSchedule(self):
-        return self.finalSchedule
+    def getAllScheduledEvents(self):
+        return self.allScheduledEvents
     
     def popFirstEvent(self):
-        return self.schedule.pop(0)
+        return self.currentSchedule.pop(0)
     
-    def isScheduleEmpty(self):
-        return len(self.schedule)==0
+    def isCurrentScheduleEmpty(self):
+        return len(self.currentSchedule)==0
     
     def scheduleEvent(self, type, date, batch, buffer, task):
         self.eventNumber += 1
@@ -46,15 +46,15 @@ class Schedule:
         event.setBatch(batch)
         event.setBuffer(buffer)
         event.setTask(task)
-        if event not in self.schedule:
+        if event not in self.currentSchedule:
             position = 0
-            while position < len(self.schedule):
-                otherEvent = self.schedule[position]
+            while position < len(self.currentSchedule):
+                otherEvent = self.currentSchedule[position]
                 if otherEvent.getDate() > event.getDate():
                     break
                 position += 1
-            self.schedule.insert(position, event)
-            self.finalSchedule.append(event) # Kan slettes
+            self.currentSchedule.insert(position, event)
+            self.allScheduledEvents.append(event) # Kan slettes
         return event
     
     # MÅ FIKSE DETTE: If two input buffers of a machine contains
@@ -62,16 +62,16 @@ class Schedule:
 
     def scheduleBufferToTask(self, task): # Muligens splitte opp batcher for å kjøre gjennom halve batcher
         
-        if task.getName() == 'End': 
+        if task.getName() == 'End':
             return False
         else:
-            capOutgoingBuffer = task.getFirstOfOutgoingBuffers().getAvailableCap()
-            incomingBatch = task.getFirstOfIncomingBuffers().getFirstBatchInQueue()
-            numOfWafersIncomingBatch = incomingBatch.getNumOfWafers()
-            incomingBuffer = task.getFirstOfIncomingBuffers()
-            outgoingBuffer = task.getFirstOfOutgoingBuffers()
+            incomingBuffer = task.getFirstOfIncomingBuffers() # the incoming buffer to this task
+            outgoingBuffer = task.getFirstOfOutgoingBuffers() # The outgoing buffer to this task
+            capOutgoingBuffer = outgoingBuffer.getAvailableCap() # Available capacity that the outgoing buffer has
+            incomingBatch = incomingBuffer.getFirstBatchInQueue() # The batch coming in from the incoming buffer
+            numOfWafersIncomingBatch = incomingBatch.getNumOfWafers() # Number of wafers that the incoming batch contains
         
-            # En maskin kan bare utføre en task av gangen, må legges til
+            # En maskin kan bare utføre en task av gangen - DET ER LAGT TIL 
             if capOutgoingBuffer >= numOfWafersIncomingBatch:
                 self.currentDate += int(1)
                 return self.scheduleEvent(Event.BUFFER_TO_TASK, int(self.currentDate-1), incomingBatch, incomingBuffer, task) 
@@ -79,12 +79,9 @@ class Schedule:
     
     # Finne ut om en TASK kan holde på en batch selvom output_buffer er full? Nei det kan den ikke. 
     def scheduleTaskToBuffer(self, buffer):
-        sourceTask = buffer.getSourceTask()
-        incomingBatch = sourceTask.getHoldingBatch()
+        sourceTask = buffer.getSourceTask() # The predecessor task to this buffer
+        incomingBatch = sourceTask.getHoldingBatch() # The batch that the task is holding, and we want to enter the buffer
         
-        
-        
-
         if incomingBatch != None and incomingBatch not in buffer.getHistoryQueueOfBatches(): #and buffer.getTargetTask().getName() == "Task2":
             # ----
             """
