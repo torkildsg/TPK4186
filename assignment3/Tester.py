@@ -54,12 +54,12 @@ buffer8 = waferprod.newBuffer(task8, task9)
 endbuffer = waferprod.newBuffer(task9, end)
 endbuffer.setCapacity(9999) # Endbuffer has unlimited space
 
-waferprod.enqueueBatchIntoBuffer(batch1, startbuffer)
+"""waferprod.enqueueBatchIntoBuffer(batch1, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch2, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch3, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch4, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch5, startbuffer)
-
+"""
  
 printer = Printer()
 #printer.exportPlantCSV(waferprod, 'plant.csv')
@@ -81,5 +81,10 @@ print(simulator.numOfIterationsInQueue)"""
 opti = Optimizer("opti")
 optiPlant = Plant("optiPlant")
 
-print(opti.generateBatches(50,220, optiPlant))
+#print(opti.generateBatches(50,220, optiPlant))
 
+opti.generateOperationPoliciesForMachines(waferprod)
+#print(waferprod.getAllMachines()[2].getMachinePolicies())
+
+opti.generateAllPossiblePolicycombinations(waferprod)
+print(opti.allPossiblePolicycombinations[0])
