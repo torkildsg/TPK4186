@@ -9,6 +9,7 @@ from Printer import Printer
 from Event import Event
 from Schedule import Schedule
 from Simulator import Simulator
+from Optimizer import Optimizer
 
 import sys
 
@@ -58,6 +59,7 @@ waferprod.enqueueBatchIntoBuffer(batch2, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch3, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch4, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch5, startbuffer)
+
  
 printer = Printer()
 #printer.exportPlantCSV(waferprod, 'plant.csv')
@@ -67,11 +69,17 @@ simulator = Simulator(waferprod)
 #event1 = schedule.scheduleBatchToTask(task1)
 
 
-simulator.simulationLoop(schedule)
+#simulator.simulationLoop(schedule)
 #printer.printSchedule(schedule, sys.stdout)
-printer.printExecution(simulator, sys.stdout)
+"""printer.printExecution(simulator, sys.stdout)
 print(simulator.getExecutionTime())
 print(len(schedule.allScheduledEvents))
 print(len(simulator.getExecution()))
-print(simulator.numOfIterationsInQueue)
+print(simulator.numOfIterationsInQueue)"""
+
+""" Testing Task 3 """
+opti = Optimizer("opti")
+optiPlant = Plant("optiPlant")
+
+print(opti.generateBatches(50,220, optiPlant))
 
