@@ -23,7 +23,7 @@ class Optimizer:
         numBatches = math.ceil(totalNumOfWafers/batchSize)
         lastBatchSize = totalNumOfWafers % batchSize
         for i in range(1, numBatches+1):
-            if i == numBatches:
+            if i == numBatches+1:
                 plant.newBatch(i, lastBatchSize)
             else: plant.newBatch(i,batchSize)
         return plant.getBatches()
@@ -45,6 +45,7 @@ class Optimizer:
             machine.setMachinePolicies(allMachinePolicies)
 
     def generateAllPossiblePolicyCombinations(self, plant):
+        self.generateOperationPoliciesForMachines(plant)
         machinesInPlant = plant.getAllMachines()
         threeDimensionalList = [] #3 Dimensional list: [[M1_PolicyList1, M1_PolicyList2, ..], [M2_PolicyList1, M2_PolicyList2, ..], [M3_PolicyList1, M3_PolicyList2, ..]]
         

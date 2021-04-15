@@ -13,6 +13,11 @@ class Simulator:
         self.execution = []
         self.numOfIterationsInQueue = dict() # Skal vi bruke denne?
         self.eventNumber = 0
+        self.terminationDates = dict()
+
+    def getSimulationExecutionTime(self):
+        values = self.executionTime.values()
+        return sum(values)
 
     def getNumOfIterationsInQueue(self): # Skal vi bruke denne?
         return self.numOfIterationsInQueue
@@ -35,14 +40,8 @@ class Simulator:
             else: 
                 continue
 
-    """def MonteCarloSimulation(self, numberOfClients, numberOfExecutions):
-        terminationDates = []
-        for index in range(0, numberOfExecutions):
-            self.SimulationLoop(numberOfClients)
-            terminationDates.append(self.currentDate)
-        return terminationDates"""
-
     def simulationLoopForOptimizer(self, schedule, policyCombination):
+        self.executionTime = dict()
         self.execution = []
         schedule.currentSchedule = []
         plant = schedule.getPlant()
@@ -74,24 +73,39 @@ class Simulator:
             if not thisBuffer.isEmpty() and sourceTask.getName() != 'End':
                 executed = self.executeBufferToTask(event, thisBuffer, thisBatch, targetTask, schedule)
                 schedule.scheduleTaskToBuffer(nextBuffer)  # Schedule the batch into the outputbuffer
-                
-                """if len(thisBuffer.getQueueOfBatches()) > 0:
-                    schedule.scheduleBufferToTask(thisBuffer.getTargetTask())
-                """
                 return executed
         
         elif event.getType() == Event.TASK_TO_BUFFER:
-
             thisTask = event.getTask()
             targetBuffer = thisTask.getFirstOfOutgoingBuffers()
             sourceBuffer = thisTask.getFirstOfIncomingBuffers()
             nextTask = targetBuffer.getTargetTask()
-
             executed = self.executeTaskToBuffer(targetBuffer, thisBatch, schedule)
-            """if targetBuffer.getTargetTask().getName() != 'End':
-                schedule.scheduleBufferToTask(nextTask) # Schedule a new batch into the next task
-            """
             return executed
+
+    def MonteCarloSimulation(self, optimizer, plant, schedule):
+        terminationDates = dict()
+        optimizer.generateAllPossiblePolicyCombinations(plant)
+        allPolicyCombinations = optimizer.allPossiblePolicyCombinations
+        allPossibleBatchSizes = [i for i in range(20, 51)]
+        
+        
+        for batchSize in allPossibleBatchSizes:
+            for policyComb in allPolicyCombinations:
+                optimizer.initiatePlant(plant, batchSize, 1000)
+                self.simulationLoopForOptimizer(schedule, policyComb)
+                terminationDates['policyComb'] = self.getSimulationExecutionTime()
+        
+        return terminationDates
+
+
+        
+        """for policyComb in 
+
+        for index in range(0, numberOfExecutions):
+            self.SimulationLoop(numberOfClients)
+            terminationDates.append(self.currentDate)
+        return terminationDates"""
 
             
     def executeEvent(self, event, schedule):
