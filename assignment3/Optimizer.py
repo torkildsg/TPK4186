@@ -10,10 +10,14 @@ from Event import Event
 from Schedule import Schedule
 from Simulator import Simulator
 import math
-class Optimizer:
+from itertools import permutations
+import itertools
 
+class Optimizer:
+    
     def __init__(self, optimizerName):
         self.optimizerName = optimizerName
+        self.allPossiblePolicyCombinations = []
     
     def generateBatches(self, batchSize, totalNumOfWafers, plant): #All batches will have the same size except for the last one. 
         numBatches = math.ceil(totalNumOfWafers/batchSize)
@@ -32,8 +36,30 @@ class Optimizer:
             return True
         else: return False
 
-    
+    def generateOperationPoliciesForMachines(self, plant):
+        machinesInPlant = plant.getAllMachines()
+        for machine in machinesInPlant:
+            allMachinePolicies = []
+            for policy in permutations(machine.getTasks()):
+                allMachinePolicies.append(list(policy))
+            machine.setMachinePolicies(allMachinePolicies)
 
-     # og kjøre alle de mulige kombinasjonene for alle mulige størrelse av batcher
+    def generateAllPossiblePolicyCombinations(self, plant):
+        machinesInPlant = plant.getAllMachines()
+        threeDimensionalList = [] #3 Dimensional list: [[M1_PolicyList1, M1_PolicyList2, ..], [M2_PolicyList1, M2_PolicyList2, ..], [M3_PolicyList1, M3_PolicyList2, ..]]
+        
+        for machine in machinesInPlant:
+            listOfThisMachinesPolicyLists = []
+            for thisMachinesPolicyLists in machine.getMachinePolicies():
+                listOfThisMachinesPolicyLists.append(thisMachinesPolicyLists)
+            threeDimensionalList.append(listOfThisMachinesPolicyLists)
+        
+        allPossiblePolicyCombinations = [] # [ [[M1_PolicyList1], [M2_PolicyList1], [M3_PolicyList1]], [[M1_PolicyList2], [M2_PolicyList1], [M3_PolicyList1]], ..]
+        for element in itertools.product(*threeDimensionalList):
+            allPossiblePolicyCombinations.append(list(element))
 
+        self.allPossiblePolicyCombinations = allPossiblePolicyCombinations
+
+
+        
 

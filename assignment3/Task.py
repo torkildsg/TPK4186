@@ -83,9 +83,13 @@ class Task:
         return self.incomingBuffer[0]
     
     def taskCanBePerformed(self):
-        batch = self.getFirstOfIncomingBuffers().getFirstBatchInQueue()
         inputBuffer = self.getFirstOfIncomingBuffers()
         outputBuffer = self.getFirstOfOutgoingBuffers()
-        if self.getState() == Task.IDLE and not inputBuffer.isEmpty() and outputBuffer.hasSpace(batch):
-            return True
-        else: return False
+        if inputBuffer.isEmpty():
+            return False
+        else:
+            batch = inputBuffer.getFirstBatchInQueue()
+            if self.getState() == Task.IDLE and not inputBuffer.isEmpty() and outputBuffer.hasSpace(batch):
+                return True
+            else: return False
+    

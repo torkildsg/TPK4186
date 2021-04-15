@@ -62,7 +62,6 @@ waferprod.enqueueBatchIntoBuffer(batch2, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch3, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch4, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch5, startbuffer)
-
  
 printer = Printer()
 #printer.exportPlantCSV(waferprod, 'plant.csv')
@@ -77,13 +76,16 @@ print(simulator.getExecutionTime())
 
 
 """ Testing Task 3 """
+scheduleOpti = Schedule(waferprod)
+simOpti = Simulator(waferprod)
 opti = Optimizer("opti")
-opti.initiatePlant(waferprod, 50, 220)
+printOpti = Printer()
+opti.initiatePlant(waferprod, 50, 1000)
+opti.generateOperationPoliciesForMachines(waferprod)
+opti.generateAllPossiblePolicyCombinations(waferprod)
 
+firstComb = opti.allPossiblePolicyCombinations[0] # Lag getter her 
 
-
-
-
-
-
-
+simOpti.simulationLoopForOptimizer(scheduleOpti, firstComb)
+#print(simOpti.getExecutionTime())
+printOpti.printExecution(simOpti, sys.stdout)

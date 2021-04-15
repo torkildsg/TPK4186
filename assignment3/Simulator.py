@@ -49,7 +49,7 @@ class Simulator:
         firstTask = plant.getFirstTask() 
         schedule.scheduleBufferToTask(firstTask)
         lastBatch = plant.getStartBuffer().getLastBatchInQueue()
-        endBuffer = plant.getEndBuffer()
+        endBuffer = plant.getEndBuffer().getQueueOfBatches()
 
         while lastBatch not in endBuffer and not schedule.isCurrentScheduleEmpty():
             event = schedule.popFirstEvent()
@@ -154,3 +154,4 @@ class Simulator:
     
 
 
+    

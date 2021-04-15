@@ -62,7 +62,9 @@ class Buffer:
         return self.queueOfBatches
 
     def getFirstBatchInQueue(self):
-        return self.queueOfBatches[0]
+        if len(self.queueOfBatches) > 0:
+            return self.queueOfBatches[0]
+        else: return False
     
     def getLastBatchInQueue(self):
         return self.queueOfBatches[-1]
