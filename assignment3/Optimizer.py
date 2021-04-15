@@ -10,10 +10,13 @@ from Event import Event
 from Schedule import Schedule
 from Simulator import Simulator
 import math
+from itertools import permutations
+import itertools
 class Optimizer:
-
+    
     def __init__(self, optimizerName):
         self.optimizerName = optimizerName
+        self.allPossiblePolicycombinations = []
     
     def generateBatches(self, batchSize, totalNumOfWafers, plant): #All batches will have the same size except for the last one. 
         numBatches = math.ceil(totalNumOfWafers/batchSize)
@@ -23,32 +26,31 @@ class Optimizer:
                 plant.newBatch(i, lastBatchSize)
             else: plant.newBatch(i,batchSize)
         return plant.getBatches()
-    
-    def initiateWaferProductionPlant(self, batchSize, totalNumOfWafers):
-        # initiate a new plant
-        waferproduction = Plant("Waferproduction") 
-        
-        # initiate the three machines
-        machine1 = waferproduction.newMachine("Machine 1") 
-        machine2 = waferproduction.newMachine("Machine 2")
-        machine3 = waferproduction.newMachine("Machine 3")
-        
-        # Initiate the tasks
-        start = waferproduction.newEvent("Start")
-        task1 = waferproduction.newTask("Task 1", 0.5, machine1)
-        task2 = waferproduction.newTask("Task 2", 3.5, machine2)
-        task3 = waferproduction.newTask("Task 3", 1.2, machine1)
-        task4 = waferproduction.newTask("Task 4", 3, machine3)
-        task5 = waferproduction.newTask("Task 5", 0.8, machine2)
-        task6 = waferproduction.newTask("Task 6", 0.5, machine1)
-        task7 = waferproduction.newTask("Task 7", 1, machine2)
-        task8 = waferproduction.newTask("Task 8", 1.9, machine3)
-        task9 = waferproduction.newTask("Task 9", 0.3, machine1)
-        end = waferproduction.newEvent("End")
 
-        # Generate the batches and add them to the plant
-        newBatches = self.generateBatches(batchSize, totalNumOfWafers, waferproduction)
+    def generateOperationPoliciesForMachines(self, plant):
+        machinesInPlant = plant.getAllMachines()
+        for machine in machinesInPlant:
+            allMachinePolicies = []
+            for policy in permutations(machine.getTasks()):
+                allMachinePolicies.append(list(policy))
+            machine.setMachinePolicies(allMachinePolicies)
 
-        return waferproduction
+    def generateAllPossiblePolicycombinations(self, plant):
+        machinesInPlant = plant.getAllMachines()
+        threeDimensionalList = [] #3 Dimensional list: [[M1_PolicyList1, M1_PolicyList2, ..], [M2_PolicyList1, M2_PolicyList2, ..], [M3_PolicyList1, M3_PolicyList2, ..]]
+        
+        for machine in machinesInPlant:
+            listOfThisMachinesPolicyLists = []
+            for thisMachinesPolicyLists in machine.getMachinePolicies():
+                listOfThisMachinesPolicyLists.append(thisMachinesPolicyLists)
+            threeDimensionalList.append(listOfThisMachinesPolicyLists)
+        
+        allPossiblePolicycombinations = [] # [ [[M1_PolicyList1], [M2_PolicyList1], [M3_PolicyList1]], [[M1_PolicyList2], [M2_PolicyList1], [M3_PolicyList1]], ..]
+        for element in itertools.product(*threeDimensionalList):
+            allPossiblePolicycombinations.append(list(element))
+
+        self.allPossiblePolicycombinations = allPossiblePolicycombinations
+
+
         
 

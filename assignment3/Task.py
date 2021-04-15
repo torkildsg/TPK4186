@@ -80,3 +80,6 @@ class Task:
 
     def getFirstOfIncomingBuffers(self):
         return self.incomingBuffer[0]
+    
+    def __str__(self):
+        print(self.name)
