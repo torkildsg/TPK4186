@@ -5,6 +5,7 @@ from Plant import Plant
 from Event import Event
 from Task import Task
 from Buffer import Buffer
+import math
 
 class Simulator:
     def __init__(self, plant):
@@ -13,7 +14,7 @@ class Simulator:
         self.execution = [] # The executed schedule
         self.eventNumber = 0
         self.terminationDates = [] # All termnation dates
-        self.bestTermination = [[], [], 9999999999, []] # [optimal policyComb, optimal batchsize, the best date, the total duration for optimal policyComb and batch]
+        self.bestTermination = [[], [], math.inf, []] # [[optimal policyCombinations], [optimal batchsizes], the best date, [the total duration for optimal policyComb and batch]]
     
     def resetSimulator(self):
         self.executionTime.clear()
@@ -163,17 +164,19 @@ class Simulator:
                 self.terminationDates.append(schedule.currentDate)
                 
                 if schedule.currentDate < self.bestTermination[2]:
-                    self.bestTermination[0] = policyComb
-                    self.bestTermination[1] = batchSize
-                    self.bestTermination[2] = schedule.currentDate
-                    self.bestTermination[3] = self.getSimulationExecutionTime()
-                """elif schedule.currentDate == self.bestTermination[2]:
+                    self.bestTermination[0] = []
                     self.bestTermination[0].append(policyComb)
-                    self.bestTermination[1].append(int(batchSize))
+                    self.bestTermination[1] = []
+                    self.bestTermination[1].append(batchSize)
+                    self.bestTermination[2] = schedule.currentDate
+                    self.bestTermination[3] = []
                     self.bestTermination[3].append(self.getSimulationExecutionTime())
 
-                    # self.bestTermination = [[], [], 9999999999, []]"""
-
+                elif schedule.currentDate == self.bestTermination[2]:
+                    self.bestTermination[0].append(policyComb)
+                    self.bestTermination[1].append(batchSize)
+                    self.bestTermination[3].append(self.getSimulationExecutionTime())
+        # Returns the list of all terminationdates, and the list of the best terminations that has the lowest date-number. 
         return self.terminationDates, self.bestTermination
         
     
