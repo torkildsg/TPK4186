@@ -52,7 +52,7 @@ printer.exportPlant(waferprod, 'plant.csv')"""
 
 
 """ Testing Task 2 """
-
+"""
 batch1 = waferprod.newBatch(1, 20)
 batch2 = waferprod.newBatch(2, 25)
 batch3 = waferprod.newBatch(3, 30)
@@ -71,9 +71,7 @@ schedule = Schedule(waferprod)
 simulator = Simulator(waferprod)
 simulator.simulationLoop(schedule)
 printer = Printer()
-#printer.printSchedule(schedule, sys.stdout) # Kan fjernes 
-printer.printExecution(simulator, sys.stdout)
-
+printer.printExecution(simulator, sys.stdout)"""
 
 
 """ Testing Task 3 """
