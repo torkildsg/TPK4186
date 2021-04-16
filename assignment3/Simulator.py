@@ -26,9 +26,6 @@ class Simulator:
         values = self.executionTime.values()
         return sum(values)
 
-    def getNumOfIterationsInQueue(self): # Skal vi bruke denne?
-        return self.numOfIterationsInQueue
-
     def getExecution(self):
         return self.execution
     

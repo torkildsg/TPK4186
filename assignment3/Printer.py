@@ -50,13 +50,6 @@ class Printer:
         file.write('{0:10}'.format('task\t'))
         file.write('{0:10}\t'.format(task.getName()))
         file.write('\n')
-    
-    """ Denne må endres"""
-    def printSchedule(self, schedule, file):
-        file.write('Schedule:\n')
-        for event in schedule.getFinalSchedule():
-            file.write('Event {e}, '.format(e = event.getNumber()))
-        file.write('\n')
         
     def printEvent(self, event, file):
         file.write('Event {type} at date {date}: '.format(type = event.getNumber(), date = event.getDate()))
@@ -75,59 +68,91 @@ class Printer:
         minDate = np.amin(terminationDates)
         maxDate = np.max(terminationDates)
 
-        n, bins, patches = plt.hist(terminationDates, density = 100, facecolor = 'green')
+        n, bins, patches = plt.hist(terminationDates, rwidth=0.7, density = 50, facecolor = 'darkseagreen')
         plt.title('Histogram of termination dates')
-        plt.xlabel('Termination dates')
-        plt.ylabel('Percentage')
+        plt.xlabel('Termination date')
+        plt.ylabel('Percentage of all terminations')
         file = plt.savefig('terminationDateHistogram.pdf')
         return file
 
     def printHTML(self, terminationDates, bestTermination):
         self.plotTerminationDates(terminationDates)
-        HTMLstring = """
-        <html>
-        <img src='terminationDateHistogram.pdf'>
-        \n
-        <head>
-        <style>
-            table {
-                font-family: arial, sans-serif;
-                border-collapse: collapse;
-                width: 100%;
-            }
+        stringOne = """<html>
+                          <head>
+                            <style>
+                                table {
+                                    font-family: arial, sans-serif;
+                                    border-collapse: collapse;
+                                    width: 100%;
+                                }
 
-            td, th {
-                border: 1px solid #dddddd;
-                text-align: left;
-                padding: 8px;
-            }
+                                td, th {
+                                    border: 1px solid #dddddd;
+                                    text-align: left;
+                                    padding: 8px;
+                                }
 
-            tr:nth-child(even) {
-                background-color: #dddddd;
-            }
-            </style>
-            </head>
-            <body>
+                                tr:nth-child(even) {
+                                    background-color: #dddddd;
+                                }
+                            </style>
+                            <embed src='terminationDateHistogram.pdf' width="800px" height="500px" />
+                        </head>
+                        <body>"""
 
-            <h2>Table of best terminations</h2>
-            <table>
-            <tr>
-                <th>Company</th>
-                <th>Contact</th>
-                <th>Country</th>
-            </tr>
-            <tr>
-                <td>Alfreds Futterkiste</td>
-                <td>Maria Anders</td>
-                <td>Germany</td>
-            </tr>
-            
-            </table>
-            </body>
-            </html>"""
-        file = open("optimized.html","w")
-        file.write(HTMLstring)
-        file.close()
+        stringTwo = """
+            <h2>Table of optimal terminations</h2>
+                <table>
+                    <tr>
+                        <th>Machine-policy combination</th>
+                        <th>Machine 1 priority</th>
+                        <th>Machine 2 priority</th>
+                        <th>Machine 3 priority</th>
+                        <th>Date</th> 
+                        <th>Size of batch [wafers] </th> 
+                        <th>Total duration [seconds] </th> 
+                    </tr>"""
+
+        with open('optimized.html', 'w') as file:
+            file.write(stringOne)
+            file.write('<h2>Table of date-statistics for all terminations</h2>')
+            file.write('<table><tr>')
+            file.write('<th> Minimum </th>')
+            file.write('<th> Maximum </th>')
+            file.write('<th> Median </th>')
+            file.write('<th> Mean </th>')
+            file.write('<th> Standard deviation </th>')
+            file.write('</tr>')
+            file.write('<tr>')
+            file.write('<td>' + str(np.amin(terminationDates)) + '</td>')
+            file.write('<td>' + str(np.amax(terminationDates)) + '</td>')
+            file.write('<td>' + str(np.median(terminationDates)) + '</td>')
+            file.write('<td>' + str(np.mean(terminationDates)) + '</td>')
+            file.write('<td>' + str(np.std(terminationDates)) + '</td>')
+            file.write('</tr></table>')
+            file.write(stringTwo)
+            j = 1
+            for i in range(len(bestTermination[0])):
+                file.write('<tr>')
+                file.write('<td>' + str(j) + '</td>')
+                file.write('<td>')
+                for k in bestTermination[0][i][0]:
+                    file.write(str(k.getName() + ", "))
+                file.write('</td><td>')
+                for l in bestTermination[0][i][1]:
+                    file.write(str(l.getName() + ", "))
+                file.write('</td><td>')
+                for m in bestTermination[0][i][2]:
+                    file.write(str(m.getName() + ", "))
+                file.write('</td>')
+                file.write('<td>' +  str(bestTermination[2]) +  '</td>')
+                file.write('<td>' +  str(bestTermination[1][i]) +  '</td>')
+                file.write('<td>' +  str(bestTermination[3][i]) +  '</td>')
+                file.write('</tr>')
+                j+=1
+            file.write('</table>')
+            file.write('</body>')
+            file.write('</html>')
+            file.close()
 
 
-        

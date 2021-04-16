@@ -19,7 +19,7 @@ class Optimizer:
         self.optimizerName = optimizerName
         self.allPossiblePolicyCombinations = []
     
-    def generateBatches(self, batchSize, totalNumOfWafers, plant): #All batches will have the same size except for the last one. 
+    def generateBatches(self, batchSize, totalNumOfWafers, plant): #All batches will have the same size except for the last one (if odd). 
         numBatches = math.ceil(totalNumOfWafers/batchSize)
         lastBatchSize = totalNumOfWafers % batchSize
         for i in range(1, numBatches+1):

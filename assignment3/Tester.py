@@ -10,19 +10,12 @@ from Event import Event
 from Schedule import Schedule
 from Simulator import Simulator
 from Optimizer import Optimizer
+import math
 
 import sys
 
 """ Testing Task 1 """
 waferprod = Plant("Waferprod")
-
-"""batch1 = waferprod.newBatch(1, 20)
-batch2 = waferprod.newBatch(2, 25)
-batch3 = waferprod.newBatch(3, 30)
-batch4 = waferprod.newBatch(4, 35)
-batch5 = waferprod.newBatch(5, 40)
-batch6 = waferprod.newBatch(6, 45)
-batch7 = waferprod.newBatch(7, 50)"""
 
 machine1 = waferprod.newMachine("machine1")
 machine2 = waferprod.newMachine("machine2")
@@ -40,9 +33,8 @@ task8 = waferprod.newTask("Task8", 1.9, machine3)
 task9 = waferprod.newTask("Task9", 0.3, machine1)
 end = waferprod.newEvent("End")
 
-
 startbuffer = waferprod.newBuffer(start, task1)
-startbuffer.setCapacity(999999) # Startbuffer has unlimited space
+startbuffer.setCapacity(math.inf) # Startbuffer has unlimited space
 buffer1 = waferprod.newBuffer(task1, task2)
 buffer2 = waferprod.newBuffer(task2, task3)
 buffer3 = waferprod.newBuffer(task3, task4)
@@ -52,48 +44,49 @@ buffer6 = waferprod.newBuffer(task6, task7)
 buffer7 = waferprod.newBuffer(task7, task8)
 buffer8 = waferprod.newBuffer(task8, task9)
 endbuffer = waferprod.newBuffer(task9, end)
-endbuffer.setCapacity(999999) # Endbuffer has unlimited space
+endbuffer.setCapacity(math.inf) # Endbuffer has unlimited space
+
+"""
+printer = Printer()
+printer.exportPlant(waferprod, 'plant.csv')"""
 
 
 """ Testing Task 2 """
-"""
+
+batch1 = waferprod.newBatch(1, 20)
+batch2 = waferprod.newBatch(2, 25)
+batch3 = waferprod.newBatch(3, 30)
+batch4 = waferprod.newBatch(4, 35)
+batch5 = waferprod.newBatch(5, 40)
+batch6 = waferprod.newBatch(6, 45)
+batch7 = waferprod.newBatch(7, 50)
+
 waferprod.enqueueBatchIntoBuffer(batch1, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch2, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch3, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch4, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch5, startbuffer)
  
-printer = Printer()
-#printer.exportPlantCSV(waferprod, 'plant.csv')
-
 schedule = Schedule(waferprod)
 simulator = Simulator(waferprod)
 simulator.simulationLoop(schedule)
-printer.printSchedule(schedule, sys.stdout)
+printer = Printer()
+#printer.printSchedule(schedule, sys.stdout) # Kan fjernes 
 printer.printExecution(simulator, sys.stdout)
-print(simulator.getExecutionTime())
-"""
+
 
 
 """ Testing Task 3 """
+"""
 scheduleOpti = Schedule(waferprod)
 simOpti = Simulator(waferprod)
 opti = Optimizer("opti")
 printOpti = Printer()
 
-"""opti.initiatePlant(waferprod, 50, 1000)
-opti.generateOperationPoliciesForMachines(waferprod)
-opti.generateAllPossiblePolicyCombinations(waferprod)
-firstComb = opti.allPossiblePolicyCombinations[0] # Lag getter her 
-simOpti.simulationLoopForOptimizer(scheduleOpti, firstComb)
-"""
-
-optimized = simOpti.MonteCarloSimulation(opti, waferprod, scheduleOpti, 200) # skal ta inn 1000 her
+optimized = simOpti.MonteCarloSimulation(opti, waferprod, scheduleOpti, 1000) # skal ta inn 1000 her
 terminationDates = optimized[0]
 bestTermination = optimized[1]
-
-printOpti.plotTerminationDates(terminationDates)
-
+printOpti.printHTML(terminationDates, bestTermination)"""
 
 
 
