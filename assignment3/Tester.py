@@ -58,8 +58,6 @@ batch2 = waferprod.newBatch(2, 25)
 batch3 = waferprod.newBatch(3, 30)
 batch4 = waferprod.newBatch(4, 35)
 batch5 = waferprod.newBatch(5, 40)
-batch6 = waferprod.newBatch(6, 45)
-batch7 = waferprod.newBatch(7, 50)
 
 waferprod.enqueueBatchIntoBuffer(batch1, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch2, startbuffer)
@@ -75,16 +73,17 @@ printer.printExecution(simulator, sys.stdout)"""
 
 
 """ Testing Task 3 """
-"""
+
 scheduleOpti = Schedule(waferprod)
 simOpti = Simulator(waferprod)
 opti = Optimizer("opti")
 printOpti = Printer()
 
-optimized = simOpti.MonteCarloSimulation(opti, waferprod, scheduleOpti, 1000) # skal ta inn 1000 her
+optimized = simOpti.MonteCarloSimulation(opti, waferprod, scheduleOpti, 1000) 
 terminationDates = optimized[0]
 bestTermination = optimized[1]
-printOpti.printHTML(terminationDates, bestTermination)"""
+printOpti.printHTML(terminationDates, bestTermination)
+
 
 
 

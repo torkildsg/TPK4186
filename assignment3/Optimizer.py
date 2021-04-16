@@ -19,13 +19,10 @@ class Optimizer:
         self.optimizerName = optimizerName
         self.allPossiblePolicyCombinations = []
     
-    def generateBatches(self, batchSize, totalNumOfWafers, plant): #All batches will have the same size except for the last one (if odd). 
-        numBatches = math.ceil(totalNumOfWafers/batchSize)
-        lastBatchSize = totalNumOfWafers % batchSize
-        for i in range(1, numBatches+1):
-            if i == numBatches+1:
-                plant.newBatch(i, lastBatchSize)
-            else: plant.newBatch(i,batchSize)
+    def generateBatches(self, batchSize, totalNumOfWafers, plant):  
+        numBatches = math.ceil(totalNumOfWafers/batchSize) # If totalNumOfWafers % batchSize > 0, we produce an extra batch to ensure that enough wafers is produced. 
+        for i in range(1, numBatches+1):                    # In this case, the number of wafers produced will be greater than totalNumOfWafers. 
+            plant.newBatch(i,batchSize)                       # This a necessity, since all batches have to be the same size (we assume).
         return plant.getBatches()
     
     def initiatePlant(self, plant, batchSize, totalNumOfWafers):

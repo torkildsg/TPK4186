@@ -153,7 +153,7 @@ class Plant:
                 duration = float(task.getLoadTime() + task.getUnloadTime() + task.getProcessTime() * batch.getNumOfWafers())
                 return duration
         
-
+    """ Task 3 """
     def runMachinePolicy(self, simulator, schedule, machine, priority):
         for task in priority:
             if not self.isMachineBusy(simulator, machine) and task.taskCanBePerformed():

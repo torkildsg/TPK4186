@@ -127,8 +127,8 @@ class Printer:
             file.write('<td>' + str(np.amin(terminationDates)) + '</td>')
             file.write('<td>' + str(np.amax(terminationDates)) + '</td>')
             file.write('<td>' + str(np.median(terminationDates)) + '</td>')
-            file.write('<td>' + str(np.mean(terminationDates)) + '</td>')
-            file.write('<td>' + str(np.std(terminationDates)) + '</td>')
+            file.write('<td>' + str(round(np.mean(terminationDates), 2)) + '</td>')
+            file.write('<td>' + str(round(np.std(terminationDates), 2)) + '</td>')
             file.write('</tr></table>')
             file.write(stringTwo)
             j = 1
