@@ -75,7 +75,7 @@ class Buffer:
         return self.queueOfBatches[-1]
     
     def enqueueBuffer(self, batch):
-        if self.getCapacity() < (self.getWafers() + batch.getNumOfWafers()):
+        if not self.hasSpace(batch):
             return False
         else:
             self.queueOfBatches.append(batch)
