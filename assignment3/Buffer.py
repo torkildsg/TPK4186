@@ -3,9 +3,9 @@
 class Buffer:
 
     def __init__(self, sourceTask, targetTask):
-        self.capacity = 120 # 120?
+        self.capacity = 120 # Defined from the assignment 
         self.wafers = 0
-        self.queueOfBatches = [] # FIFO-queue: Only use .pop(0) to get, and .append() to add
+        self.queueOfBatches = [] # FIFO-queue
         self.historyQueueOfBatches = []
         self.sourceTask = sourceTask
         self.targetTask = targetTask
