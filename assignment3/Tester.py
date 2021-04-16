@@ -89,8 +89,8 @@ simOpti.simulationLoopForOptimizer(scheduleOpti, firstComb)
 """
 
 
-print(simOpti.MonteCarloSimulation(opti, waferprod, scheduleOpti))
-print(simOpti.getExecutionTime())
+print(simOpti.MonteCarloSimulation(opti, waferprod, scheduleOpti, 1000))
+
 
 
 

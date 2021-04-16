@@ -10,10 +10,10 @@ class Simulator:
     def __init__(self, plant):
         self.plant = plant
         self.executionTime = dict() # Key: batchCode, value: total time for all tasks
-        self.execution = []
-        self.numOfIterationsInQueue = dict() # Skal vi bruke denne?
+        self.execution = [] # The executed schedule
         self.eventNumber = 0
-        self.terminationDates = dict()
+        self.terminationDates = [] # All termnation dates
+        self.bestTermination = [[], [], 9999999999, []] # [optimal policyComb, optimal batchsize, the best date, the total duration for optimal policyComb and batch]
     
     def resetSimulator(self):
         self.executionTime.clear()
@@ -45,78 +45,6 @@ class Simulator:
                 self.execution.append(event)
             else: 
                 continue
-
-    def simulationLoopForOptimizer(self, schedule, policyCombination):
-        #self.executionTime = dict()
-        self.execution = []
-        schedule.currentSchedule = []
-        plant = schedule.getPlant()
-        firstTask = plant.getFirstTask() 
-        schedule.scheduleBufferToTask(firstTask)
-        lastBatch = plant.getStartBuffer().getLastBatchInQueue()
-        endBuffer = plant.getEndBuffer().getQueueOfBatches()
-
-        while lastBatch not in endBuffer and not schedule.isCurrentScheduleEmpty():
-            event = schedule.popFirstEvent()
-            if self.executeEventForOptimizer(event, schedule):
-                self.execution.append(event)
-                for index, machine in enumerate(plant.getAllMachines(), 0):
-                    plant.runMachinePolicy(self, schedule, machine, policyCombination[index])
-            else: 
-                continue
-    
-    def executeEventForOptimizer(self, event, schedule):
-        self.currentDate = event.getDate()
-        thisBatch = event.getBatch()
-
-        if event.getType() == Event.BUFFER_TO_TASK:
-            targetTask = event.getTask()
-            thisBuffer = event.getBuffer()
-            sourceTask = thisBuffer.getSourceTask()
-            nextBuffer = targetTask.getFirstOfOutgoingBuffers()
-            task = thisBuffer.getTargetTask()
-
-            if not thisBuffer.isEmpty() and sourceTask.getName() != 'End':
-                executed = self.executeBufferToTask(event, thisBuffer, thisBatch, targetTask, schedule)
-                schedule.scheduleTaskToBuffer(nextBuffer)  # Schedule the batch into the outputbuffer
-                return executed
-        
-        elif event.getType() == Event.TASK_TO_BUFFER:
-            thisTask = event.getTask()
-            targetBuffer = thisTask.getFirstOfOutgoingBuffers()
-            sourceBuffer = thisTask.getFirstOfIncomingBuffers()
-            nextTask = targetBuffer.getTargetTask()
-            executed = self.executeTaskToBuffer(targetBuffer, thisBatch, schedule)
-            return executed
-
-    def MonteCarloSimulation(self, optimizer, plant, schedule):
-        terminationDates = []
-        optimizer.generateAllPossiblePolicyCombinations(plant)
-        allPolicyCombinations = optimizer.allPossiblePolicyCombinations
-        allPossibleBatchSizes = [i for i in range(20, 51)]
-        bestTermination = [None, 9999999999]
-        
-        for batchSize in allPossibleBatchSizes:
-            print(len(terminationDates))
-            for policyComb in allPolicyCombinations:    
-                plant.resetPlant()
-                schedule.resetSchedule()
-                self.resetSimulator()
-                
-                optimizer.initiatePlant(plant, batchSize, 1000) 
-                self.simulationLoopForOptimizer(schedule, policyComb)
-                #if policyComb == allPolicyCombinations[-1]:
-                #    pass
-                #else: 
-                terminationDates.append(schedule.currentDate)
-                if schedule.currentDate < bestTermination[1]:
-                    bestTermination[1] = schedule.currentDate
-                    bestTermination[0] = policyComb
-
-            #terminationDates[policyComb] = self.getSimulationExecutionTime()
-            #terminationDates.append([policyComb, self.getSimulationExecutionTime()])
-        # terminationDates har 288 elementer for mye!
-        return len(terminationDates), bestTermination, min(terminationDates)
 
     def executeEvent(self, event, schedule):
         self.currentDate = event.getDate()
@@ -174,6 +102,79 @@ class Simulator:
             return True
         else:
             return False
+
+    """ Task 3 """
+
+    def simulationLoopForOptimizer(self, schedule, policyCombination):
+        self.execution = []
+        schedule.currentSchedule = []
+        plant = schedule.getPlant()
+        firstTask = plant.getFirstTask() 
+        schedule.scheduleBufferToTask(firstTask)
+        lastBatch = plant.getStartBuffer().getLastBatchInQueue()
+        endBuffer = plant.getEndBuffer().getQueueOfBatches()
+
+        while lastBatch not in endBuffer and not schedule.isCurrentScheduleEmpty():
+            event = schedule.popFirstEvent()
+            if self.executeEventForOptimizer(event, schedule):
+                self.execution.append(event)
+                for index, machine in enumerate(plant.getAllMachines(), 0):
+                    plant.runMachinePolicy(self, schedule, machine, policyCombination[index])
+            else: 
+                continue
+    
+    def executeEventForOptimizer(self, event, schedule):
+        self.currentDate = event.getDate()
+        thisBatch = event.getBatch()
+
+        if event.getType() == Event.BUFFER_TO_TASK:
+            targetTask = event.getTask()
+            thisBuffer = event.getBuffer()
+            sourceTask = thisBuffer.getSourceTask()
+            nextBuffer = targetTask.getFirstOfOutgoingBuffers()
+            task = thisBuffer.getTargetTask()
+
+            if not thisBuffer.isEmpty() and sourceTask.getName() != 'End':
+                executed = self.executeBufferToTask(event, thisBuffer, thisBatch, targetTask, schedule)
+                schedule.scheduleTaskToBuffer(nextBuffer)  # Schedule the batch into the outputbuffer
+                return executed
+        
+        elif event.getType() == Event.TASK_TO_BUFFER:
+            thisTask = event.getTask()
+            targetBuffer = thisTask.getFirstOfOutgoingBuffers()
+            sourceBuffer = thisTask.getFirstOfIncomingBuffers()
+            nextTask = targetBuffer.getTargetTask()
+            executed = self.executeTaskToBuffer(targetBuffer, thisBatch, schedule)
+            return executed
+
+    def MonteCarloSimulation(self, optimizer, plant, schedule, numOfWafers):
+        optimizer.generateAllPossiblePolicyCombinations(plant)
+        allPolicyCombinations = optimizer.allPossiblePolicyCombinations
+        allPossibleBatchSizes = [i for i in range(20, 51)] # Testing 31 (30-50) different batch-sizes. 
+        
+        for batchSize in allPossibleBatchSizes:
+            for policyComb in allPolicyCombinations:    
+                plant.resetPlant()
+                schedule.resetSchedule()
+                self.resetSimulator()
+            
+                optimizer.initiatePlant(plant, batchSize, numOfWafers) 
+                self.simulationLoopForOptimizer(schedule, policyComb)
+                self.terminationDates.append(schedule.currentDate)
+                
+                if schedule.currentDate < self.bestTermination[2]:
+                    self.bestTermination[0] = policyComb
+                    self.bestTermination[1] = batchSize
+                    self.bestTermination[2] = schedule.currentDate
+                    self.bestTermination[3] = self.getSimulationExecutionTime()
+                """elif schedule.currentDate == self.bestTermination[2]:
+                    self.bestTermination[0].append(policyComb)
+                    self.bestTermination[1].append(int(batchSize))
+                    self.bestTermination[3].append(self.getSimulationExecutionTime())
+
+                    # self.bestTermination = [[], [], 9999999999, []]"""
+
+        return self.terminationDates, self.bestTermination
         
     
 
