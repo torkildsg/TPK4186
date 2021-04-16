@@ -6,6 +6,9 @@ from Buffer import Buffer
 from Task import Task
 from Plant import Plant
 from Event import Event
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
 class Printer:
 
@@ -67,5 +70,64 @@ class Printer:
         file.write("Execution:\n")
         for event in simulator.getExecution():
             self.printEvent(event, file)
+    
+    def plotTerminationDates(self, terminationDates):
+        minDate = np.amin(terminationDates)
+        maxDate = np.max(terminationDates)
+
+        n, bins, patches = plt.hist(terminationDates, density = 100, facecolor = 'green')
+        plt.title('Histogram of termination dates')
+        plt.xlabel('Termination dates')
+        plt.ylabel('Percentage')
+        file = plt.savefig('terminationDateHistogram.pdf')
+        return file
+
+    def printHTML(self, terminationDates, bestTermination):
+        self.plotTerminationDates(terminationDates)
+        HTMLstring = """
+        <html>
+        <img src='terminationDateHistogram.pdf'>
+        \n
+        <head>
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+            </style>
+            </head>
+            <body>
+
+            <h2>Table of best terminations</h2>
+            <table>
+            <tr>
+                <th>Company</th>
+                <th>Contact</th>
+                <th>Country</th>
+            </tr>
+            <tr>
+                <td>Alfreds Futterkiste</td>
+                <td>Maria Anders</td>
+                <td>Germany</td>
+            </tr>
+            
+            </table>
+            </body>
+            </html>"""
+        file = open("optimized.html","w")
+        file.write(HTMLstring)
+        file.close()
+
 
         

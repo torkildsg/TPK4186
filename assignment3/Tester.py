@@ -88,8 +88,11 @@ firstComb = opti.allPossiblePolicyCombinations[0] # Lag getter her
 simOpti.simulationLoopForOptimizer(scheduleOpti, firstComb)
 """
 
+optimized = simOpti.MonteCarloSimulation(opti, waferprod, scheduleOpti, 200) # skal ta inn 1000 her
+terminationDates = optimized[0]
+bestTermination = optimized[1]
 
-print(simOpti.MonteCarloSimulation(opti, waferprod, scheduleOpti, 1000))
+printOpti.plotTerminationDates(terminationDates)
 
 
 
