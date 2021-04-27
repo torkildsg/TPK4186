@@ -54,10 +54,10 @@ printer.exportPlant(waferprod, 'plant.csv')"""
 """ Testing Task 2 """
 """
 batch1 = waferprod.newBatch(1, 20)
-batch2 = waferprod.newBatch(2, 25)
-batch3 = waferprod.newBatch(3, 30)
-batch4 = waferprod.newBatch(4, 35)
-batch5 = waferprod.newBatch(5, 40)
+batch2 = waferprod.newBatch(2, 20)
+batch3 = waferprod.newBatch(3, 20)
+batch4 = waferprod.newBatch(4, 20)
+batch5 = waferprod.newBatch(5, 20)
 
 waferprod.enqueueBatchIntoBuffer(batch1, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch2, startbuffer)
@@ -74,7 +74,7 @@ printer.printExecution(simulator, sys.stdout)"""
 
 """ Testing Task 3 """
 
-"""scheduleOpti = Schedule(waferprod)
+scheduleOpti = Schedule(waferprod)
 simOpti = Simulator(waferprod)
 opti = Optimizer("opti")
 printOpti = Printer()
@@ -82,4 +82,8 @@ printOpti = Printer()
 optimized = simOpti.MonteCarloSimulation(opti, waferprod, scheduleOpti, 1000) 
 terminationDates = optimized[0]
 bestTermination = optimized[1]
-printOpti.printHTML(terminationDates, bestTermination)"""
+printOpti.printHTML(terminationDates, bestTermination)
+
+print(scheduleOpti.currentSecond)
+#print(simOpti.terminationDates)
+print(simOpti.bestTermination)
