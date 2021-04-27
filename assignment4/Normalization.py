@@ -4,8 +4,8 @@ import math
 import numpy as np
 import pandas as pd 
 import csv
-from itertools import islice
-from pprint import pprint
+#from itertools import islice
+#from pprint import pprint
 from sklearn import svm
 from sklearn import metrics
 
@@ -15,6 +15,7 @@ class ParseProject:
         self.projectName = None
         self.expectedDuration = None
         self.actualDuration = None
+        self.projectDataFrame = None
     
     # Q: In task 2.2 and 2.3; what is considered 'early'?
     # Q: Mate inn til maskinlæring: 
@@ -24,20 +25,29 @@ class ParseProject:
     #    Your first task consists thus in writting a Python script that normalizes the data, 
     #    i.e. that transforms their weekly progression into an abstract scale of progression.
 
-    def importProjectPandas(self, fileName):
+    def importProject(self, fileName):
         expectedDurationDataFrame = pd.read_csv(fileName, sep='\t', nrows=1)
         expectedDuration = expectedDurationDataFrame.iat[0,1] 
         projectDataFrame = pd.read_csv(fileName, sep='\t', header=2)
 
+        self.setExpectedDuration(expectedDuration)
+        self.setProjectDataFrame(projectDataFrame)
+
         return projectDataFrame
+    
+    def calculateWeeklyDelay(self, projectDataFrame):
+        ...
+
 
     # Design one or more Python scripts to make statistics on how much projects are delayed. 
-    # Q: From week to week, or in the end of the project?
+    # Q: From week to week, or in the end of the project?. 
+    # Q: Make statistics for every project, and plot this, or what? 
     def calculateStatisticsOfProject(self, project):
-        statList = []
+        ...
     
 
-    # In particular, print out histograms of delays.
+    # In particular, print out histograms of delays. 
+    # Q: For all projects in general?
     """def plotTerminationDates(self, terminationDates):
             minDate = np.amin(terminationDates)
             maxDate = np.max(terminationDates)
@@ -61,11 +71,17 @@ class ParseProject:
     def getExpectedDuration(self):
         return self.expectedDuration 
 
-    def setAcutalDuration(self, actualDuration):
+    def setActualDuration(self, actualDuration):
         self.actualDuration = actualDuration
     
-    def getAcutalDuration(self):
+    def getActualDuration(self):
         return self.actualDuration 
+    
+    def setProjectDataFrame(self, dataframe):
+        self.projectDataFrame = dataframe
+    
+    def getProjectDataFrame(self):
+        return self.projectDataFrame
 
     """def importProject(self, csv_file):
         try:
@@ -100,7 +116,5 @@ class ParseProject:
 """ Testing """
 
 parsing = ParseProject() 
-print(parsing.importProjectPandas(r'projectData\project001.tsv'))
-
-testContent = parsing.importProject(testFile)
-print(parsing.getAcutalDuration())
+parsing.importProject(r'projectData\project001.tsv')
+#print(parsing.getProjectDataFrame())
