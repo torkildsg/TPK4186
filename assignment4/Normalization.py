@@ -86,6 +86,14 @@ class ParseProject:
     
     def getProjectDataFrame(self):
         return self.projectDataFrame
+    
+    def createColumsForWeeklyProgression(self):
+        expDu = self.getExpectedDuration()
+        df = self.getProjectDataFrame()
+        df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expDu)*100,1)))
+        return df 
+
+
 
     """def importProject(self, csv_file):
         try:
@@ -120,5 +128,6 @@ class ParseProject:
 """ Testing """
 
 parsing = ParseProject() 
-parsing.importProject(r'projectData\project001.tsv')
-#print(parsing.getProjectDataFrame())
+parsing.importProject("/Users/eivndlarsen/VS/TPK4186/assignment4/projectData/project001.tsv")
+print(parsing.getProjectDataFrame())
+print(parsing.createColumsForWeeklyProgression())
