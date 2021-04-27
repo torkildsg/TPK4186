@@ -14,15 +14,21 @@ class Schedule:
         self.currentSchedule = []
         self.currentDate = 1
         self.eventNumber = 0
+
+        self.currentSecond = 0
     
     def resetSchedule(self):
-        self.currentDate = 1
+        #self.currentDate = 1
+        self.currentSecond = 0
         self.allScheduledEvents = []
         self.currentSchedule = []
         return True
 
     def getPlant(self):
         return self.plant
+
+    def getCurrentSecond(self):
+        return self.currentSecond
 
     def getCurrentSchedule(self):
         return self.currentSchedule
@@ -64,8 +70,12 @@ class Schedule:
             numOfWafersIncomingBatch = incomingBatch.getNumOfWafers() # Number of wafers that the incoming batch contains
          
             if capOutgoingBuffer >= numOfWafersIncomingBatch:
-                self.currentDate += int(1)
-                return self.scheduleEvent(Event.BUFFER_TO_TASK, int(self.currentDate-1), incomingBatch, incomingBuffer, task) 
+                # currentDate = tasks sin runtid per wafer * batchstørrelse + 4 sekunder (unload + loadtime)
+                #newTime = int(incomingBatch.getNumOfWafers() * task.getProcessTime() + task.getLoadTime())
+                #self.currentSecond += newTime
+                #self.currentDate += int(1)
+                #return self.scheduleEvent(Event.BUFFER_TO_TASK, int(self.currentDate - 1), incomingBatch, incomingBuffer, task) 
+                return self.scheduleEvent(Event.BUFFER_TO_TASK, int(self.currentSecond), incomingBatch, incomingBuffer, task) 
             else: return False
     
     def scheduleTaskToBuffer(self, buffer):
@@ -73,7 +83,11 @@ class Schedule:
         incomingBatch = sourceTask.getHoldingBatch() # The batch that the task is holding, and we want to enter the buffer
         
         if incomingBatch != None and incomingBatch not in buffer.getHistoryQueueOfBatches(): 
-            self.currentDate += int(1)
-            self.scheduleEvent(Event.TASK_TO_BUFFER, int(self.currentDate-1), incomingBatch, buffer, sourceTask)
+            #time = int(sourceTask.getUnloadTime())
+            #self.currentSecond += time
+            #self.currentDate += int(1)
+            
+            #self.scheduleEvent(Event.TASK_TO_BUFFER, int(self.currentDate-1), incomingBatch, buffer, sourceTask)
+            self.scheduleEvent(Event.TASK_TO_BUFFER, int(self.currentSecond), incomingBatch, buffer, sourceTask)
         else: return False 
     
