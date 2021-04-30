@@ -3,11 +3,14 @@
 import math
 import numpy as np
 import pandas as pd 
+import matplotlib.pyplot as plt
 import csv
+import seaborn as sns
 #from itertools import islice
 #from pprint import pprint
-from sklearn import svm
-from sklearn import metrics
+from sklearn import svm, metrics
+from sklearn.preprocessing import MinMaxScaler
+
 
 class ParseProject:
 
@@ -16,28 +19,37 @@ class ParseProject:
         self.expectedDuration = None
         self.actualDuration = None
         self.projectDataFrame = None
+        self.allProjectDataFrames = dict()
     
     # Q: In task 2.2 and 2.3; what is considered 'early'?
     # A: Mater inn data, records fra uke til uke, hvor tidlig klarer man av å avgjøre hvorvidt det er en fiasko?
     # Prøv å begrense litt og litt data
-
-
 
     # Q: Mate inn til maskinlæring: 
     # 1. prosent; expected duration / this week number A: JA, bruk denne. Denne vil gi forventet prosent
 
     #    Your first task consists thus in writting a Python script that normalizes the data, 
     #    i.e. that transforms their weekly progression into an abstract scale of progression.
+    def appendProject(self, dataframe, expectedDuration):
+        self.allProjectDataFrames[expectedDuration] = dataframe
 
     def importProject(self, fileName):
         expectedDurationDataFrame = pd.read_csv(fileName, sep='\t', nrows=1)
         expectedDuration = expectedDurationDataFrame.iat[0,1] 
         projectDataFrame = pd.read_csv(fileName, sep='\t', header=2)
 
-        self.setExpectedDuration(expectedDuration)
-        self.setProjectDataFrame(projectDataFrame)
+        self.setExpectedDuration(expectedDuration) # Gjøre om? / fjerne
+        self.setProjectDataFrame(projectDataFrame) # Gjøre om / fjerne
+
+        self.appendProject(projectDataFrame, expectedDuration)
 
         return projectDataFrame
+    
+    def createColumsForWeeklyProgression(self):
+        expDu = self.getExpectedDuration()
+        df = self.getProjectDataFrame()
+        df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expDu)*100,1)))
+        return df
     
     def calculateWeeklyDelay(self, projectDataFrame):
         ...
@@ -86,14 +98,7 @@ class ParseProject:
     
     def getProjectDataFrame(self):
         return self.projectDataFrame
-    
-    def createColumsForWeeklyProgression(self):
-        expDu = self.getExpectedDuration()
-        df = self.getProjectDataFrame()
-        df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expDu)*100,1)))
-        return df 
-
-
+  
 
     """def importProject(self, csv_file):
         try:
@@ -128,6 +133,13 @@ class ParseProject:
 """ Testing """
 
 parsing = ParseProject() 
-parsing.importProject("/Users/eivndlarsen/VS/TPK4186/assignment4/projectData/project001.tsv")
-print(parsing.getProjectDataFrame())
+parsing.importProject(r'projectData\project001.tsv')
+#parsing.importProject("/Users/eivndlarsen/VS/TPK4186/assignment4/projectData/project001.tsv")
+test = parsing.getProjectDataFrame()
 print(parsing.createColumsForWeeklyProgression())
+#sns.pairplot(test)
+#plt.show()
+
+
+
+
