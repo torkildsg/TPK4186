@@ -35,12 +35,12 @@ class Normalization:
         self.allProjectDataFrames[project] = df
 
     def calculateProjectDelay(self, project):
-        ...
+        lastWeek = project.getProjectDataFrame().iloc[-1]['Week']
 
     def normalizeDataInColumns(self, project):
         thisDf = project.getProjectDataFrame()
         scaling = MinMaxScaler()
-        normalizedDataframe = scaling.fit_transform(thisDf[['Foundation'], ['Framing'], ['CurtainWall'], ['HVAC'], ['FireFighting'], ['Elevator'], ['Electrical'], ['ArchitecturalFinishing']])
+        normalizedDataframe = scaling.fit_transform(thisDf[['Foundation'], ['Framing'], ['CurtainWall'], ['HVAC'], ['FireFighting'], ['Elevator'], ['Electrical'], ['ArchitecturalFinishing']]) 
         project.setProjectDataFrame(normalizedDataframe)
         return normalizedDataframe
 
