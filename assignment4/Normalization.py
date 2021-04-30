@@ -34,7 +34,7 @@ class Normalization:
         scaling.fit_transform(projectDataFrame[['Foundation'], ['Framing'], ['CurtainWall'], ['HVAC'], ['FireFighting'], ['Elevator'], ['Electrical'], ['ArchitecturalFinishing']])
         # Jobbe videre her 
 
-    def createColumnsForWeeklyProgression(self, projectName):
+    def createColumnsForWeeklyProgression(self, projectCode):
         expectedDuration = self.getExpectedDuration()
         df = self.getProjectDataFrame()
         df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 4)))
