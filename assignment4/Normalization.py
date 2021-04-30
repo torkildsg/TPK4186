@@ -98,6 +98,7 @@ class ParseProject:
     
     def getProjectDataFrame(self):
         return self.projectDataFrame
+  
 
     """def importProject(self, csv_file):
         try:
@@ -133,7 +134,12 @@ class ParseProject:
 
 parsing = ParseProject() 
 parsing.importProject(r'projectData\project001.tsv')
+#parsing.importProject("/Users/eivndlarsen/VS/TPK4186/assignment4/projectData/project001.tsv")
 test = parsing.getProjectDataFrame()
-print(test.isnull().values.any())
+print(parsing.createColumsForWeeklyProgression())
 #sns.pairplot(test)
 #plt.show()
+
+
+
+
