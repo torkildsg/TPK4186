@@ -33,6 +33,11 @@ class ParseProject:
     def appendProject(self, dataframe, expectedDuration):
         self.allProjectDataFrames[expectedDuration] = dataframe
 
+    def normalizeDataInColumns(self, projectDataFrame):
+        scaling = MinMaxScaler()
+        scaling.fit_transform(projectDataFrame[['Foundation'], ['Framing'], ['CurtainWall'], ['HVAC'], ['FireFighting'], ['Elevator'], ['Electrical'], ['ArchitecturalFinishing']])
+        # Jobbe videre her 
+
     def importProject(self, fileName):
         expectedDurationDataFrame = pd.read_csv(fileName, sep='\t', nrows=1)
         expectedDuration = expectedDurationDataFrame.iat[0,1] 
@@ -48,7 +53,7 @@ class ParseProject:
     def createColumsForWeeklyProgression(self):
         expDu = self.getExpectedDuration()
         df = self.getProjectDataFrame()
-        df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expDu)*100,1)))
+        df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expDu), 4)))
         return df
     
     def calculateWeeklyDelay(self, projectDataFrame):

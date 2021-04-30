@@ -180,7 +180,7 @@ class Printer:
                 j+=1
             file.write('</table>')
 
-            file.write('<h1>Description of code</h2>')
+            file.write('<h1>Description of code</h1>')
             file.write(task1)
             file.write(task2)
             file.write(task3)

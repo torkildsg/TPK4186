@@ -67,12 +67,12 @@ class Schedule:
                 return self.scheduleEvent(Event.BUFFER_TO_TASK, date, incomingBatch, incomingBuffer, task) 
             else: return False
     
-    
     def scheduleTaskToBuffer(self, buffer):
         sourceTask = buffer.getSourceTask() # The predecessor task to this buffer
         incomingBatch = sourceTask.getHoldingBatch() # The batch that the task is holding, and we want to enter the buffer
         
-        if (incomingBatch not in buffer.getHistoryQueueOfBatches()) and incomingBatch != None: 
+        if incomingBatch != None and incomingBatch not in buffer.getHistoryQueueOfBatches():  
             date = int(self.currentDate + (incomingBatch.getNumOfWafers() * sourceTask.getProcessTime()) + sourceTask.getUnloadTime())
             self.scheduleEvent(Event.TASK_TO_BUFFER, date, incomingBatch, buffer, sourceTask)
-        else: return False 
+        else: 
+            return False 
