@@ -46,13 +46,13 @@ class Normalization:
         df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 4)))
         self.setProjectDataFrame(df)
     
-     # Funkson for å hente alle filene
-    def allProjects(self, directory):
+    # Funkson for å hente alle filene
+    def readFiles(self):
         pathlist = Path("/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186/assignment4/projectData").rglob('*.tsv')
         for path in sorted(pathlist):
-             # because path is object not string
-             path_in_str = str(path)
-             #print(path_in_str)
+            #because path is object not string
+            path_in_str = str(path)
+            #print(path_in_str)
 
     def calculateWeeklyDelay(self, projectDataFrame):
         ...
@@ -63,6 +63,7 @@ class Normalization:
     # Q: Make statistics for every project, and plot this, or what? 
     def calculateStatisticsOfProject(self, project):
         ...
+
     
     # Funkson for å hente alle filene
 
@@ -77,6 +78,7 @@ class Normalization:
             self.createColumnsForWeeklyProgression(newProject)
             self.normalizeDataInColumns(newProject)
             self.appendProject(projectCode, newProject.getProjectDataFrame())
+
 
     # In particular, print out histograms of delays. 
     # Q: For all projects in general?
