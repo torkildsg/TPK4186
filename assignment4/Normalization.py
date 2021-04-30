@@ -56,13 +56,17 @@ class Normalization:
         pathlist = Path(str(folderPath)).rglob('*.tsv')
         for path in sorted(pathlist):
             pathString = str(path)
-            print(pathString)
-            start = 'projectData/project'
+            mac = 'projectData/project'
+            if mac in pathString:
+                start = mac
+            else:
+                start = 'projectData\project'
+
             end = '.tsv'
             projectCode = int((pathString.split(start))[1].split(end)[0])
             newProject = Project(projectCode, pathString)
             self.createColumnsForWeeklyProgression(newProject)
-            self.normalizeDataInColumns(newProject)
+            #self.normalizeDataInColumns(newProject)
             self.appendProject(newProject, newProject.getProjectDataFrame())
 
 
@@ -89,7 +93,7 @@ eivindPath = "/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186
 #torkildPath = "\Users\Torkild\TPK4186\assignment4\projectData"
 
 in_Normalization = Normalization()
-in_Normalization.readFiles(torkildPath)
+in_Normalization.readFiles(eivindPath)
 
 print(in_Normalization.allProjectDataFrames)
 
