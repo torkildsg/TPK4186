@@ -13,6 +13,8 @@ from sklearn.preprocessing import MinMaxScaler
 from pathlib import Path
 
 
+
+
 class Normalization:
 
     def __init__(self):
@@ -37,12 +39,20 @@ class Normalization:
         # Jobbe videre her 
 
 
-    def createColumnsForWeeklyProgression(self, projectName):
+    def createColumsForWeeklyProgression(self, projectCode):
         expectedDuration = self.getExpectedDuration()
         df = self.getProjectDataFrame()
         df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 4)))
         self.setProjectDataFrame(df)
     
+     # Funkson for å hente alle filene
+    def allProjects(self, directory):
+        pathlist = Path("/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186/assignment4/projectData").rglob('*.tsv')
+        for path in sorted(pathlist):
+             # because path is object not string
+             path_in_str = str(path)
+             #print(path_in_str)
+
     def calculateWeeklyDelay(self, projectDataFrame):
         ...
 
@@ -79,7 +89,4 @@ class Normalization:
 
 
 """ Testing """
-
-
-
 
