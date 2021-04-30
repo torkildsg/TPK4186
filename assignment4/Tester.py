@@ -13,12 +13,12 @@ in_Normalization.readFiles(torkildPath)
 in_Normalization.calculateAllProjectsDelay()
 in_Normalization.plotHistorgramOfDelays()
 
-"""for key, value in in_Normalization.allProjectDataFrames.items():
+for key, value in in_Normalization.allProjectDataFrames.items():
     print(value)
     print('\n')
-    break"""
+    break
 
-detect = FiascoDetection()
+"""detect = FiascoDetection()
 testDf = list(in_Normalization.allProjectDataFrames.values())[0]
 print(testDf)
-print(detect.logisticRegression(testDf))
+print(detect.logisticRegression(testDf))"""
