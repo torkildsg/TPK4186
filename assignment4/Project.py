@@ -4,16 +4,16 @@ import numpy as np
 import pandas as pd
 
 class Project:
-    def __init__(self, name, fileName):
-        self.projectName = name
+    def __init__(self, projectCode, fileName):
+        self.projectCode = projectCode
         self.fileName = fileName
         self.expectedDuration = None
         self.actualDuration = None
         self.projectDataFrame = None
         self.importProject(fileName)
     
-    def getProject(self, projectName):
-        return self
+    def getProject(self, projectCode):
+        return self.projectCode
 
     def importProject(self, fileName):
         expectedDurationDataFrame = pd.read_csv(fileName, sep='\t', nrows=1)
@@ -22,13 +22,7 @@ class Project:
 
         self.setExpectedDuration(expectedDuration) 
         self.setProjectDataFrame(projectDataFrame) 
-        return projectDataFrame
-    
-    def setProjectName(self, projectName):
-        self.projectName = projectName  
-    
-    def getProjectName(self):
-        return self.projectName 
+        return projectDataFrame 
 
     def setExpectedDuration(self, expectedDuration):
         self.expectedDuration = int(expectedDuration)
