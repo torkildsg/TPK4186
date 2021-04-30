@@ -11,6 +11,7 @@ import seaborn as sns
 from sklearn import svm, metrics
 from sklearn.preprocessing import MinMaxScaler
 from pathlib import Path
+from Project import Project
 
 
 
@@ -30,8 +31,11 @@ class Normalization:
     #    Your first task consists thus in writting a Python script that normalizes the data, 
     #    i.e. that transforms their weekly progression into an abstract scale of progression.
     
-    def appendProject(self, projectCode, df):
-        self.allProjectDataFrames[projectCode] = df
+    def appendProject(self, project, df):
+        self.allProjectDataFrames[project] = df
+
+    def calculateProjectDelay(self, project):
+        ...
 
     def normalizeDataInColumns(self, project):
         thisDf = project.getProjectDataFrame()
@@ -45,26 +49,22 @@ class Normalization:
         df = project.getProjectDataFrame()
         df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 4)))
         project.setProjectDataFrame(df)
+
     
     # Funkson for å hente alle filene
-    def readFiles(self):
-        pathlist = Path("/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186/assignment4/projectData").rglob('*.tsv')
+    def readFiles(self, folderPath):
+        pathlist = Path(str(folderPath)).rglob('*.tsv')
         for path in sorted(pathlist):
-            #because path is object not string
-            path_in_str = str(path)
-            #print(path_in_str)
+            pathString = str(path)
+            print(pathString)
+            start = 'projectData/project'
+            end = '.tsv'
+            projectCode = int((pathString.split(start))[1].split(end)[0])
+            newProject = Project(projectCode, pathString)
+            self.createColumnsForWeeklyProgression(newProject)
+            self.normalizeDataInColumns(newProject)
+            self.appendProject(newProject, newProject.getProjectDataFrame())
 
-            # Kalle på createColumnsForWeeklyProgression og normalizeDataInColumns her 
-
-    def calculateWeeklyDelay(self, projectDataFrame):
-        ...
-
-
-    # Design one or more Python scripts to make statistics on how much projects are delayed. 
-    # Q: From week to week, or in the end of the project?. 
-    # Q: Make statistics for every project, and plot this, or what? 
-    def calculateStatisticsOfProject(self, project):
-        ...
 
     # In particular, print out histograms of delays. 
     # Q: For all projects in general?
@@ -84,4 +84,12 @@ class Normalization:
 
 
 """ Testing """
+
+eivindPath = "/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186/assignment4/projectData"
+#torkildPath = "\Users\Torkild\TPK4186\assignment4\projectData"
+
+in_Normalization = Normalization()
+in_Normalization.readFiles(torkildPath)
+
+print(in_Normalization.allProjectDataFrames)
 
