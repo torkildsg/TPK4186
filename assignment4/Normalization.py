@@ -114,5 +114,6 @@ in_Normalization.plotHistorgramOfDelays()
 for key, value in in_Normalization.allProjectDataFrames.items():
     print(value)
     print('\n')
+    break
 
 
