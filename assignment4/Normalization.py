@@ -19,7 +19,8 @@ from Project import Project
 class Normalization:
 
     def __init__(self):
-        self.allProjectDataFrames = dict() # {key: 'project001', values: <df>, ...}
+        self.allProjectDataFrames = dict() # {key: <Project>, values: <df>, ...}
+        self.allProjectDelays = []
     
     # Q: In task 2.2 and 2.3; what is considered 'early'?
     # A: Mater inn data, records fra uke til uke, hvor tidlig klarer man av å avgjøre hvorvidt det er en fiasko?
@@ -31,23 +32,31 @@ class Normalization:
     #    Your first task consists thus in writting a Python script that normalizes the data, 
     #    i.e. that transforms their weekly progression into an abstract scale of progression.
     
+    def getAllProjectsDelays(self):
+        return self.allProjectDelays
+    
     def appendProject(self, project, df):
         self.allProjectDataFrames[project] = df
 
-    def calculateProjectDelay(self, project):
-        ...
+    def calculateAllProjectsDelay(self):
+        for key, value in self.allProjectDataFrames.items():    
+            actualWeek = value.iloc[-1]['Week']
+            key.setActualDuration(actualWeek)
+            delay = round(float((key.getDelay()-1)*100), 1)
+            self.allProjectDelays.append(delay)
+        return self.getAllProjectsDelays
 
     def normalizeDataInColumns(self, project):
-        thisDf = project.getProjectDataFrame()
+        df = project.getProjectDataFrame()
         scaling = MinMaxScaler()
-        normalizedDataframe = scaling.fit_transform(thisDf[['Foundation'], ['Framing'], ['CurtainWall'], ['HVAC'], ['FireFighting'], ['Elevator'], ['Electrical'], ['ArchitecturalFinishing']])
-        project.setProjectDataFrame(normalizedDataframe)
-        return normalizedDataframe
+        df[['Foundation', 'Framing', 'CurtainWall', 'HVAC', 'FireFighting', 'Elevator', 'Electrical', 'ArchitecturalFinishing']] = scaling.fit_transform(df[['Foundation', 'Framing', 'CurtainWall', 'HVAC', 'FireFighting', 'Elevator', 'Electrical', 'ArchitecturalFinishing']])
+        project.setProjectDataFrame(df)
+        return df
 
     def createColumnsForWeeklyProgression(self, project):
         expectedDuration = project.getExpectedDuration()
         df = project.getProjectDataFrame()
-        df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 4)))
+        df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 3)))
         project.setProjectDataFrame(df)
 
     
@@ -61,39 +70,49 @@ class Normalization:
                 start = mac
             else:
                 start = 'projectData\project'
-
             end = '.tsv'
             projectCode = int((pathString.split(start))[1].split(end)[0])
             newProject = Project(projectCode, pathString)
             self.createColumnsForWeeklyProgression(newProject)
-            #self.normalizeDataInColumns(newProject)
+            self.normalizeDataInColumns(newProject)
             self.appendProject(newProject, newProject.getProjectDataFrame())
 
 
     # In particular, print out histograms of delays. 
-    # Q: For all projects in general?
+    def plotHistorgramOfDelays(self):
+            listOfDelays = self.getAllProjectsDelays()
+            minDelay = np.amin(listOfDelays)
+            maxDelay = np.max(listOfDelays)
 
-    """def plotTerminationDates(self, terminationDates):
-            minDate = np.amin(terminationDates)
-            maxDate = np.max(terminationDates)
+            fig, ax = plt.subplots(1, figsize=(8,4))
+            n, bins, patches = plt.hist(listOfDelays, rwidth=0.7, density = True, facecolor = 'darkseagreen', bins=np.arange(min(listOfDelays), max(listOfDelays), 10))
+            plt.title('Histogram of Project-delays')
 
-            n, bins, patches = plt.hist(terminationDates, rwidth=0.7, density = 50, facecolor = 'darkseagreen')
-            plt.title('Histogram of termination dates')
-            plt.xlabel('Termination date')
-            plt.ylabel('Percentage of all terminations')
-            file = plt.savefig('terminationDateHistogram.pdf')
-            return file"""
-  
+            # x-ticks
+            xticks = [(bins[idx+1] + value)/2 for idx, value in enumerate(bins[:-1])]
+            xticks_labels = [ "{:.0f}-{:.0f}".format(value, bins[idx+1]) for idx, value in enumerate(bins[:-1])]
+            plt.xticks(xticks, labels = xticks_labels, fontsize=8)
+            ax.tick_params(axis='x', which='both',length=0)
+            
+            plt.xlabel('Delay [%]')
+            plt.ylabel('Percentage')
+            file = plt.savefig('delayHistogram.pdf')
+            return file
 
 
 
 """ Testing """
 
 eivindPath = "/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186/assignment4/projectData"
-#torkildPath = "\Users\Torkild\TPK4186\assignment4\projectData"
+torkildPath = "projectData"
 
 in_Normalization = Normalization()
-in_Normalization.readFiles(eivindPath)
+in_Normalization.readFiles(torkildPath)
+in_Normalization.calculateAllProjectsDelay()
+in_Normalization.plotHistorgramOfDelays()
 
-print(in_Normalization.allProjectDataFrames)
+for key, value in in_Normalization.allProjectDataFrames.items():
+    print(value)
+    print('\n')
+
 

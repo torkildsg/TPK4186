@@ -22,7 +22,10 @@ class Project:
 
         self.setExpectedDuration(expectedDuration) 
         self.setProjectDataFrame(projectDataFrame) 
-        return projectDataFrame 
+        return projectDataFrame
+    
+    def getDelay(self):
+        return round((self.getActualDuration()/self.getExpectedDuration()), 3)
 
     def setExpectedDuration(self, expectedDuration):
         self.expectedDuration = int(expectedDuration)
