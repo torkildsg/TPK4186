@@ -31,57 +31,44 @@ class Normalization:
     #    Your first task consists thus in writting a Python script that normalizes the data, 
     #    i.e. that transforms their weekly progression into an abstract scale of progression.
     
-    def appendProject(self, projectName, df):
-        self.allProjectDataFrames[projectName] = df
+    def appendProject(self, project, df):
+        self.allProjectDataFrames[project] = df
 
-    def normalizeDataInColumns(self, projectDataFrame):
+    def calculateProjectDelay(self, project):
+        ...
+
+    def normalizeDataInColumns(self, project):
+        thisDf = project.getProjectDataFrame()
         scaling = MinMaxScaler()
-        scaling.fit_transform(projectDataFrame[['Foundation'], ['Framing'], ['CurtainWall'], ['HVAC'], ['FireFighting'], ['Elevator'], ['Electrical'], ['ArchitecturalFinishing']])
-        # Jobbe videre her 
+        normalizedDataframe = scaling.fit_transform(thisDf[['Foundation'], ['Framing'], ['CurtainWall'], ['HVAC'], ['FireFighting'], ['Elevator'], ['Electrical'], ['ArchitecturalFinishing']])
+        project.setProjectDataFrame(normalizedDataframe)
+        return normalizedDataframe
 
-
-    def createColumnsForWeeklyProgression(self, projectCode):
-        expectedDuration = self.getExpectedDuration()
-        df = self.getProjectDataFrame()
+    def createColumnsForWeeklyProgression(self, project):
+        expectedDuration = project.getExpectedDuration()
+        df = project.getProjectDataFrame()
         df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 4)))
-        self.setProjectDataFrame(df)
-    
-    # Funkson for å hente alle filene
-    def readFiles(self):
-        pathlist = Path("/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186/assignment4/projectData").rglob('*.tsv')
-        for path in sorted(pathlist):
-            #because path is object not string
-            path_in_str = str(path)
-            #print(path_in_str)
-
-    def calculateWeeklyDelay(self, projectDataFrame):
-        ...
-
-
-    # Design one or more Python scripts to make statistics on how much projects are delayed. 
-    # Q: From week to week, or in the end of the project?. 
-    # Q: Make statistics for every project, and plot this, or what? 
-    def calculateStatisticsOfProject(self, project):
-        ...
+        project.setProjectDataFrame(df)
 
     
     # Funkson for å hente alle filene
-
-    def readFiles(self):
-        pathlist = Path("/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186/assignment4/projectData").rglob('*.tsv')
+    def readFiles(self, folderPath):
+        pathlist = Path(str(folderPath)).rglob('*.tsv')
         for path in sorted(pathlist):
             pathString = str(path)
+            print(pathString)
             start = 'projectData/project'
             end = '.tsv'
             projectCode = int((pathString.split(start))[1].split(end)[0])
             newProject = Project(projectCode, pathString)
             self.createColumnsForWeeklyProgression(newProject)
             self.normalizeDataInColumns(newProject)
-            self.appendProject(projectCode, newProject.getProjectDataFrame())
+            self.appendProject(newProject, newProject.getProjectDataFrame())
 
 
     # In particular, print out histograms of delays. 
     # Q: For all projects in general?
+
     """def plotTerminationDates(self, terminationDates):
             minDate = np.amin(terminationDates)
             maxDate = np.max(terminationDates)
@@ -97,8 +84,12 @@ class Normalization:
 
 
 """ Testing """
-in_Normalization = Normalization()
-in_Normalization.readFiles()
 
-#print(in_Normalization.allProjectDataFrames)
+eivindPath = "/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186/assignment4/projectData"
+#torkildPath = "\Users\Torkild\TPK4186\assignment4\projectData"
+
+in_Normalization = Normalization()
+in_Normalization.readFiles(torkildPath)
+
+print(in_Normalization.allProjectDataFrames)
 
