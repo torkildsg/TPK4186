@@ -53,7 +53,7 @@ printer.exportPlant(waferprod, 'plant.csv')"""
 
 """ Testing Task 2 """
 
-batch1 = waferprod.newBatch(1, 20)
+"""batch1 = waferprod.newBatch(1, 20)
 batch2 = waferprod.newBatch(2, 20)
 batch3 = waferprod.newBatch(3, 20) # Suksess: 120, 
 batch4 = waferprod.newBatch(4, 20) # Feiler: 200, 150, 
@@ -75,12 +75,12 @@ for buffer in waferprod.getAllBuffers():
     print(str(buffer.getSourceTask().getName()) + "->" + str(buffer.getTargetTask().getName()))
     for batch in buffer.getQueueOfBatches():
         print(batch.getBatchCode())
-    print('\n')
+    print('\n')"""
 
 
 """ Testing Task 3 """
 
-"""scheduleOpti = Schedule(waferprod)
+scheduleOpti = Schedule(waferprod)
 simOpti = Simulator(waferprod)
 optimizer = Optimizer("opti")
 printOptimizer = Printer()
@@ -88,7 +88,7 @@ printOptimizer = Printer()
 optimized = simOpti.MonteCarloSimulation(optimizer, waferprod, scheduleOpti, 1000) 
 terminationDates = optimized[0]
 bestTermination = optimized[1]
-printOptimizer.printHTML(terminationDates, bestTermination)"""
+printOptimizer.printHTML(terminationDates, bestTermination)
 
 
 
