@@ -4,6 +4,7 @@ from Batch import Batch
 from Buffer import Buffer
 from Task import Task
 from Machine import Machine
+import operator
 
 class Plant:
 
@@ -161,6 +162,3 @@ class Plant:
                 return True
             else: continue
         return False
-
-
-        

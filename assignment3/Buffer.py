@@ -85,5 +85,7 @@ class Buffer:
     def dequeueBuffer(self):
         if len(self.queueOfBatches) < 1:
             return None
-        return self.queueOfBatches.pop(0)
+        popped = self.queueOfBatches.pop(0)
+        self.setWafers()
+        return popped
 
