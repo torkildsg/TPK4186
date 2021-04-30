@@ -11,6 +11,7 @@ import seaborn as sns
 from sklearn import svm, metrics
 from sklearn.preprocessing import MinMaxScaler
 from pathlib import Path
+from Project import Project
 
 
 
@@ -39,7 +40,7 @@ class Normalization:
         # Jobbe videre her 
 
 
-    def createColumsForWeeklyProgression(self, projectCode):
+    def createColumnsForWeeklyProgression(self, projectCode):
         expectedDuration = self.getExpectedDuration()
         df = self.getProjectDataFrame()
         df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 4)))
@@ -68,9 +69,14 @@ class Normalization:
     def readFiles(self):
         pathlist = Path("/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186/assignment4/projectData").rglob('*.tsv')
         for path in sorted(pathlist):
-            #because path is object not string
-            path_in_str = str(path)
-            #print(path_in_str)
+            pathString = str(path)
+            start = 'projectData/project'
+            end = '.tsv'
+            projectCode = int((pathString.split(start))[1].split(end)[0])
+            newProject = Project(projectCode, pathString)
+            self.createColumnsForWeeklyProgression(newProject)
+            self.normalizeDataInColumns(newProject)
+            self.appendProject(projectCode, newProject.getProjectDataFrame())
 
     # In particular, print out histograms of delays. 
     # Q: For all projects in general?
@@ -89,4 +95,8 @@ class Normalization:
 
 
 """ Testing """
+in_Normalization = Normalization()
+in_Normalization.readFiles()
+
+#print(in_Normalization.allProjectDataFrames)
 
