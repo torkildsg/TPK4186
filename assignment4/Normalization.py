@@ -14,8 +14,6 @@ from pathlib import Path
 from Project import Project
 
 
-
-
 class Normalization:
 
     def __init__(self):
@@ -98,22 +96,5 @@ class Normalization:
             plt.ylabel('Percentage')
             file = plt.savefig('delayHistogram.pdf')
             return file
-
-
-
-""" Testing """
-
-eivindPath = "/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186/assignment4/projectData"
-torkildPath = "projectData"
-
-in_Normalization = Normalization()
-in_Normalization.readFiles(torkildPath)
-in_Normalization.calculateAllProjectsDelay()
-in_Normalization.plotHistorgramOfDelays()
-
-for key, value in in_Normalization.allProjectDataFrames.items():
-    print(value)
-    print('\n')
-    break
 
 
