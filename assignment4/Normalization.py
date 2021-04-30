@@ -11,6 +11,7 @@ import seaborn as sns
 from sklearn import svm, metrics
 from sklearn.preprocessing import MinMaxScaler
 from pathlib import Path
+from Project import Project
 
 
 
@@ -38,6 +39,7 @@ class Normalization:
         scaling.fit_transform(projectDataFrame[['Foundation'], ['Framing'], ['CurtainWall'], ['HVAC'], ['FireFighting'], ['Elevator'], ['Electrical'], ['ArchitecturalFinishing']])
         # Jobbe videre her 
 
+
     def createColumnsForWeeklyProgression(self, projectCode):
         expectedDuration = self.getExpectedDuration()
         df = self.getProjectDataFrame()
@@ -62,6 +64,22 @@ class Normalization:
     def calculateStatisticsOfProject(self, project):
         ...
 
+    
+    # Funkson for å hente alle filene
+
+    def readFiles(self):
+        pathlist = Path("/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186/assignment4/projectData").rglob('*.tsv')
+        for path in sorted(pathlist):
+            pathString = str(path)
+            start = 'projectData/project'
+            end = '.tsv'
+            projectCode = int((pathString.split(start))[1].split(end)[0])
+            newProject = Project(projectCode, pathString)
+            self.createColumnsForWeeklyProgression(newProject)
+            self.normalizeDataInColumns(newProject)
+            self.appendProject(projectCode, newProject.getProjectDataFrame())
+
+
     # In particular, print out histograms of delays. 
     # Q: For all projects in general?
     """def plotTerminationDates(self, terminationDates):
@@ -79,4 +97,8 @@ class Normalization:
 
 
 """ Testing """
+in_Normalization = Normalization()
+in_Normalization.readFiles()
+
+#print(in_Normalization.allProjectDataFrames)
 
