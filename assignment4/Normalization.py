@@ -46,10 +46,10 @@ class ParseProject:
         return projectDataFrame
     
     def createColumsForWeeklyProgression(self):
-        expDu = self.getExpectedDuration()
+        expectedDuration = self.getExpectedDuration()
         df = self.getProjectDataFrame()
-        df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expDu)*100,1)))
-        return df
+        df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 4)))
+        self.setProjectDataFrame(df)
     
     def calculateWeeklyDelay(self, projectDataFrame):
         ...
@@ -133,13 +133,20 @@ class ParseProject:
 """ Testing """
 
 parsing = ParseProject() 
-parsing.importProject(r'projectData\project001.tsv')
-#parsing.importProject("/Users/eivndlarsen/VS/TPK4186/assignment4/projectData/project001.tsv")
+#parsing.importProject(r'projectData\project001.tsv')
+parsing.importProject("/Users/eivndlarsen/VS/TPK4186/assignment4/projectData/project001.tsv")
 test = parsing.getProjectDataFrame()
-print(parsing.createColumsForWeeklyProgression())
+#print(test)
 #sns.pairplot(test)
 #plt.show()
 
 
+# Funkson for å hente alle filene
 
+from pathlib import Path
 
+pathlist = Path("/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186/assignment4/projectData").rglob('*.tsv')
+for path in sorted(pathlist):
+     # because path is object not string
+     path_in_str = str(path)
+     #print(path_in_str)
