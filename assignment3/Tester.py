@@ -46,41 +46,32 @@ buffer8 = waferprod.newBuffer(task8, task9)
 endbuffer = waferprod.newBuffer(task9, end)
 endbuffer.setCapacity(math.inf) # Endbuffer has unlimited space
 
-"""
-printer = Printer()
-printer.exportPlant(waferprod, 'plant.csv')"""
 
+"""printer = Printer()
+printer.exportPlant(waferprod, 'plant.csv')
+"""
 
 """ Testing Task 2 """
 
-"""batch1 = waferprod.newBatch(1, 20)
-batch2 = waferprod.newBatch(2, 20)
-batch3 = waferprod.newBatch(3, 20) # Suksess: 120, 
-batch4 = waferprod.newBatch(4, 20) # Feiler: 200, 150, 
-batch5 = waferprod.newBatch(5, 20)
+"""
+batch1 = waferprod.newBatch(1, 50)
+batch2 = waferprod.newBatch(2, 50)
+batch3 = waferprod.newBatch(3, 50)
 
 waferprod.enqueueBatchIntoBuffer(batch1, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch2, startbuffer)
 waferprod.enqueueBatchIntoBuffer(batch3, startbuffer)
-waferprod.enqueueBatchIntoBuffer(batch4, startbuffer)
-waferprod.enqueueBatchIntoBuffer(batch5, startbuffer)
 
 schedule = Schedule(waferprod)
 simulator = Simulator(waferprod)
 simulator.simulationLoop(schedule)
 printer = Printer()
-printer.printExecution(simulator, sys.stdout)
-
-for buffer in waferprod.getAllBuffers():
-    print(str(buffer.getSourceTask().getName()) + "->" + str(buffer.getTargetTask().getName()))
-    for batch in buffer.getQueueOfBatches():
-        print(batch.getBatchCode())
-    print('\n')"""
+printer.printExecution(simulator, sys.stdout)"""
 
 
 """ Testing Task 3 """
 
-scheduleOpti = Schedule(waferprod)
+"""scheduleOpti = Schedule(waferprod)
 simOpti = Simulator(waferprod)
 optimizer = Optimizer("opti")
 printOptimizer = Printer()
@@ -88,7 +79,4 @@ printOptimizer = Printer()
 optimized = simOpti.MonteCarloSimulation(optimizer, waferprod, scheduleOpti, 1000) 
 terminationDates = optimized[0]
 bestTermination = optimized[1]
-printOptimizer.printHTML(terminationDates, bestTermination)
-
-
-
+printOptimizer.printHTML(terminationDates, bestTermination)"""
