@@ -5,7 +5,6 @@ from Buffer import Buffer
 from Task import Task
 from Machine import Machine
 from Plant import Plant
-from Printer import Printer
 from Event import Event
 from Schedule import Schedule
 from Simulator import Simulator

@@ -10,27 +10,18 @@ import math
 class Simulator:
     def __init__(self, plant):
         self.plant = plant
-        self.executionTime = dict() # Key: batchCode, value: total time for all tasks
         self.execution = [] # The executed schedule
         self.eventNumber = 0
         self.terminationDates = [] # All termnation dates
-        self.bestTermination = [[], [], math.inf, []] # [[optimal policyCombinations], [optimal batchsizes], the best date, [the total duration for optimal policyComb and batch]]
-    
+        self.bestTermination = [[], [], math.inf] # [[optimal policyCombinations], [optimal batchsizes], the best date] 
+
     def resetSimulator(self):
-        self.executionTime.clear()
         self.execution = []
         self.eventNumber = 0
         return True
 
-    def getSimulationExecutionTime(self):
-        values = self.executionTime.values()
-        return sum(values)
-
     def getExecution(self):
         return self.execution
-    
-    def getExecutionTime(self):
-        return self.executionTime
     
     def simulationLoop(self, schedule):
         self.execution = []
@@ -42,10 +33,9 @@ class Simulator:
             if self.executeEvent(event, schedule):
                 self.execution.append(event)
             else: continue
-
+    
     def executeEvent(self, event, schedule):
-        #self.currentDate = event.getDate()
-        self.currentSecond = event.getDate()
+        schedule.currentDate = event.getDate()
         thisBatch = event.getBatch()
 
         if event.getType() == Event.BUFFER_TO_TASK:
@@ -58,58 +48,38 @@ class Simulator:
             if not thisBuffer.isEmpty() and sourceTask.getName() != 'End':
                 executed = self.executeBufferToTask(event, thisBuffer, thisBatch, targetTask, schedule)
 
-                newTime = int(task.getLoadTime()) # Ny
-                schedule.currentSecond += newTime # Ny
-
+                #if nextBuffer.hasSpace(thisBatch):
                 schedule.scheduleTaskToBuffer(nextBuffer)  # Schedule the batch into the outputbuffer
-                
                 if len(thisBuffer.getQueueOfBatches()) > 0:
                     schedule.scheduleBufferToTask(thisBuffer.getTargetTask())
-                return executed
+                return executed 
 
         elif event.getType() == Event.TASK_TO_BUFFER:
-
             thisTask = event.getTask()
             targetBuffer = thisTask.getFirstOfOutgoingBuffers()
             sourceBuffer = thisTask.getFirstOfIncomingBuffers()
             nextTask = targetBuffer.getTargetTask()
-
+            #if targetBuffer.hasSpace(thisBatch):
             executed = self.executeTaskToBuffer(targetBuffer, thisBatch, schedule)
             if targetBuffer.getTargetTask().getName() != 'End' and len(targetBuffer.getQueueOfBatches()) > 0:
-
-                time = int((thisBatch.getNumOfWafers() * thisTask.getProcessTime()) + thisTask.getUnloadTime()) # Ny
-                schedule.currentSecond += time        # Ny
-
                 schedule.scheduleBufferToTask(nextTask) # Schedule a new batch into the next task
             return executed
-
+            #else: return False
 
     def executeBufferToTask(self, event, buffer, batch, task, schedule):
         duration = self.plant.taskServesBatch(self, batch, task)
         if duration:
             task.setHoldingBatch(batch)
-            newTime = int(task.getLoadTime()) # Ny
-            schedule.currentSecond += newTime # Ny
-            if not batch.getBatchCode() in self.executionTime.keys():
-                self.executionTime[batch.getBatchCode()] = float(duration)
-            else:
-                self.executionTime[batch.getBatchCode()] += float(duration)
             return True
-        else: 
-            return False
+        else: return False
     
     def executeTaskToBuffer(self, buffer, batch, schedule):
         sourceTask = buffer.getSourceTask()
-        targetTask = buffer.getTargetTask() 
-
-        if buffer.getAvailableCap() >= batch.getNumOfWafers() and batch not in buffer.getHistoryQueueOfBatches():
+        if (buffer.getAvailableCap() >= batch.getNumOfWafers()) and (batch not in buffer.getHistoryQueueOfBatches()):
             sourceTask.batchIsDone() # Removes the batch that the task holds, and sets the Task's state to idle
-            time = int((batch.getNumOfWafers() * sourceTask.getProcessTime()) + sourceTask.getUnloadTime()) # Ny
-            schedule.currentSecond += time        # Ny
             self.plant.enqueueBatchIntoBuffer(batch, buffer)
             return True
-        else:
-            return False
+        else: return False
         
 
     """ Task 3 """
@@ -125,7 +95,7 @@ class Simulator:
 
         while lastBatch not in endBuffer and not schedule.isCurrentScheduleEmpty():
             event = schedule.popFirstEvent()
-            if self.executeEventForOptimizer(event, schedule):
+            if self.executeEventForOptimizer(event, schedule): #Her brukte vi før eecuteEventForOptimizer
                 self.execution.append(event)
                 for index, machine in enumerate(plant.getAllMachines(), 0):
                     plant.runMachinePolicy(self, schedule, machine, policyCombination[index])
@@ -133,8 +103,7 @@ class Simulator:
                 continue
     
     def executeEventForOptimizer(self, event, schedule):
-        #self.currentDate = event.getDate()
-        self.currentSecond = event.getDate()
+        schedule.currentDate = event.getDate()
         thisBatch = event.getBatch()
 
         if event.getType() == Event.BUFFER_TO_TASK:
@@ -142,22 +111,17 @@ class Simulator:
             thisBuffer = event.getBuffer()
             sourceTask = thisBuffer.getSourceTask()
             nextBuffer = targetTask.getFirstOfOutgoingBuffers()
-            task = thisBuffer.getTargetTask()
 
             if not thisBuffer.isEmpty() and sourceTask.getName() != 'End':
                 executed = self.executeBufferToTask(event, thisBuffer, thisBatch, targetTask, schedule)
-                
-                
-                schedule.scheduleTaskToBuffer(nextBuffer)  # Schedule the batch into the outputbuffer
+                if nextBuffer.hasSpace(thisBatch):
+                    schedule.scheduleTaskToBuffer(nextBuffer)  # Schedule the batch into the outputbuffer
                 return executed
-        
+
         elif event.getType() == Event.TASK_TO_BUFFER:
             thisTask = event.getTask()
             targetBuffer = thisTask.getFirstOfOutgoingBuffers()
-            sourceBuffer = thisTask.getFirstOfIncomingBuffers()
-            nextTask = targetBuffer.getTargetTask()
             executed = self.executeTaskToBuffer(targetBuffer, thisBatch, schedule)
-
             return executed
 
     def MonteCarloSimulation(self, optimizer, plant, schedule, numOfWafers):
@@ -173,24 +137,16 @@ class Simulator:
             
                 optimizer.initiatePlant(plant, batchSize, numOfWafers) 
                 self.simulationLoopForOptimizer(schedule, policyComb)
-                #self.terminationDates.append(schedule.currentDate)
-                self.terminationDates.append(schedule.currentSecond)
+                self.terminationDates.append(schedule.currentDate)
                 
-                #if schedule.currentDate < self.bestTermination[2]:
-                if schedule.currentSecond < self.bestTermination[2]:
-                    self.bestTermination[0] = []
-                    self.bestTermination[0].append(policyComb)
-                    self.bestTermination[1] = []
-                    self.bestTermination[1].append(batchSize)
-                    #self.bestTermination[2] = schedule.currentDate
-                    self.bestTermination[2] = schedule.currentSecond
-                    self.bestTermination[3] = []
-                    self.bestTermination[3].append(self.getSimulationExecutionTime())
-
-                elif schedule.currentSecond == self.bestTermination[2]:
+                if schedule.currentDate < self.bestTermination[2]:
                     self.bestTermination[0].append(policyComb)
                     self.bestTermination[1].append(batchSize)
-                    self.bestTermination[3].append(self.getSimulationExecutionTime())
+                    self.bestTermination[2] = schedule.currentDate
+                elif schedule.currentDate == self.bestTermination[2]:
+                    self.bestTermination[0].append(policyComb)
+                    self.bestTermination[1].append(batchSize)
+        
         # Returns the list of all terminationdates, and the list of the best terminations that has the lowest date-number. 
         return self.terminationDates, self.bestTermination
         

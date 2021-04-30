@@ -5,21 +5,15 @@ from Event import Event
 from Buffer import Buffer
 from Batch import Batch
 from Task import Task
-from Printer import Printer
-import sys
-
 class Schedule:
     def __init__(self, plant):
         self.plant = plant
         self.currentSchedule = []
-        self.currentDate = 1
+        self.currentDate = 0
         self.eventNumber = 0
-
-        self.currentSecond = 0
     
     def resetSchedule(self):
-        #self.currentDate = 1
-        self.currentSecond = 0
+        self.currentDate = 0
         self.allScheduledEvents = []
         self.currentSchedule = []
         return True
@@ -27,8 +21,8 @@ class Schedule:
     def getPlant(self):
         return self.plant
 
-    def getCurrentSecond(self):
-        return self.currentSecond
+    def getCurrentDate(self):
+        return self.currentDate
 
     def getCurrentSchedule(self):
         return self.currentSchedule
@@ -52,14 +46,13 @@ class Schedule:
             position = 0
             while position < len(self.currentSchedule):
                 otherEvent = self.currentSchedule[position]
-                if otherEvent.getDate() > event.getDate():
+                if otherEvent.getDate() >= event.getDate():
                     break
                 position += 1
             self.currentSchedule.insert(position, event)
         return event
 
     def scheduleBufferToTask(self, task): 
-        
         if task.getName() == 'End':
             return False
         else:
@@ -70,24 +63,16 @@ class Schedule:
             numOfWafersIncomingBatch = incomingBatch.getNumOfWafers() # Number of wafers that the incoming batch contains
          
             if capOutgoingBuffer >= numOfWafersIncomingBatch:
-                # currentDate = tasks sin runtid per wafer * batchstørrelse + 4 sekunder (unload + loadtime)
-                #newTime = int(incomingBatch.getNumOfWafers() * task.getProcessTime() + task.getLoadTime())
-                #self.currentSecond += newTime
-                #self.currentDate += int(1)
-                #return self.scheduleEvent(Event.BUFFER_TO_TASK, int(self.currentDate - 1), incomingBatch, incomingBuffer, task) 
-                return self.scheduleEvent(Event.BUFFER_TO_TASK, int(self.currentSecond), incomingBatch, incomingBuffer, task) 
+                date = int(self.currentDate + task.getLoadTime())
+                return self.scheduleEvent(Event.BUFFER_TO_TASK, date, incomingBatch, incomingBuffer, task) 
             else: return False
+    
     
     def scheduleTaskToBuffer(self, buffer):
         sourceTask = buffer.getSourceTask() # The predecessor task to this buffer
         incomingBatch = sourceTask.getHoldingBatch() # The batch that the task is holding, and we want to enter the buffer
         
-        if incomingBatch != None and incomingBatch not in buffer.getHistoryQueueOfBatches(): 
-            #time = int(sourceTask.getUnloadTime())
-            #self.currentSecond += time
-            #self.currentDate += int(1)
-            
-            #self.scheduleEvent(Event.TASK_TO_BUFFER, int(self.currentDate-1), incomingBatch, buffer, sourceTask)
-            self.scheduleEvent(Event.TASK_TO_BUFFER, int(self.currentSecond), incomingBatch, buffer, sourceTask)
+        if (incomingBatch not in buffer.getHistoryQueueOfBatches()) and incomingBatch != None: 
+            date = int(self.currentDate + (incomingBatch.getNumOfWafers() * sourceTask.getProcessTime()) + sourceTask.getUnloadTime())
+            self.scheduleEvent(Event.TASK_TO_BUFFER, date, incomingBatch, buffer, sourceTask)
         else: return False 
-    
