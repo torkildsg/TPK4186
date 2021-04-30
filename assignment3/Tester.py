@@ -71,7 +71,7 @@ printer.printExecution(simulator, sys.stdout)"""
 
 """ Testing Task 3 """
 
-scheduleOpti = Schedule(waferprod)
+"""scheduleOpti = Schedule(waferprod)
 simOpti = Simulator(waferprod)
 optimizer = Optimizer("opti")
 printOptimizer = Printer()
@@ -79,4 +79,4 @@ printOptimizer = Printer()
 optimized = simOpti.MonteCarloSimulation(optimizer, waferprod, scheduleOpti, 1000) 
 terminationDates = optimized[0]
 bestTermination = optimized[1]
-printOptimizer.printHTML(terminationDates, bestTermination)
+printOptimizer.printHTML(terminationDates, bestTermination)"""
