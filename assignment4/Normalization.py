@@ -10,6 +10,10 @@ import seaborn as sns
 #from pprint import pprint
 from sklearn import svm, metrics
 from sklearn.preprocessing import MinMaxScaler
+from pathlib import Path
+
+
+
 
 class Normalization:
 
@@ -34,12 +38,21 @@ class Normalization:
         scaling.fit_transform(projectDataFrame[['Foundation'], ['Framing'], ['CurtainWall'], ['HVAC'], ['FireFighting'], ['Elevator'], ['Electrical'], ['ArchitecturalFinishing']])
         # Jobbe videre her 
 
-    def createColumnsForWeeklyProgression(self, projectName):
+
+    def createColumsForWeeklyProgression(self, projectCode):
         expectedDuration = self.getExpectedDuration()
         df = self.getProjectDataFrame()
         df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 4)))
         self.setProjectDataFrame(df)
     
+     # Funkson for å hente alle filene
+    def allProjects(self, directory):
+        pathlist = Path("/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186/assignment4/projectData").rglob('*.tsv')
+        for path in sorted(pathlist):
+             # because path is object not string
+             path_in_str = str(path)
+             #print(path_in_str)
+
     def calculateWeeklyDelay(self, projectDataFrame):
         ...
 
@@ -50,6 +63,14 @@ class Normalization:
     def calculateStatisticsOfProject(self, project):
         ...
     
+    # Funkson for å hente alle filene
+
+    def readFiles(self):
+        pathlist = Path("/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186/assignment4/projectData").rglob('*.tsv')
+        for path in sorted(pathlist):
+            #because path is object not string
+            path_in_str = str(path)
+            #print(path_in_str)
 
     # In particular, print out histograms of delays. 
     # Q: For all projects in general?
@@ -65,47 +86,7 @@ class Normalization:
             return file"""
   
 
-    """def importProject(self, csv_file):
-        try:
-            inputFile = open(csv_file, 'r')
-        except FileNotFoundError:
-            print("The file " + csv_file + "does not exist.")
-    
-        #array = np.genfromtxt(islice(inputFile, 3, 5))
-        content = [x.strip() for x in inputFile.readlines()] 
-        newContent = []
-        headers = []
-        week = 0
-
-        for i in range(len(content)):
-            thisLine = content[i].split('\t')
-            if i == 0:
-                self.setProjectName(thisLine[1])
-            elif i == 1:
-                self.setExpectedDuration(thisLine[1])
-            elif i == 2:
-                headers = thisLine
-            else: 
-                floatLine = []
-                for e in thisLine:
-                    floatLine.append(float(e))
-                week += 1
-                newContent.append(floatLine)
-            self.setAcutalDuration(week)
-        return newContent"""
 
 
 """ Testing """
-
-parsing = ParseProject() 
-parsing.importProject(r'projectData\project001.tsv')
-#parsing.importProject("/Users/eivndlarsen/VS/TPK4186/assignment4/projectData/project001.tsv")
-#test = parsing.getProjectDataFrame()
-parsing.createColumnsForWeeklyProgression()
-print(parsing.getProjectDataFrame())
-#sns.pairplot(test)
-#plt.show()
-
-
-
 
