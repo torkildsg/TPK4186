@@ -75,11 +75,12 @@ class Simulator:
     
     def executeTaskToBuffer(self, buffer, batch, schedule):
         sourceTask = buffer.getSourceTask()
-        if (buffer.getAvailableCap() >= batch.getNumOfWafers()) and (batch not in buffer.getHistoryQueueOfBatches()):
+        if buffer.getAvailableCap() >= batch.getNumOfWafers() and batch not in buffer.getHistoryQueueOfBatches():
             sourceTask.batchIsDone() # Removes the batch that the task holds, and sets the Task's state to idle
             self.plant.enqueueBatchIntoBuffer(batch, buffer)
             return True
-        else: return False
+        else: 
+            return False
         
 
     """ Task 3 """
@@ -128,7 +129,7 @@ class Simulator:
         optimizer.generateAllPossiblePolicyCombinations(plant)
         allPolicyCombinations = optimizer.allPossiblePolicyCombinations
         allPossibleBatchSizes = [i for i in range(20, 51)] # Testing 31 (20-50) different batch-sizes. 
-        print(len(allPolicyCombinations))
+
         for batchSize in allPossibleBatchSizes:
             for policyComb in allPolicyCombinations:    
                 plant.resetPlant()
