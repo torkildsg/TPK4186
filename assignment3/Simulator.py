@@ -129,7 +129,7 @@ class Simulator:
         optimizer.generateAllPossiblePolicyCombinations(plant)
         allPolicyCombinations = optimizer.allPossiblePolicyCombinations
         allPossibleBatchSizes = [i for i in range(20, 51)] # Testing 31 (20-50) different batch-sizes. 
-        
+
         for batchSize in allPossibleBatchSizes:
             for policyComb in allPolicyCombinations:    
                 plant.resetPlant()

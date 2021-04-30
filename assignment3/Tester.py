@@ -52,6 +52,7 @@ printer.exportPlant(waferprod, 'plant.csv')
 """
 
 """ Testing Task 2 """
+
 """
 batch1 = waferprod.newBatch(1, 50)
 batch2 = waferprod.newBatch(2, 50)
@@ -67,6 +68,7 @@ simulator.simulationLoop(schedule)
 printer = Printer()
 printer.printExecution(simulator, sys.stdout)"""
 
+
 """ Testing Task 3 """
 
 scheduleOpti = Schedule(waferprod)
@@ -78,6 +80,3 @@ optimized = simOpti.MonteCarloSimulation(optimizer, waferprod, scheduleOpti, 100
 terminationDates = optimized[0]
 bestTermination = optimized[1]
 printOptimizer.printHTML(terminationDates, bestTermination)
-
-
-
