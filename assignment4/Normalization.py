@@ -11,15 +11,10 @@ import seaborn as sns
 from sklearn import svm, metrics
 from sklearn.preprocessing import MinMaxScaler
 
-
-class ParseProject:
+class Normalization:
 
     def __init__(self):
-        self.projectName = None
-        self.expectedDuration = None
-        self.actualDuration = None
-        self.projectDataFrame = None
-        self.allProjectDataFrames = dict()
+        self.allProjectDataFrames = dict() # {key: 'project001', values: <df>, ...}
     
     # Q: In task 2.2 and 2.3; what is considered 'early'?
     # A: Mater inn data, records fra uke til uke, hvor tidlig klarer man av å avgjøre hvorvidt det er en fiasko?
@@ -30,31 +25,20 @@ class ParseProject:
 
     #    Your first task consists thus in writting a Python script that normalizes the data, 
     #    i.e. that transforms their weekly progression into an abstract scale of progression.
-    def appendProject(self, dataframe, expectedDuration):
-        self.allProjectDataFrames[expectedDuration] = dataframe
+    
+    def appendProject(self, projectName, df):
+        self.allProjectDataFrames[projectName] = df
 
     def normalizeDataInColumns(self, projectDataFrame):
         scaling = MinMaxScaler()
         scaling.fit_transform(projectDataFrame[['Foundation'], ['Framing'], ['CurtainWall'], ['HVAC'], ['FireFighting'], ['Elevator'], ['Electrical'], ['ArchitecturalFinishing']])
         # Jobbe videre her 
 
-    def importProject(self, fileName):
-        expectedDurationDataFrame = pd.read_csv(fileName, sep='\t', nrows=1)
-        expectedDuration = expectedDurationDataFrame.iat[0,1] 
-        projectDataFrame = pd.read_csv(fileName, sep='\t', header=2)
-
-        self.setExpectedDuration(expectedDuration) # Gjøre om? / fjerne
-        self.setProjectDataFrame(projectDataFrame) # Gjøre om / fjerne
-
-        self.appendProject(projectDataFrame, expectedDuration)
-
-        return projectDataFrame
-    
-    def createColumsForWeeklyProgression(self):
-        expDu = self.getExpectedDuration()
+    def createColumnsForWeeklyProgression(self, projectName):
+        expectedDuration = self.getExpectedDuration()
         df = self.getProjectDataFrame()
-        df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expDu), 4)))
-        return df
+        df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 4)))
+        self.setProjectDataFrame(df)
     
     def calculateWeeklyDelay(self, projectDataFrame):
         ...
@@ -79,30 +63,6 @@ class ParseProject:
             plt.ylabel('Percentage of all terminations')
             file = plt.savefig('terminationDateHistogram.pdf')
             return file"""
-
-    def setProjectName(self, projectName):
-        self.projectName = projectName  
-    
-    def getProjectName(self):
-        return self.projectName 
-
-    def setExpectedDuration(self, expectedDuration):
-        self.expectedDuration = int(expectedDuration)
-
-    def getExpectedDuration(self):
-        return self.expectedDuration 
-
-    def setActualDuration(self, actualDuration):
-        self.actualDuration = actualDuration
-    
-    def getActualDuration(self):
-        return self.actualDuration 
-    
-    def setProjectDataFrame(self, dataframe):
-        self.projectDataFrame = dataframe
-    
-    def getProjectDataFrame(self):
-        return self.projectDataFrame
   
 
     """def importProject(self, csv_file):
@@ -140,8 +100,9 @@ class ParseProject:
 parsing = ParseProject() 
 parsing.importProject(r'projectData\project001.tsv')
 #parsing.importProject("/Users/eivndlarsen/VS/TPK4186/assignment4/projectData/project001.tsv")
-test = parsing.getProjectDataFrame()
-print(parsing.createColumsForWeeklyProgression())
+#test = parsing.getProjectDataFrame()
+parsing.createColumnsForWeeklyProgression()
+print(parsing.getProjectDataFrame())
 #sns.pairplot(test)
 #plt.show()
 
