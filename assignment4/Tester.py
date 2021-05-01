@@ -2,6 +2,7 @@
 
 from Normalization import Normalization
 from FiascoDetection import FiascoDetection
+import pandas as pd
 
 """ Testing """
 
@@ -10,6 +11,7 @@ torkildPath = "projectData"
 
 in_Normalization = Normalization()
 in_Normalization.readFiles(torkildPath)
+
 in_Normalization.calculateAllProjectsDelay()
 in_Normalization.plotHistorgramOfDelays()
 
@@ -27,4 +29,8 @@ test47 = list(in_Normalization.allProjectDataFrames.values())[46]
 test60 = list(in_Normalization.allProjectDataFrames.values())[59]
 test76 = list(in_Normalization.allProjectDataFrames.values())[75]
 
-print(detect.logisticReg(test15))
+""" Testing Logistic Regression """
+#print(detect.logisticReg(test15, 0.5))
+
+""" Testing KNeighbors """
+print(detect.KNeighbors(test15, 0.3))
