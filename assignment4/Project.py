@@ -12,6 +12,8 @@ class Project:
         self.projectDataFrame = None
         self.importProject(fileName)
     
+    
+    
     def getProject(self, projectCode):
         return self.projectCode
     
@@ -29,15 +31,17 @@ class Project:
     
     def getDelay(self):
         return round((self.getActualDuration()/self.getExpectedDuration()), 3)
-
+         
     def setExpectedDuration(self, expectedDuration):
         self.expectedDuration = int(expectedDuration)
 
     def getExpectedDuration(self):
         return self.expectedDuration 
 
-    def setActualDuration(self, actualDuration):
-        self.actualDuration = actualDuration
+    def setActualDuration(self):
+        df = self.getProjectDataFrame()
+        actualWeek = df.iloc[-1]['Week']
+        self.actualDuration = actualWeek
     
     def getActualDuration(self):
         return self.actualDuration 

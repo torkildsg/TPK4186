@@ -33,10 +33,11 @@ class Normalization:
     def appendProject(self, project, df):
         self.allProjectDataFrames[project] = df
 
+
+
     def calculateAllProjectsDelay(self):
         for key, value in self.allProjectDataFrames.items():    
-            actualWeek = value.iloc[-1]['Week']
-            key.setActualDuration(actualWeek)
+            key.setActualDuration()
             delay = round(float((key.getDelay()-1)*100), 1)
             self.allProjectDelays.append(delay)
         return self.getAllProjectsDelays
@@ -54,13 +55,19 @@ class Normalization:
         df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 3)))
         project.setProjectDataFrame(df)
     
+
     def createBinaryFiasco(self, project):
         df = project.getProjectDataFrame()
-        conditionOne = (df["WeeklyProgression"] < 1.4) 
+        """conditionOne = (df["WeeklyProgression"] < 1.4) 
         conditionTwo = (df["WeeklyProgression"] >= 1.4)
         conditions = [conditionOne, conditionTwo]
         choices = [0, 1]
-        df["FiascoBinary"] = np.select(conditions, choices)
+        df["FiascoBinary"] = np.select(conditions, choices)"""
+        if project.getDelay() >= 1.4:
+            df["FiascoBinary"] = 1
+        else:
+            df["FiascoBinary"] = 0 
+
     
     # Funkson for å hente alle filene
     def readFiles(self, folderPath):
@@ -76,6 +83,7 @@ class Normalization:
             projectCode = int((pathString.split(start))[1].split(end)[0])
             newProject = Project(projectCode, pathString)
             self.createColumnsForWeeklyProgression(newProject)
+            newProject.setActualDuration()
             self.createBinaryFiasco(newProject)
             self.normalizeDataInColumns(newProject)
             self.appendProject(newProject, newProject.getProjectDataFrame())
