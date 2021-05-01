@@ -5,10 +5,7 @@ import numpy as np
 import pandas as pd 
 import matplotlib.pyplot as plt
 import csv
-import seaborn as sns
-#from itertools import islice
-#from pprint import pprint
-from sklearn import svm, metrics
+from sklearn import svm, metrics, preprocessing
 from sklearn.preprocessing import MinMaxScaler
 from pathlib import Path
 from Project import Project
@@ -59,13 +56,12 @@ class Normalization:
     
     def createBinaryFiasco(self, project):
         df = project.getProjectDataFrame()
-        df = df.assign(FiascoBinary=lambda x: 0 if float(x['WeeklyProgression']) < 1 else 1)
-        project.setProjectDataFrame(df)
-
-        # lambda x: 'True' if x <= 4 else 'False'
-        # 0 if x['WeeklyProgression'] < 1 else 1
+        conditionOne = (df["WeeklyProgression"] < 1.4) 
+        conditionTwo = (df["WeeklyProgression"] >= 1.4)
+        conditions = [conditionOne, conditionTwo]
+        choices = [0, 1]
+        df["FiascoBinary"] = np.select(conditions, choices)
     
-
     # Funkson for å hente alle filene
     def readFiles(self, folderPath):
         pathlist = Path(str(folderPath)).rglob('*.tsv')
