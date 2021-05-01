@@ -59,7 +59,7 @@ class Normalization:
     
     def createBinaryFiasco(self, project):
         df = project.getProjectDataFrame()
-        df = df.assign(FiascoBinary=lambda x: 0 if float(x['WeeklyProgression']) < 1 else 1)
+        df = df.assign(FiascoBinary=lambda x: (x['WeeklyProgression'] >1 ))
         project.setProjectDataFrame(df)
 
         # lambda x: 'True' if x <= 4 else 'False'

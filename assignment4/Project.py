@@ -14,6 +14,9 @@ class Project:
     
     def getProject(self, projectCode):
         return self.projectCode
+    
+    def getProjectCode(self):
+        return self.projectCode
 
     def importProject(self, fileName):
         expectedDurationDataFrame = pd.read_csv(fileName, sep='\t', nrows=1)
