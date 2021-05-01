@@ -35,8 +35,7 @@ class Normalization:
 
     def calculateAllProjectsDelay(self):
         for key, value in self.allProjectDataFrames.items():    
-            actualWeek = value.iloc[-1]['Week']
-            key.setActualDuration(actualWeek)
+            key.setActualDuration()
             delay = round(float((key.getDelay()-1)*100), 1)
             self.allProjectDelays.append(delay)
         return self.getAllProjectsDelays
@@ -76,9 +75,11 @@ class Normalization:
             projectCode = int((pathString.split(start))[1].split(end)[0])
             newProject = Project(projectCode, pathString)
             self.createColumnsForWeeklyProgression(newProject)
+            newProject.setActualDuration()
             self.createBinaryFiasco(newProject)
             self.normalizeDataInColumns(newProject)
             self.appendProject(newProject, newProject.getProjectDataFrame())
+        self.calculateAllProjectsDelay()
 
 
     # In particular, print out histograms of delays. 

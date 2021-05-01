@@ -33,8 +33,10 @@ class Project:
     def getExpectedDuration(self):
         return self.expectedDuration 
 
-    def setActualDuration(self, actualDuration):
-        self.actualDuration = actualDuration
+    def setActualDuration(self):
+        df = self.getProjectDataFrame()
+        actualWeek = df.iloc[-1]['Week']
+        self.actualDuration = actualWeek
     
     def getActualDuration(self):
         return self.actualDuration 
