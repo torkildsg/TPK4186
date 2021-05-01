@@ -32,12 +32,12 @@ class FiascoDetection:
     #   4. EnsembleRegressors
 
 
-    def logisticReg(self, df):
+    def logisticReg(self, df, testSize):
         # Seperate our columns into X (features), y (target labels)
         X, y = df.drop(['WeeklyProgression', 'Week', 'FiascoBinary'], axis=1), df['FiascoBinary'] # .values
-        
-        # Split our data with a 70/30 train/test-split
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.4)
+
+        # Split our data with a 50/50 train/test-split
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = testSize)
 
         lr_model = LogisticRegression()
         lr_model.fit(X_train,y_train)
@@ -53,9 +53,9 @@ class FiascoDetection:
         test_acc = accuracy_score(y_test, test_preds)
         print(f"Accuracy on test data: {test_acc:.4f}")
     
-    def KNeighbors(self, df):
+    def KNeighbors(self, df, testSize):
         X, y = df.drop(['WeeklyProgression', 'Week', 'FiascoBinary'], axis=1), df['FiascoBinary'] # .values
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = testSize)
 
         # Define model
         knn_model = KNeighborsClassifier()
