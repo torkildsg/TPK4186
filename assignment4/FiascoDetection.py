@@ -9,6 +9,7 @@ from sklearn import svm, metrics, preprocessing
 from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.kernel_ridge import KernelRidge
 
 
 # A project is considered as a fiasco if its actual duration is at least 40% higher than its expected
