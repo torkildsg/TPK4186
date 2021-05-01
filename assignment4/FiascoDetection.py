@@ -7,7 +7,9 @@ import numpy as np
 import pandas as pd 
 from sklearn import svm, metrics, preprocessing
 from sklearn.metrics import accuracy_score
-from sklearn.neighbors import KNeighborsClassifier 
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.kernel_ridge import KernelRidge
 
 
 # A project is considered as a fiasco if its actual duration is at least 40% higher than its expected
@@ -31,6 +33,7 @@ class FiascoDetection:
     #   3. SVR(kernel = 'rbf')
     #   4. EnsembleRegressors
 
+    """ Task 2: Classification algorithms """
 
     def logisticReg(self, df, testSize):
         # Seperate our columns into X (features), y (target labels)
@@ -41,39 +44,64 @@ class FiascoDetection:
 
         lr_model = LogisticRegression()
         lr_model.fit(X_train,y_train)
-        train_preds = lr_model.predict(X_train)
+        train_prediction = lr_model.predict(X_train)
 
-        train_acc = accuracy_score(y_train, train_preds)
+        train_acc = accuracy_score(y_train, train_prediction)
         print(f"Accuracy on training data: {train_acc:.4f}")
         
         # Predict test data
-        test_preds = lr_model.predict(X_test)
+        test_prediction = lr_model.predict(X_test)
 
         # Calculate accuracy on test set
-        test_acc = accuracy_score(y_test, test_preds)
+        test_acc = accuracy_score(y_test, test_prediction)
         print(f"Accuracy on test data: {test_acc:.4f}")
     
     def KNeighbors(self, df, testSize):
         X, y = df.drop(['WeeklyProgression', 'Week', 'FiascoBinary'], axis=1), df['FiascoBinary'] # .values
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = testSize)
 
-        # Define model
         knn_model = KNeighborsClassifier()
-
-        # Fit model
         knn_model.fit(X_train, y_train)
-
-        # Predict training data
-        train_preds = knn_model.predict(X_train)
+        train_prediction = knn_model.predict(X_train)
 
         # Output accuracy on training data
-        train_acc = accuracy_score(y_train, train_preds)
+        train_acc = accuracy_score(y_train, train_prediction)
         print(f"Accuracy on training data: {train_acc:.4f}")
 
         # Predict test data
-        test_preds = knn_model.predict(X_test)
+        test_prediction = knn_model.predict(X_test)
 
         # Calculate accuracy on test set
-        test_acc = accuracy_score(y_test, test_preds)
+        test_acc = accuracy_score(y_test, test_prediction)
         print(f"Accuracy on test data: {test_acc:.4f}")
+    
+    def naiveBayes(self, df, testSize):
+        X, y = df.drop(['WeeklyProgression', 'Week', 'FiascoBinary'], axis=1), df['FiascoBinary'] # .values
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = testSize)
 
+        gnb_model = GaussianNB()
+        gnb_model.fit(X_train, y_train)
+        train_prediction = gnb_model.predict(X_train)
+        
+        # Output accuracy on training data
+        train_acc = accuracy_score(y_train, train_prediction)
+        print(f"Accuracy on training data: {train_acc:.4f}")
+
+        # Predict test data
+        test_prediction = gnb_model.predict(X_test)
+
+        # Calculate accuracy on test set
+        test_acc = accuracy_score(y_test, test_prediction)
+        print(f"Accuracy on test data: {test_acc:.4f}")
+    
+
+    """ Task 3: Regression algorithms """
+
+    def RidgeReg(self, df, testSize):
+        ...
+    
+    def SVRlinear(self, df, testSize):
+        ...
+    
+    def SVRrbf(self, df, testSize):
+        ...

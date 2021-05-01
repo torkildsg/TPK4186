@@ -87,6 +87,7 @@ class Normalization:
             self.createBinaryFiasco(newProject)
             self.normalizeDataInColumns(newProject)
             self.appendProject(newProject, newProject.getProjectDataFrame())
+        self.calculateAllProjectsDelay()
 
 
     # In particular, print out histograms of delays. 
