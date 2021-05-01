@@ -43,16 +43,16 @@ class FiascoDetection:
 
         lr_model = LogisticRegression()
         lr_model.fit(X_train,y_train)
-        train_preds = lr_model.predict(X_train)
+        train_prediction = lr_model.predict(X_train)
 
-        train_acc = accuracy_score(y_train, train_preds)
+        train_acc = accuracy_score(y_train, train_prediction)
         print(f"Accuracy on training data: {train_acc:.4f}")
         
         # Predict test data
-        test_preds = lr_model.predict(X_test)
+        test_prediction = lr_model.predict(X_test)
 
         # Calculate accuracy on test set
-        test_acc = accuracy_score(y_test, test_preds)
+        test_acc = accuracy_score(y_test, test_prediction)
         print(f"Accuracy on test data: {test_acc:.4f}")
     
     def KNeighbors(self, df, testSize):
@@ -61,10 +61,10 @@ class FiascoDetection:
 
         knn_model = KNeighborsClassifier()
         knn_model.fit(X_train, y_train)
-        train_preds = knn_model.predict(X_train)
+        train_prediction = knn_model.predict(X_train)
 
         # Output accuracy on training data
-        train_acc = accuracy_score(y_train, train_preds)
+        train_acc = accuracy_score(y_train, train_prediction)
         print(f"Accuracy on training data: {train_acc:.4f}")
 
         # Predict test data
@@ -102,5 +102,5 @@ class FiascoDetection:
     def SVRlinear(self, df, testSize):
         ...
     
-    def SVRrbf(Self, df, testSize):
+    def SVRrbf(self, df, testSize):
         ...

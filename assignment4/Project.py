@@ -12,7 +12,12 @@ class Project:
         self.projectDataFrame = None
         self.importProject(fileName)
     
+    
+    
     def getProject(self, projectCode):
+        return self.projectCode
+    
+    def getProjectCode(self):
         return self.projectCode
 
     def importProject(self, fileName):
@@ -26,7 +31,7 @@ class Project:
     
     def getDelay(self):
         return round((self.getActualDuration()/self.getExpectedDuration()), 3)
-
+         
     def setExpectedDuration(self, expectedDuration):
         self.expectedDuration = int(expectedDuration)
 
