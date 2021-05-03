@@ -12,29 +12,40 @@ in_Normalization = Normalization()
 dictOfAllProjects = in_Normalization.readFiles(torkildPath)
 #in_Normalization.plotHistorgramOfDelays()
 
+#------------------------------------------------------------------------------------------------------------
 
 """ Testing Task 2 """
-
 # All projects that is a fiasco: 15, 28, 40, 47, 60, 76
 # Here you can decide the # of weeks you want to use (the number is a decimal)
-normalizedDf = in_Normalization.generateDataFrameForClassification(dictOfAllProjects, 0.2) 
-print(normalizedDf)
-print(normalizedDf.iloc[[39]])
-
+classificationDf = in_Normalization.generateDataFrameForClassification(dictOfAllProjects, 0.2) 
 predict = ProjectPrediction()
 
+#print(classificationDf)
+#print(classificationDf.iloc[[39]])
+
 """ Testing Logistic Regression """
-# Here you can decide the test-split (in decimal)
-print("Logistic Regression: ")
-print(predict.logisticReg(normalizedDf, 0.7))
-print("\n")
+# Here you can decide the test-size (in decimal)
+print(predict.logisticReg(classificationDf, 0.2))
 
 """ Testing KNeighbors """
-print("KNeighbors: ")
-print(predict.KNeighbors(normalizedDf, 0.7))
-print("\n")
+print(predict.KNeighbors(classificationDf, 0.2))
 
 """ Testing Naive Bayes """
-print("Naive Bayes: ")
-print(predict.naiveBayes(normalizedDf, 0.7))
-print("\n")
+print(predict.naiveBayes(classificationDf, 0.2))
+
+#------------------------------------------------------------------------------------------------------------
+
+""" Testing Task 3 """
+# Here you can decide the # of weeks you want to use (the number is a decimal)
+regressionDf = in_Normalization.generateDataFrameForRegression(dictOfAllProjects, 0.2)
+#print(regressionDf)
+
+""" Testing Linear SVR """
+# Here you can decide the test-split (in decimal)
+predict.SVRlinear(regressionDf, 0.2)
+
+""" Testing Linear Lasso """
+predict.LassoLinear(regressionDf, 0.2)
+
+""" Testing Ridge Regression """
+predict.ridgeReg(regressionDf, 0.2)

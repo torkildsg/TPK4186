@@ -70,7 +70,7 @@ class Normalization:
     
     def generateDataFrameForClassification(self, dictOfAllProjects, percentageOfTime):
         for key, value in dictOfAllProjects.items():
-            rowNumber = int(math.ceil(key.getExpectedDuration() * percentageOfTime)-1)
+            rowNumber = int(math.ceil(key.getActualDuration() * percentageOfTime)-1)
             df = value.drop(['Week'], axis=1).iloc[[rowNumber]]
             df.insert(0, 'Project', 'Project' + str(key.getProjectCode()))
             self.normalizedDataFrameForClassification = self.normalizedDataFrameForClassification.append(df.iloc[[0]], ignore_index=True)
@@ -78,12 +78,11 @@ class Normalization:
     
     def generateDataFrameForRegression(self, dictOfAllProjects, percentageOfTime):
         for key, value in dictOfAllProjects.items():
-            ...
-            #rowNumber = int(math.ceil(key.getExpectedDuration() * percentageOfTime)-1)
-            #df = value.drop(['Week'], axis=1).iloc[[rowNumber]]
-            #df.insert(0, 'Project', 'Project' + str(key.getProjectCode()))
-
-            #self.normalizedDataFrameForRegression = self.normalizedDataFrameForRegression.append(df.iloc[[0]], ignore_index=True)
+            rowNumber = int(math.ceil(key.getActualDuration() * percentageOfTime)-1)
+            df = value.drop(['FiascoBinary'], axis=1).iloc[[rowNumber]]
+            df.insert(0, 'Project', 'Project' + str(key.getProjectCode()))
+            df['ActualDuration'] = key.getActualDuration() #round(float(key.getActualDuration()/key.getExpectedDuration()), 4)
+            self.normalizedDataFrameForRegression = self.normalizedDataFrameForRegression.append(df.iloc[[0]], ignore_index=True)
         return self.normalizedDataFrameForRegression
 
     def createFiascoBinary(self, project):
