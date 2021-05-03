@@ -97,6 +97,8 @@ class ProjectPrediction:
     
 
     """ Task 3: Regression algorithms """
+    # Using different regression algorithms (at least 3), study whether it is possible predict early the
+    # actual duration of a project.
 
     def LassoLinear(self, df, testSize):
         X, y = df.drop(['Project', 'FiascoBinary'], axis=1), df['FiascoBinary'].astype('int')

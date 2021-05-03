@@ -17,7 +17,7 @@ dictOfAllProjects = in_Normalization.readFiles(torkildPath)
 
 # All projects that is a fiasco: 15, 28, 40, 47, 60, 76
 # Here you can decide the # of weeks you want to use (the number is a decimal)
-normalizedDf = in_Normalization.generateDataFrame(dictOfAllProjects, 0.2) 
+normalizedDf = in_Normalization.generateDataFrameForClassification(dictOfAllProjects, 0.2) 
 print(normalizedDf)
 print(normalizedDf.iloc[[39]])
 
