@@ -1,8 +1,7 @@
 """" Group 14: Eivind Stangebye Larsen and Torkild Sandnes Grøstad """
 
 from Normalization import Normalization
-from FiascoDetection import FiascoDetection
-import pandas as pd
+from ProjectPrediction import ProjectPrediction
 
 """ Testing Task1 """
 
@@ -10,30 +9,32 @@ eivindPath = "/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186
 torkildPath = "projectData"
 
 in_Normalization = Normalization()
-in_Normalization.readFiles(torkildPath)
-in_Normalization.plotHistorgramOfDelays()
+dictOfAllProjects = in_Normalization.readFiles(torkildPath)
+#in_Normalization.plotHistorgramOfDelays()
 
-"""for key, value in in_Normalization.allProjectDataFrames.items():
-    print(value)
-    print('\n')
-"""    
 
 """ Testing Task 2 """
 
 # All projects that is a fiasco: 15, 28, 40, 47, 60, 76
-detect = FiascoDetection()
-test15 = list(in_Normalization.allProjectDataFrames.values())[14]
-test28 = list(in_Normalization.allProjectDataFrames.values())[27]
-test40 = list(in_Normalization.allProjectDataFrames.values())[39]
-test47 = list(in_Normalization.allProjectDataFrames.values())[46]
-test60 = list(in_Normalization.allProjectDataFrames.values())[59]
-test76 = list(in_Normalization.allProjectDataFrames.values())[75]
+# Here you can decide the # of weeks you want to use (the number is a decimal)
+normalizedDf = in_Normalization.generateDataFrame(dictOfAllProjects, 0.3) 
+print(normalizedDf)
+print(normalizedDf.iloc[[39]])
+
+predict = ProjectPrediction()
 
 """ Testing Logistic Regression """
-#print(detect.logisticReg(test15, 0.5))
+# Here you can decide the train/test-split (in decimal)
+print("Logistic Regression: ")
+print(predict.logisticReg(normalizedDf, 0.5))
+print("\n")
 
 """ Testing KNeighbors """
-#print(detect.KNeighbors(test15, 0.5))
+print("KNeighbors: ")
+print(predict.KNeighbors(normalizedDf, 0.5))
+print("\n")
 
 """ Testing Naive Bayes """
-#detect.KNeighbors(test15, 0.2)
+print("Naive Bayes: ")
+print(predict.naiveBayes(normalizedDf, 0.5))
+print("\n")

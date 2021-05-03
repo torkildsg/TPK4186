@@ -27,7 +27,7 @@ from sklearn.naive_bayes import GaussianNB
 #   3. SVR(kernel = 'rbf')
 #   4. EnsembleRegressors
 
-class FiascoDetection:
+class ProjectPrediction:
     def __init__(self):
         super().__init__()
 
