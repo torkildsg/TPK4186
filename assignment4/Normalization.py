@@ -16,24 +16,25 @@ class Normalization:
     def __init__(self):
         self.allProjectDataFrames = dict() # {key: <Project>, values: <df>, ...}
         self.allProjectDelays = []
+        self.normalizedDataFrame = None # The dataframe containing all the projects status after a certain time (..given in %)
+        self.setNormalizedDataFrame()
     
     # Q: In task 2.2 and 2.3; what is considered 'early'?
     # A: Mater inn data, records fra uke til uke, hvor tidlig klarer man av å avgjøre hvorvidt det er en fiasko?
     # Prøv å begrense litt og litt data
 
-    # Q: Mate inn til maskinlæring: 
-    # 1. prosent; expected duration / this week number A: JA, bruk denne. Denne vil gi forventet prosent
-
     #    Your first task consists thus in writting a Python script that normalizes the data, 
     #    i.e. that transforms their weekly progression into an abstract scale of progression.
     
+    def setNormalizedDataFrame(self):
+        df = pd.DataFrame(columns = ['Project', 'Foundation', 'Framing', 'CurtainWall', 'HVAC', 'FireFighting', 'Elevator', 'Electrical', 'ArchitecturalFinishing', 'FiascoBinary'])
+        self.normalizedDataFrame = df
+    
+    def getNormalizedDataFrame(self):
+        return self.normalizedDataFrame
+
     def getAllProjectsDelays(self):
         return self.allProjectDelays
-    
-    def appendProject(self, project, df):
-        self.allProjectDataFrames[project] = df
-
-
 
     def calculateAllProjectsDelay(self):
         for key, value in self.allProjectDataFrames.items():    
@@ -48,28 +49,32 @@ class Normalization:
         df[['Foundation', 'Framing', 'CurtainWall', 'HVAC', 'FireFighting', 'Elevator', 'Electrical', 'ArchitecturalFinishing']] = scaling.fit_transform(df[['Foundation', 'Framing', 'CurtainWall', 'HVAC', 'FireFighting', 'Elevator', 'Electrical', 'ArchitecturalFinishing']])
         project.setProjectDataFrame(df)
         return df
+    
+    def appendProject(self, project, df):
+        self.allProjectDataFrames[project] = df
 
-    def createColumnsForWeeklyProgression(self, project):
+    """def createColumnForWeeklyProgression(self, project):
         expectedDuration = project.getExpectedDuration()
         df = project.getProjectDataFrame()
         df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 3)))
-        project.setProjectDataFrame(df)
+        project.setProjectDataFrame(df)"""
     
+    def generateDataFrame(self, dictOfAllProjects, percentageOfTime):
+        for key, value in dictOfAllProjects.items():
+            rowNumber = int(math.ceil(key.getExpectedDuration() * percentageOfTime)-1)
+            df = value.drop(['Week'], axis=1).iloc[[rowNumber]]
+            df.insert(0, 'Project', 'Project' + str(key.getProjectCode()))
 
-    def createBinaryFiasco(self, project):
+            self.normalizedDataFrame = self.normalizedDataFrame.append(df.iloc[[0]], ignore_index=True)
+        return self.normalizedDataFrame
+
+    def createFiascoBinary(self, project):
         df = project.getProjectDataFrame()
-        """conditionOne = (df["WeeklyProgression"] < 1.4) 
-        conditionTwo = (df["WeeklyProgression"] >= 1.4)
-        conditions = [conditionOne, conditionTwo]
-        choices = [0, 1]
-        df["FiascoBinary"] = np.select(conditions, choices)"""
         if project.getDelay() >= 1.4:
             df["FiascoBinary"] = 1
         else:
-            df["FiascoBinary"] = 0 
-
+            df["FiascoBinary"] = 0
     
-    # Funkson for å hente alle filene
     def readFiles(self, folderPath):
         pathlist = Path(str(folderPath)).rglob('*.tsv')
         for path in sorted(pathlist):
@@ -82,12 +87,12 @@ class Normalization:
             end = '.tsv'
             projectCode = int((pathString.split(start))[1].split(end)[0])
             newProject = Project(projectCode, pathString)
-            self.createColumnsForWeeklyProgression(newProject)
             newProject.setActualDuration()
-            self.createBinaryFiasco(newProject)
+            self.createFiascoBinary(newProject) 
             self.normalizeDataInColumns(newProject)
             self.appendProject(newProject, newProject.getProjectDataFrame())
         self.calculateAllProjectsDelay()
+        return self.allProjectDataFrames
 
 
     # In particular, print out histograms of delays. 
@@ -112,3 +117,19 @@ class Normalization:
         return file
 
 
+# Excessive code
+
+
+"""conditionOne = (df["WeeklyProgression"] < 1.4) 
+    conditionTwo = (df["WeeklyProgression"] >= 1.4)
+    conditions = [conditionOne, conditionTwo]
+    choices = [0, 1]
+    df["FiascoBinary"] = np.select(conditions, choices)"""
+
+"""for col in df.columns: 
+            startWeek = int((df.loc[df[col] != 0].index)[0])
+            finishedWeek = int((df.loc[df[col] == 100].index)[0]+1)
+            numOfWeeks = int(finishedWeek - startWeek)
+            normalizedDuration = round(float(numOfWeeks/project.getExpectedDuration()), 4)
+            self.normalizedDataFrame = self.allProject.append({col: normalizedDuration}, ignore_index=True)
+        self.normalizedDataFrame['FiascoBinary'] = [self.getFiascoBinary(project)]"""

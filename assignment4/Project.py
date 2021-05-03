@@ -12,8 +12,6 @@ class Project:
         self.projectDataFrame = None
         self.importProject(fileName)
     
-    
-    
     def getProject(self, projectCode):
         return self.projectCode
     
