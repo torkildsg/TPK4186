@@ -16,8 +16,10 @@ class Normalization:
     def __init__(self):
         self.allProjectDataFrames = dict() # {key: <Project>, values: <df>, ...}
         self.allProjectDelays = []
-        self.normalizedDataFrame = None # The dataframe containing all the projects status after a certain time (..given in %)
-        self.setNormalizedDataFrame()
+        self.normalizedDataFrameForClassification = None # The dataframe containing all the projects status after a certain time (..given in %)
+        self.setNormalizedDataFrameForClassification()
+        self.normalizedDataFrameForRegression = None
+        self.setNormalizedDataFrameForRegression()
     
     # Q: In task 2.2 and 2.3; what is considered 'early'?
     # A: Mater inn data, records fra uke til uke, hvor tidlig klarer man av å avgjøre hvorvidt det er en fiasko?
@@ -26,12 +28,19 @@ class Normalization:
     #    Your first task consists thus in writting a Python script that normalizes the data, 
     #    i.e. that transforms their weekly progression into an abstract scale of progression.
     
-    def setNormalizedDataFrame(self):
+    def setNormalizedDataFrameForClassification(self):
         df = pd.DataFrame(columns = ['Project', 'Foundation', 'Framing', 'CurtainWall', 'HVAC', 'FireFighting', 'Elevator', 'Electrical', 'ArchitecturalFinishing', 'FiascoBinary'])
-        self.normalizedDataFrame = df
+        self.normalizedDataFrameForClassification = df
     
-    def getNormalizedDataFrame(self):
-        return self.normalizedDataFrame
+    def getNormalizedDataFrameForClassification(self):
+        return self.normalizedDataFrameForClassification
+
+    def setNormalizedDataFrameForRegression(self):
+        df = pd.DataFrame(columns = ['Project', 'Week', 'Foundation', 'Framing', 'CurtainWall', 'HVAC', 'FireFighting', 'Elevator', 'Electrical', 'ArchitecturalFinishing', 'ActualDuration'])
+        self.normalizedDataFrameForRegression = df
+    
+    def getNormalizedDataFrameForRegression(self):
+        return self.normalizedDataFrameForRegression
 
     def getAllProjectsDelays(self):
         return self.allProjectDelays
@@ -59,14 +68,22 @@ class Normalization:
         df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 3)))
         project.setProjectDataFrame(df)"""
     
-    def generateDataFrame(self, dictOfAllProjects, percentageOfTime):
+    def generateDataFrameForClassification(self, dictOfAllProjects, percentageOfTime):
         for key, value in dictOfAllProjects.items():
-            rowNumber = int(math.ceil(key.getExpectedDuration() * percentageOfTime)-1)
+            rowNumber = int(math.ceil(key.getActualDuration() * percentageOfTime)-1)
             df = value.drop(['Week'], axis=1).iloc[[rowNumber]]
             df.insert(0, 'Project', 'Project' + str(key.getProjectCode()))
-
-            self.normalizedDataFrame = self.normalizedDataFrame.append(df.iloc[[0]], ignore_index=True)
-        return self.normalizedDataFrame
+            self.normalizedDataFrameForClassification = self.normalizedDataFrameForClassification.append(df.iloc[[0]], ignore_index=True)
+        return self.normalizedDataFrameForClassification
+    
+    def generateDataFrameForRegression(self, dictOfAllProjects, percentageOfTime):
+        for key, value in dictOfAllProjects.items():
+            rowNumber = int(math.ceil(key.getActualDuration() * percentageOfTime)-1)
+            df = value.drop(['FiascoBinary'], axis=1).iloc[[rowNumber]]
+            df.insert(0, 'Project', 'Project' + str(key.getProjectCode()))
+            df['ActualDuration'] = key.getActualDuration() #round(float(key.getActualDuration()/key.getExpectedDuration()), 4)
+            self.normalizedDataFrameForRegression = self.normalizedDataFrameForRegression.append(df.iloc[[0]], ignore_index=True)
+        return self.normalizedDataFrameForRegression
 
     def createFiascoBinary(self, project):
         df = project.getProjectDataFrame()
