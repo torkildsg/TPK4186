@@ -1,7 +1,7 @@
 """" Group 14: Eivind Stangebye Larsen and Torkild Sandnes Grøstad """
 
 from Normalization import Normalization
-from FiascoDetection import FiascoDetection
+from ProjectPrediction import ProjectPrediction
 
 """ Testing Task1 """
 
@@ -21,20 +21,20 @@ normalizedDf = in_Normalization.generateDataFrame(dictOfAllProjects, 0.3)
 print(normalizedDf)
 print(normalizedDf.iloc[[39]])
 
-detect = FiascoDetection()
+predict = ProjectPrediction()
 
 """ Testing Logistic Regression """
 # Here you can decide the train/test-split (in decimal)
 print("Logistic Regression: ")
-print(detect.logisticReg(normalizedDf, 0.5))
+print(predict.logisticReg(normalizedDf, 0.5))
 print("\n")
 
 """ Testing KNeighbors """
 print("KNeighbors: ")
-print(detect.KNeighbors(normalizedDf, 0.5))
+print(predict.KNeighbors(normalizedDf, 0.5))
 print("\n")
 
 """ Testing Naive Bayes """
 print("Naive Bayes: ")
-print(detect.naiveBayes(normalizedDf, 0.5))
+print(predict.naiveBayes(normalizedDf, 0.5))
 print("\n")
