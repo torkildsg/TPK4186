@@ -10,7 +10,7 @@ torkildPath = "projectData"
 
 in_Normalization = Normalization()
 dictOfAllProjects = in_Normalization.readFiles(torkildPath)
-#in_Normalization.plotHistorgramOfDelays()
+in_Normalization.plotHistorgramOfDelays()
 
 #------------------------------------------------------------------------------------------------------------
 
