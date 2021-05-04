@@ -119,26 +119,3 @@ class Normalization:
         plt.ylabel('Percentage')
         file = plt.savefig('delayHistogram.pdf')
         return file
-
-
-# Excessive code - may be deleted 
-
-"""def createColumnForWeeklyProgression(self, project):
-        expectedDuration = project.getExpectedDuration()
-        df = project.getProjectDataFrame()
-        df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 3)))
-        project.setProjectDataFrame(df)"""
-
-"""conditionOne = (df["WeeklyProgression"] < 1.4) 
-    conditionTwo = (df["WeeklyProgression"] >= 1.4)
-    conditions = [conditionOne, conditionTwo]
-    choices = [0, 1]
-    df["FiascoBinary"] = np.select(conditions, choices)"""
-
-"""for col in df.columns: 
-            startWeek = int((df.loc[df[col] != 0].index)[0])
-            finishedWeek = int((df.loc[df[col] == 100].index)[0]+1)
-            numOfWeeks = int(finishedWeek - startWeek)
-            normalizedDuration = round(float(numOfWeeks/project.getExpectedDuration()), 4)
-            self.normalizedDataFrame = self.allProject.append({col: normalizedDuration}, ignore_index=True)
-        self.normalizedDataFrame['FiascoBinary'] = [self.getFiascoBinary(project)]"""

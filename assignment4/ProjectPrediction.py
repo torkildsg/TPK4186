@@ -11,21 +11,6 @@ from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 
-# A project is considered as a fiasco if its actual duration is at least 40% higher than its expected
-# duration. Using different classification algorithms (at least 3), study whether it is possible detect
-# early that a project will be a fiasco.
-
-# Classification: We have <100K samples. 
-# Try:
-#   1. Logistic SVR
-#   2. Naive Bayes
-#   3. KNeighbors Classifier
-
-# Regression: We have <100K samples
-# Try: 
-#   1. RidgeRegression
-#   2. SVR(kernel = 'linear')
-
 class ProjectPrediction:
     def __init__(self):
         super().__init__()
@@ -96,8 +81,8 @@ class ProjectPrediction:
     
 
     """ Task 3: Regression algorithms """
-    # Using different regression algorithms (at least 3), study whether it is possible predict early the
-    # actual duration of a project.
+
+    # Add: Skriv ut informasjon im hvilke tall som er brukt, og avviket mellom test og trening
 
     def SVRlinear(self, df, testSize):
         X, y = df.drop(['Project', 'ActualDuration'], axis=1), df['ActualDuration'].astype('int')
