@@ -7,9 +7,10 @@ from ProjectPrediction import ProjectPrediction
 
 path = "projectData"
 in_Normalization = Normalization()
+predict = ProjectPrediction()
+dictOfAllProjects = in_Normalization.readFiles(path) # read all files in this folder
 
-"""dictOfAllProjects = in_Normalization.readFiles(path) # read all files in this folder
-in_Normalization.plotHistorgramOfDelays()"""
+"""in_Normalization.plotHistorgramOfDelays()"""
 
 #------------------------------------------------------------------------------------------------------------
 
@@ -17,7 +18,6 @@ in_Normalization.plotHistorgramOfDelays()"""
 """
 # Here you can decide the # of weeks (in a precentage) you want to use (the number has to be a decimal)
 classificationDf = in_Normalization.generateDataFrameForClassification(dictOfAllProjects, 0.2) 
-predict = ProjectPrediction()
 
 # Here you can print put the dataframe to see how it looks like
 print(classificationDf)
@@ -40,9 +40,9 @@ predict.decisionTree(classificationDf, 0.2)
 #------------------------------------------------------------------------------------------------------------
 
 """ Testing Task 3 """
-"""
+
 # Here you can decide the # of weeks you want to use (the number is a decimal)
-regressionDf = in_Normalization.generateDataFrameForRegression(dictOfAllProjects, 0.2)
+"""regressionDf = in_Normalization.generateDataFrameForRegression(dictOfAllProjects, 0.05)
 
 # Here you can print put the dataframe to see how it looks like
 print(regressionDf)
@@ -56,5 +56,4 @@ predict.SVRlinear(in_Normalization, regressionDf, 0.2)
 predict.LassoLinear(in_Normalization, regressionDf, 0.2)
 
 # Ridge Regression 
-predict.ridgeReg(in_Normalization, regressionDf, 0.2)
-"""
+predict.ridgeReg(in_Normalization, regressionDf, 0.2)"""
