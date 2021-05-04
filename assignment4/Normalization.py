@@ -20,6 +20,8 @@ class Normalization:
         self.setNormalizedDataFrameForClassification()
         self.normalizedDataFrameForRegression = None
         self.setNormalizedDataFrameForRegression()
+        self.percentageOfWeeksClassification = 0
+        self.percentageOfWeeksRegression = 0
 
     def setNormalizedDataFrameForClassification(self):
         df = pd.DataFrame(columns = ['Project', 'Foundation', 'Framing', 'CurtainWall', 'HVAC', 'FireFighting', 'Elevator', 'Electrical', 'ArchitecturalFinishing', 'FiascoBinary'])
@@ -56,6 +58,7 @@ class Normalization:
         self.allProjectDataFrames[project] = df
     
     def generateDataFrameForClassification(self, dictOfAllProjects, percentageOfTime):
+        self.percentageOfWeeksClassification = percentageOfTime
         for key, value in dictOfAllProjects.items():
             rowNumber = int(math.ceil(key.getActualDuration() * percentageOfTime)-1)
             df = value.drop(['Week'], axis=1).iloc[[rowNumber]]
@@ -64,6 +67,7 @@ class Normalization:
         return self.normalizedDataFrameForClassification
     
     def generateDataFrameForRegression(self, dictOfAllProjects, percentageOfTime):
+        self.percentageOfWeeksRegression = percentageOfTime
         for key, value in dictOfAllProjects.items():
             rowNumber = int(math.ceil(key.getActualDuration() * percentageOfTime)-1)
             df = value.drop(['FiascoBinary'], axis=1).iloc[[rowNumber]]

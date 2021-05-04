@@ -104,7 +104,7 @@ class ProjectPrediction:
 
     # Add: Skriv ut informasjon im hvilke tall som er brukt, og avviket mellom test og trening
 
-    def SVRlinear(self, df, testSize):
+    def SVRlinear(self, normalization, df, testSize):
         X, y = df.drop(['Project', 'ActualDuration'], axis=1), df['ActualDuration'].astype('int')
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = testSize)
 
@@ -117,10 +117,14 @@ class ProjectPrediction:
 
         test_prediction = linear_model.predict(X_test)
         test_acc = linear_model.score(X_test, y_test)
-        print(f"Accuracy on test data: {test_acc:.4f}\n")
+        print(f"Accuracy on test data: {test_acc:.4f}")
+
+        print("SVR linear prediction with " + str(normalization.percentageOfWeeksRegression*100) + "% of the data in each of the " + str(len(normalization.allProjectDataFrames)) + \
+            " projects, \nand a train/test ratio of " + str(int((1-testSize)*100)) + "/" + str(int(testSize*100)) + " resulted in a deviation of " +\
+                 str(round(np.mean((test_prediction-y_test)), 3)) + " weeks.\n")
         return ""
 
-    def LassoLinear(self, df, testSize):
+    def LassoLinear(self, normalization, df, testSize):
         X, y = df.drop(['Project', 'ActualDuration'], axis=1), df['ActualDuration'].astype('int')
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = testSize)
 
@@ -133,10 +137,14 @@ class ProjectPrediction:
 
         test_prediction = lasso_model.predict(X_test)
         test_acc = lasso_model.score(X_test, y_test)
-        print(f"Accuracy on test data: {test_acc:.4f}\n")
+        print(f"Accuracy on test data: {test_acc:.4f}")
+
+        print("Lasso linear regression with " + str(normalization.percentageOfWeeksRegression*100) + "% of the data in each of the " + str(len(normalization.allProjectDataFrames)) + \
+            " projects, \nand a train/test ratio of " + str(int((1-testSize)*100)) + "/" + str(int(testSize*100)) + " resulted in a deviation of " +\
+                 str(round(np.mean((test_prediction-y_test)), 3)) + " weeks.\n")
         return ""
     
-    def ridgeReg(self, df, testSize):
+    def ridgeReg(self, normalization, df, testSize):
         X, y = df.drop(['Project', 'ActualDuration'], axis=1), df['ActualDuration'].astype('int')
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = testSize)
 
@@ -149,5 +157,9 @@ class ProjectPrediction:
 
         test_prediction = ridge_model.predict(X_test)
         test_acc = ridge_model.score(X_test, y_test)
-        print(f"Accuracy on test data: {test_acc:.4f}\n")
+        print(f"Accuracy on test data: {test_acc:.4f}")
+
+        print("Ridge regression with " + str(normalization.percentageOfWeeksRegression*100) + "% of the data in each of the " + str(len(normalization.allProjectDataFrames)) + \
+            " projects, \nand a train/test ratio of " + str(int((1-testSize)*100)) + "/" + str(int(testSize*100)) + " resulted in a deviation of " +\
+                 str(round(np.mean((test_prediction-y_test)), 3)) + " weeks.\n")
         return ""
