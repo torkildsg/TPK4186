@@ -20,14 +20,7 @@ class Normalization:
         self.setNormalizedDataFrameForClassification()
         self.normalizedDataFrameForRegression = None
         self.setNormalizedDataFrameForRegression()
-    
-    # Q: In task 2.2 and 2.3; what is considered 'early'?
-    # A: Mater inn data, records fra uke til uke, hvor tidlig klarer man av å avgjøre hvorvidt det er en fiasko?
-    # Prøv å begrense litt og litt data
 
-    #    Your first task consists thus in writting a Python script that normalizes the data, 
-    #    i.e. that transforms their weekly progression into an abstract scale of progression.
-    
     def setNormalizedDataFrameForClassification(self):
         df = pd.DataFrame(columns = ['Project', 'Foundation', 'Framing', 'CurtainWall', 'HVAC', 'FireFighting', 'Elevator', 'Electrical', 'ArchitecturalFinishing', 'FiascoBinary'])
         self.normalizedDataFrameForClassification = df
@@ -61,12 +54,6 @@ class Normalization:
     
     def appendProject(self, project, df):
         self.allProjectDataFrames[project] = df
-
-    """def createColumnForWeeklyProgression(self, project):
-        expectedDuration = project.getExpectedDuration()
-        df = project.getProjectDataFrame()
-        df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 3)))
-        project.setProjectDataFrame(df)"""
     
     def generateDataFrameForClassification(self, dictOfAllProjects, percentageOfTime):
         for key, value in dictOfAllProjects.items():
@@ -134,8 +121,13 @@ class Normalization:
         return file
 
 
-# Excessive code
+# Excessive code - may be deleted 
 
+"""def createColumnForWeeklyProgression(self, project):
+        expectedDuration = project.getExpectedDuration()
+        df = project.getProjectDataFrame()
+        df = df.assign(WeeklyProgression=lambda x:(round((x['Week'] / expectedDuration), 3)))
+        project.setProjectDataFrame(df)"""
 
 """conditionOne = (df["WeeklyProgression"] < 1.4) 
     conditionTwo = (df["WeeklyProgression"] >= 1.4)
