@@ -10,6 +10,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.tree import DecisionTreeClassifier
 
 class ProjectPrediction:
     def __init__(self):
@@ -79,6 +80,25 @@ class ProjectPrediction:
         print(f"Accuracy on test data: {test_acc:.4f}\n")
         return ""
     
+    def decisionTree(self, df, testSize):
+        X, y = df.drop(['Project', 'FiascoBinary'], axis=1), df['FiascoBinary'].astype('int')
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = testSize)
+
+        dt_model = DecisionTreeClassifier()
+        dt_model.fit(X_train, y_train)
+        train_prediction = dt_model.predict(X_train)
+        
+        # Output accuracy on training data
+        train_acc = accuracy_score(y_train, train_prediction)
+        print(f"Decision tree: \nAccuracy on training data: {train_acc:.4f}")
+
+        # Predict test data
+        test_prediction = dt_model.predict(X_test)
+
+        # Calculate accuracy on test set
+        test_acc = accuracy_score(y_test, test_prediction)
+        print(f"Accuracy on test data: {test_acc:.4f}\n")
+        return ""
 
     """ Task 3: Regression algorithms """
 

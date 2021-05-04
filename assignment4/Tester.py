@@ -5,11 +5,10 @@ from ProjectPrediction import ProjectPrediction
 
 """ Testing Task1 """
 
-eivindPath = "/Users/eivndlarsen/Documents/NTNU/Performance engineering /TPK4186/assignment4/projectData"
-torkildPath = "projectData"
+path = "projectData"
 
 in_Normalization = Normalization()
-dictOfAllProjects = in_Normalization.readFiles(torkildPath)
+dictOfAllProjects = in_Normalization.readFiles(path)
 #in_Normalization.plotHistorgramOfDelays()
 
 #------------------------------------------------------------------------------------------------------------
@@ -21,7 +20,7 @@ classificationDf = in_Normalization.generateDataFrameForClassification(dictOfAll
 predict = ProjectPrediction()
 
 # Here you can print put the dataframe to see how it looks like
-#print(classificationDf)
+print(classificationDf)
 
 """ Testing Logistic Regression """
 # Here you can decide the test-size (in decimal)
@@ -34,7 +33,7 @@ predict = ProjectPrediction()
 #predict.naiveBayes(classificationDf, 0.2)
 
 """ Testing Decision Tree """
-
+#predict.decisionTree(classificationDf, 0.20)
 
 #------------------------------------------------------------------------------------------------------------
 
