@@ -40,7 +40,7 @@ predict.decisionTree(classificationDf, 0.2)
 #------------------------------------------------------------------------------------------------------------
 
 """ Testing Task 3 """
-
+"""
 # Here you can decide the # of weeks you want to use (the number is a decimal)
 regressionDf = in_Normalization.generateDataFrameForRegression(dictOfAllProjects, 0.05)
 
@@ -56,4 +56,4 @@ predict.SVRlinear(in_Normalization, regressionDf, 0.2)
 predict.LassoLinear(in_Normalization, regressionDf, 0.2)
 
 # Ridge Regression 
-predict.ridgeReg(in_Normalization, regressionDf, 0.2)
+predict.ridgeReg(in_Normalization, regressionDf, 0.2)"""
