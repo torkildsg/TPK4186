@@ -4,6 +4,7 @@ from Normalization import Normalization
 import numpy as np
 import pandas as pd 
 import matplotlib.pyplot as plt
+import math
 from sklearn import svm, metrics, preprocessing, linear_model
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
@@ -47,15 +48,10 @@ class ProjectPrediction:
         knn_model = KNeighborsClassifier()
         knn_model.fit(X_train, y_train)
         train_prediction = knn_model.predict(X_train)
-
-        # Output accuracy on training data
         train_acc = accuracy_score(y_train, train_prediction)
         print(f"KNeighbors: \nAccuracy on training data: {train_acc:.4f}")
 
-        # Predict test data
         test_prediction = knn_model.predict(X_test)
-
-        # Calculate accuracy on test set
         test_acc = accuracy_score(y_test, test_prediction)
         print(f"Accuracy on test data: {test_acc:.4f}\n")
         return ""
@@ -67,15 +63,10 @@ class ProjectPrediction:
         gnb_model = GaussianNB()
         gnb_model.fit(X_train, y_train)
         train_prediction = gnb_model.predict(X_train)
-        
-        # Output accuracy on training data
         train_acc = accuracy_score(y_train, train_prediction)
         print(f"Naive Bayes: \nAccuracy on training data: {train_acc:.4f}")
 
-        # Predict test data
         test_prediction = gnb_model.predict(X_test)
-
-        # Calculate accuracy on test set
         test_acc = accuracy_score(y_test, test_prediction)
         print(f"Accuracy on test data: {test_acc:.4f}\n")
         return ""
@@ -87,22 +78,15 @@ class ProjectPrediction:
         dt_model = DecisionTreeClassifier()
         dt_model.fit(X_train, y_train)
         train_prediction = dt_model.predict(X_train)
-        
-        # Output accuracy on training data
         train_acc = accuracy_score(y_train, train_prediction)
         print(f"Decision tree: \nAccuracy on training data: {train_acc:.4f}")
 
-        # Predict test data
         test_prediction = dt_model.predict(X_test)
-
-        # Calculate accuracy on test set
         test_acc = accuracy_score(y_test, test_prediction)
         print(f"Accuracy on test data: {test_acc:.4f}\n")
         return ""
 
     """ Task 3: Regression algorithms """
-
-    # Add: Skriv ut informasjon im hvilke tall som er brukt, og avviket mellom test og trening
 
     def SVRlinear(self, normalization, df, testSize):
         X, y = df.drop(['Project', 'ActualDuration'], axis=1), df['ActualDuration'].astype('int')
@@ -110,18 +94,14 @@ class ProjectPrediction:
 
         linear_model = svm.SVR(kernel="linear")
         linear_model.fit(X_train, y_train)
-
         train_prediction = linear_model.predict(X_train)
-        train_acc = linear_model.score(X_train, y_train)
-        print(f"Linear SVR: \nAccuracy on training data: {train_acc:.4f}")
-
         test_prediction = linear_model.predict(X_test)
-        test_acc = linear_model.score(X_test, y_test)
-        print(f"Accuracy on test data: {test_acc:.4f}")
 
         print("SVR linear prediction with " + str(normalization.percentageOfWeeksRegression*100) + "% of the data in each of the " + str(len(normalization.allProjectDataFrames)) + \
-            " projects, \nand a train/test ratio of " + str(int((1-testSize)*100)) + "/" + str(int(testSize*100)) + " resulted in a deviation of " +\
-                 str(round(np.mean((test_prediction-y_test)), 3)) + " weeks.\n")
+            " projects, \nand a train/test ratio of " + str(int((1-testSize)*100)) + "/" + str(int(testSize*100)) + " resulted in:")
+        print("MAE:\t{0:.3f}".format(metrics.mean_absolute_error(y_test, test_prediction)))
+        print("RMSE:\t{0:.3f}".format(metrics.mean_squared_error(y_test, test_prediction, squared=False)))
+        print("R^2:\t{0:>1.3f}\n".format(metrics.r2_score(y_test, test_prediction)))
         return ""
 
     def LassoLinear(self, normalization, df, testSize):
@@ -130,18 +110,14 @@ class ProjectPrediction:
 
         lasso_model = linear_model.Lasso(alpha=0.01)
         lasso_model.fit(X_train, y_train) 
-        
         train_prediction = lasso_model.predict(X_train)
-        train_acc = lasso_model.score(X_train, y_train)
-        print(f"Linear Lasso: \nAccuracy on training data: {train_acc:.4f}")
-
         test_prediction = lasso_model.predict(X_test)
-        test_acc = lasso_model.score(X_test, y_test)
-        print(f"Accuracy on test data: {test_acc:.4f}")
 
-        print("Lasso linear regression with " + str(normalization.percentageOfWeeksRegression*100) + "% of the data in each of the " + str(len(normalization.allProjectDataFrames)) + \
-            " projects, \nand a train/test ratio of " + str(int((1-testSize)*100)) + "/" + str(int(testSize*100)) + " resulted in a deviation of " +\
-                 str(round(np.mean((test_prediction-y_test)), 3)) + " weeks.\n")
+        print("Lasso linear prediction with " + str(normalization.percentageOfWeeksRegression*100) + "% of the data in each of the " + str(len(normalization.allProjectDataFrames)) + \
+            " projects, \nand a train/test ratio of " + str(int((1-testSize)*100)) + "/" + str(int(testSize*100)) + " resulted in:")
+        print("MAE:\t{0:.3f}".format(metrics.mean_absolute_error(y_test, test_prediction)))
+        print("RMSE:\t{0:.3f}".format(metrics.mean_squared_error(y_test, test_prediction, squared=False)))
+        print("R^2:\t{0:>1.3f}\n".format(metrics.r2_score(y_test, test_prediction)))
         return ""
     
     def ridgeReg(self, normalization, df, testSize):
@@ -150,16 +126,12 @@ class ProjectPrediction:
 
         ridge_model = linear_model.Ridge(alpha=.5)
         ridge_model.fit(X_train, y_train)
-
         train_prediction = ridge_model.predict(X_train)
-        train_acc = ridge_model.score(X_train, y_train)
-        print(f"Ridge Regression: \nAccuracy on training data: {train_acc:.4f}")
-
         test_prediction = ridge_model.predict(X_test)
-        test_acc = ridge_model.score(X_test, y_test)
-        print(f"Accuracy on test data: {test_acc:.4f}")
 
-        print("Ridge regression with " + str(normalization.percentageOfWeeksRegression*100) + "% of the data in each of the " + str(len(normalization.allProjectDataFrames)) + \
-            " projects, \nand a train/test ratio of " + str(int((1-testSize)*100)) + "/" + str(int(testSize*100)) + " resulted in a deviation of " +\
-                 str(round(np.mean((test_prediction-y_test)), 3)) + " weeks.\n")
+        print("Ridge regression prediction with " + str(normalization.percentageOfWeeksRegression*100) + "% of the data in each of the " + str(len(normalization.allProjectDataFrames)) + \
+            " projects, \nand a train/test ratio of " + str(int((1-testSize)*100)) + "/" + str(int(testSize*100)) + " resulted in:")
+        print("MAE:\t{0:.3f}".format(metrics.mean_absolute_error(y_test, test_prediction)))
+        print("RMSE:\t{0:.3f}".format(metrics.mean_squared_error(y_test, test_prediction, squared=False)))
+        print("R^2:\t{0:>1.3f}\n".format(metrics.r2_score(y_test, test_prediction)))
         return ""
